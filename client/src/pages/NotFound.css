@@ -1,0 +1,348 @@
+/* =========================================================
+   STUDENTDECK — PREMIUM 404 PAGE
+========================================================= */
+
+.not-found-page {
+  min-height: calc(100vh - 70px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(37, 169, 255, 0.10),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(99, 102, 241, 0.09),
+      transparent 34%
+    ),
+    #f8fafc;
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.not-found-card {
+  position: relative;
+
+  width: 100%;
+  max-width: 620px;
+
+  padding: 68px 48px;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 250, 252, 0.96)
+    );
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 26px;
+
+  box-shadow:
+    0 25px 65px rgba(15, 23, 42, 0.09),
+    0 4px 12px rgba(15, 23, 42, 0.035);
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  animation: notFoundCardIn 0.45s ease;
+}
+
+@keyframes notFoundCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Top gradient accent */
+
+.not-found-card::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #25a9ff,
+      #6366f1,
+      #22d3ee
+    );
+}
+
+/* Decorative glow */
+
+.not-found-card::after {
+  content: '';
+
+  position: absolute;
+
+  width: 230px;
+  height: 230px;
+
+  top: -135px;
+  right: -95px;
+
+  border-radius: 50%;
+
+  background: rgba(37, 169, 255, 0.07);
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   404 NUMBER
+========================================================= */
+
+.not-found-code {
+  position: relative;
+  z-index: 1;
+
+  display: inline-block;
+
+  margin-bottom: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb,
+      #6366f1
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  color: #2563eb;
+
+  font-size: clamp(78px, 12vw, 112px);
+
+  font-weight: 900;
+
+  line-height: 0.95;
+
+  letter-spacing: -6px;
+
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.not-found-card h1 {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 13px;
+
+  color: #0f172a;
+
+  font-size: clamp(28px, 5vw, 36px);
+
+  font-weight: 800;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.8px;
+}
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.not-found-card p {
+  position: relative;
+  z-index: 1;
+
+  max-width: 470px;
+
+  margin: 0 auto 30px;
+
+  color: #64748b;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+}
+
+/* =========================================================
+   HOME BUTTON
+========================================================= */
+
+.not-found-home-button {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 13px 23px;
+
+  border: 1px solid rgba(37, 99, 235, 0.2);
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb
+    );
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 9px 20px rgba(37, 99, 235, 0.20);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.not-found-home-button:hover {
+  transform: translateY(-2px);
+
+  filter: brightness(1.04);
+
+  box-shadow:
+    0 13px 28px rgba(37, 99, 235, 0.28);
+}
+
+.not-found-home-button:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 700px) {
+  .not-found-page {
+    padding: 30px 16px;
+  }
+
+  .not-found-card {
+    padding: 55px 32px;
+
+    border-radius: 22px;
+  }
+
+  .not-found-code {
+    font-size: 82px;
+
+    letter-spacing: -4px;
+  }
+
+  .not-found-card h1 {
+    font-size: 29px;
+  }
+
+  .not-found-card p {
+    font-size: 15px;
+
+    margin-bottom: 26px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+  .not-found-page {
+    min-height: calc(100vh - 60px);
+
+    padding: 20px 12px;
+  }
+
+  .not-found-card {
+    padding: 48px 20px;
+
+    border-radius: 20px;
+  }
+
+  .not-found-code {
+    margin-bottom: 13px;
+
+    font-size: 68px;
+
+    letter-spacing: -3px;
+  }
+
+  .not-found-card h1 {
+    margin-bottom: 10px;
+
+    font-size: 25px;
+  }
+
+  .not-found-card p {
+    font-size: 14px;
+
+    line-height: 1.65;
+
+    margin-bottom: 24px;
+  }
+
+  .not-found-home-button {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 18px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .not-found-card {
+    animation: none;
+  }
+
+  .not-found-home-button {
+    transition: none;
+  }
+}

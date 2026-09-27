@@ -1,0 +1,230 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f8fafc;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.auth-container h1 {
+  margin: 0;
+  text-align: center;
+  color: #0f172a;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: #64748b;
+  margin: 10px 0 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+  color: #0f172a;
+  background-color: white;
+}
+
+.form-group input::placeholder {
+  color: #94a3b8;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #64748b;
+}
+
+/* =========================
+   PASSWORD INPUT
+========================= */
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding: 12px 45px 12px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+  color: #0f172a;
+  background-color: white;
+}
+
+.password-input-wrapper input::placeholder {
+  color: #94a3b8;
+}
+
+.password-input-wrapper input:focus {
+  outline: none;
+  border-color: #64748b;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  color: #64748b;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  color: #1e293b;
+}
+
+/* =========================
+   YEAR INPUT
+========================= */
+
+.year-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.year-input-wrapper input {
+  width: 100%;
+  padding: 12px 45px 12px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+  color: #0f172a;
+  background-color: white;
+}
+
+.year-input-wrapper input::placeholder {
+  color: #94a3b8;
+}
+
+.year-input-wrapper input:focus {
+  outline: none;
+  border-color: #64748b;
+}
+
+.year-arrows {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  z-index: 2;
+}
+
+.year-arrows button {
+  width: 24px;
+  height: 16px;
+
+  padding: 0;
+  margin: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #64748b;
+  font-size: 10px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.year-arrows button:hover {
+  color: #1e293b;
+}
+
+/* =========================
+   AUTH BUTTON
+========================= */
+
+.auth-button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1e293b;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.auth-button:hover {
+  background-color: #334155;
+}
+
+/* =========================
+   AUTH FOOTER
+========================= */
+
+.auth-footer {
+  text-align: center;
+  margin-top: 25px;
+  color: #64748b;
+}
+
+.auth-footer a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+  .auth-container {
+    padding: 30px 20px;
+  }
+}

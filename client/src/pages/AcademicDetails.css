@@ -1,0 +1,610 @@
+/* =========================================
+   ACADEMIC DETAILS — PREMIUM UI
+========================================= */
+
+.academic-details-page {
+  min-height: 100vh;
+  padding: 42px 20px 70px;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(37, 169, 255, 0.08), transparent 28%),
+    radial-gradient(circle at 90% 10%, rgba(99, 102, 241, 0.07), transparent 25%),
+    #f8fafc;
+}
+
+.academic-details-container {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   BACK BUTTON
+========================================= */
+
+.academic-details-container > a,
+.academic-details-container .back-academic {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+  padding: 10px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #475569;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.academic-details-container > a:hover,
+.academic-details-container .back-academic:hover {
+  color: #2563eb;
+  border-color: #bfdbfe;
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.08);
+  transform: translateX(-2px);
+}
+
+/* =========================================
+   MAIN CARD
+========================================= */
+
+.academic-details-card {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+  box-shadow:
+    0 20px 55px rgba(15, 23, 42, 0.07),
+    0 4px 14px rgba(15, 23, 42, 0.03);
+}
+
+.academic-details-card::before {
+  content: "";
+  display: block;
+  height: 5px;
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #25a9ff,
+    #6366f1
+  );
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.academic-details-content {
+  padding: 44px;
+}
+
+/* =========================================
+   TITLE
+========================================= */
+
+.academic-details-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.academic-details-title-row h1 {
+  margin: 0;
+  max-width: 760px;
+  color: #0f172a;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.15;
+  letter-spacing: -0.7px;
+  font-weight: 800;
+}
+
+.academic-details-type {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    #eff6ff,
+    #f0f9ff
+  );
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.academic-details-description {
+  max-width: 820px;
+  margin: 20px 0 0;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+/* =========================================
+   INFORMATION GRID
+========================================= */
+
+.academic-details-information {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  margin-top: 32px;
+}
+
+.academic-information-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+  padding: 16px 18px;
+  border: 1px solid #e5eaf0;
+  border-radius: 15px;
+  background: #f8fafc;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.academic-information-item:hover {
+  background: #ffffff;
+  border-color: #bfdbfe;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.07);
+  transform: translateY(-2px);
+}
+
+.academic-information-item > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 43px;
+  height: 43px;
+  border-radius: 12px;
+  background: #eff6ff;
+  font-size: 20px;
+}
+
+.academic-information-item small {
+  display: block;
+  margin-bottom: 4px;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.academic-information-item p {
+  margin: 0;
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* =========================================
+   UPLOADED BY
+========================================= */
+
+.academic-uploaded-by {
+  position: relative;
+  margin-top: 34px;
+  padding: 22px 0 0 58px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.academic-uploaded-by::before {
+  content: "👤";
+  position: absolute;
+  left: 0;
+  top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  font-size: 18px;
+}
+
+.academic-uploaded-by h2 {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.academic-uploaded-by p {
+  margin: 3px 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   ACTION AREA
+========================================= */
+
+.academic-resource-action {
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.academic-resource-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 11px;
+  flex-wrap: wrap;
+}
+
+/* =========================================
+   COMMON BUTTON STYLE
+========================================= */
+
+.academic-open-resource-button,
+.academic-save-button,
+.academic-edit-button,
+.academic-delete-button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 11px 18px;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* =========================================
+   OPEN RESOURCE
+========================================= */
+
+.academic-open-resource-button {
+  border: 1px solid #1d4ed8;
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #0ea5e9
+  );
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(37, 99, 235, 0.18);
+}
+
+.academic-open-resource-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 11px 25px rgba(37, 99, 235, 0.24);
+}
+
+.academic-open-resource-button:active {
+  transform: translateY(0);
+}
+
+/* =========================================
+   SAVE BUTTON
+========================================= */
+
+.academic-save-button {
+  border: 1px solid #bfdbfe;
+  background: #ffffff;
+  color: #2563eb;
+  cursor: pointer;
+}
+
+.academic-save-button:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  transform: translateY(-2px);
+}
+
+.academic-save-button.saved {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 7px 18px rgba(37, 99, 235, 0.15);
+}
+
+.academic-save-button.saved:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.academic-save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================
+   EDIT BUTTON
+========================================= */
+
+.academic-edit-button {
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.academic-edit-button:hover {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   DELETE BUTTON
+========================================= */
+
+.academic-delete-button {
+  border: 1px solid #fecaca;
+  background: #fff1f2;
+  color: #dc2626;
+  cursor: pointer;
+}
+
+.academic-delete-button:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  transform: translateY(-2px);
+}
+
+.academic-delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================
+   FOCUS STATES
+========================================= */
+
+.academic-open-resource-button:focus-visible,
+.academic-save-button:focus-visible,
+.academic-edit-button:focus-visible,
+.academic-delete-button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 2px;
+}
+
+/* =========================================
+   NOT FOUND / LOADING
+========================================= */
+
+.academic-details-not-found {
+  width: min(100%, 620px);
+  min-height: 65vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.academic-details-not-found h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.academic-details-not-found p {
+  max-width: 520px;
+  margin: 12px 0 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.academic-details-not-found a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 22px;
+  padding: 11px 17px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.academic-details-not-found a:hover {
+  background: #dbeafe;
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   RESPONSIVE — TABLET
+========================================= */
+
+@media (max-width: 760px) {
+  .academic-details-page {
+    padding: 30px 16px 55px;
+  }
+
+  .academic-details-content {
+    padding: 30px 24px;
+  }
+
+  .academic-details-title-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .academic-details-type {
+    align-self: flex-start;
+  }
+
+  .academic-details-information {
+    grid-template-columns: 1fr;
+  }
+
+  .academic-resource-actions {
+    justify-content: stretch;
+  }
+}
+
+/* =========================================
+   RESPONSIVE — MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+  .academic-details-page {
+    padding: 22px 12px 45px;
+  }
+
+  .academic-details-container > a,
+  .academic-details-container .back-academic {
+    margin-bottom: 16px;
+    padding: 9px 13px;
+    font-size: 13px;
+  }
+
+  .academic-details-card {
+    border-radius: 17px;
+  }
+
+  .academic-details-card::before {
+    height: 4px;
+  }
+
+  .academic-details-content {
+    padding: 24px 18px;
+  }
+
+  .academic-details-title-row h1 {
+    font-size: 27px;
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+  }
+
+  .academic-details-type {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+
+  .academic-details-description {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .academic-details-information {
+    gap: 11px;
+    margin-top: 24px;
+  }
+
+  .academic-information-item {
+    min-height: 68px;
+    padding: 13px;
+    border-radius: 13px;
+  }
+
+  .academic-information-item > span {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 17px;
+  }
+
+  .academic-information-item small {
+    font-size: 10px;
+  }
+
+  .academic-information-item p {
+    font-size: 13px;
+  }
+
+  .academic-uploaded-by {
+    margin-top: 27px;
+    padding-top: 20px;
+    padding-left: 51px;
+  }
+
+  .academic-uploaded-by::before {
+    top: 20px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+
+  .academic-uploaded-by h2 {
+    font-size: 16px;
+  }
+
+  .academic-uploaded-by p {
+    font-size: 13px;
+  }
+
+  .academic-resource-action {
+    margin-top: 27px;
+    padding-top: 21px;
+  }
+
+  .academic-resource-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 9px;
+  }
+
+  .academic-open-resource-button,
+  .academic-save-button,
+  .academic-edit-button,
+  .academic-delete-button {
+    width: 100%;
+    min-height: 45px;
+    padding: 12px 15px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .academic-details-not-found {
+    min-height: 70vh;
+  }
+
+  .academic-details-not-found h1 {
+    font-size: 25px;
+  }
+
+  .academic-details-not-found p {
+    font-size: 14px;
+  }
+}

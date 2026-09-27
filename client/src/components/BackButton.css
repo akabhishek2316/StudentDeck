@@ -1,0 +1,50 @@
+.back-button {
+  position: sticky;
+  top: 16px;
+  z-index: 5;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin: 20px 0 18px;
+  padding: 9px 18px;
+
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  color: #1e293b;
+
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.back-button:hover {
+  background-color: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+  transform: translateX(-2px);
+}
+
+.back-button-arrow {
+  font-size: 16px;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .back-button {
+    top: 10px;
+    margin: 14px 0 14px;
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
