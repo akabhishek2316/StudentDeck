@@ -36,7 +36,8 @@ function Messages() {
   const currentUserRef = useRef(null)
   const chatMessagesRef = useRef(null)
   const conversationsRef = useRef([])
-  
+  const deliveredMessageIdsRef = useRef(new Set())
+
   const [currentUser, setCurrentUser] =
     useState(null)
 
@@ -89,13 +90,13 @@ function Messages() {
     useRef(null)
 
   const [onlineUsers, setOnlineUsers] = useState(
-  new Set()
-)
+    new Set()
+  )
 
-const [typingUserId, setTypingUserId] =
-  useState(null)
+  const [typingUserId, setTypingUserId] =
+    useState(null)
 
-const typingTimeoutRef = useRef(null)
+  const typingTimeoutRef = useRef(null)
 
   /*
    * =========================
@@ -108,19 +109,19 @@ const typingTimeoutRef = useRef(null)
   }, [currentUser])
 
   useEffect(() => {
-  const socket = socketRef.current
+    const socket = socketRef.current
 
-  if (!socket?.connected || !currentUser?._id) {
-    return
-  }
+    if (!socket?.connected || !currentUser?._id) {
+      return
+    }
 
-  socket.emit('join_user', currentUser._id)
+    socket.emit('join_user', currentUser._id)
 
-  console.log(
-    'Joined user room:',
-    currentUser._id
-  )
-}, [currentUser?._id])
+    console.log(
+      'Joined user room:',
+      currentUser._id
+    )
+  }, [currentUser?._id])
 
   useEffect(() => {
     activeConversationRef.current =
@@ -139,23 +140,23 @@ const typingTimeoutRef = useRef(null)
 
 
   useEffect(() => {
-  conversationsRef.current = conversations
+    conversationsRef.current = conversations
 
-  const socket = socketRef.current
+    const socket = socketRef.current
 
-  if (!socket?.connected) {
-    return
-  }
-
-  conversations.forEach((conversation) => {
-    if (conversation?._id) {
-      socket.emit(
-        'join_conversation',
-        conversation._id
-      )
+    if (!socket?.connected) {
+      return
     }
-  })
-}, [conversations])
+
+    conversations.forEach((conversation) => {
+      if (conversation?._id) {
+        socket.emit(
+          'join_conversation',
+          conversation._id
+        )
+      }
+    })
+  }, [conversations])
 
   /*
    * =========================
@@ -206,6 +207,23 @@ const typingTimeoutRef = useRef(null)
     }
   }, [filePreview])
 
+  useEffect(() => {
+  const totalUnread = conversations.reduce(
+    (total, conversation) =>
+      total + Number(conversation?.unreadCount || 0),
+    0
+  )
+
+  localStorage.setItem(
+    'unreadMessageCount',
+    String(totalUnread)
+  )
+
+  window.dispatchEvent(
+    new Event('unreadMessagesUpdated')
+  )
+}, [conversations])
+
   /*
    * =========================
    * SOCKET CONNECTION
@@ -226,33 +244,33 @@ const typingTimeoutRef = useRef(null)
 
     socketRef.current = socket
 
- socket.on('connect', () => {
-  console.log(
-    'Socket connected:',
-    socket.id
-  )
+    socket.on('connect', () => {
+      console.log(
+        'Socket connected:',
+        socket.id
+      )
 
-  const user =
-    currentUserRef.current
+      const user =
+        currentUserRef.current
 
-  if (user?._id) {
-    socket.emit(
-      'join_user',
-      user._id
-    )
-  }
-
-  conversationsRef.current.forEach(
-    (conversation) => {
-      if (conversation?._id) {
+      if (user?._id) {
         socket.emit(
-          'join_conversation',
-          conversation._id
+          'join_user',
+          user._id
         )
       }
-    }
-  )
-})
+
+      conversationsRef.current.forEach(
+        (conversation) => {
+          if (conversation?._id) {
+            socket.emit(
+              'join_conversation',
+              conversation._id
+            )
+          }
+        }
+      )
+    })
 
     socket.on('connect_error', (socketError) => {
       console.error(
@@ -267,248 +285,289 @@ const typingTimeoutRef = useRef(null)
      * =========================
      */
 
-socket.on(
-  'new_message',
-  (incomingMessage) => {
+    socket.on(
+      'new_message',
+      (incomingMessage) => {
 
-    if (
-  incomingMessage?.sender &&
-  String(
-    incomingMessage.sender?._id ||
-    incomingMessage.sender
-  ) !== String(
-    currentUserRef.current?._id
+        if (
+          incomingMessage?.sender &&
+          String(
+            incomingMessage.sender?._id ||
+            incomingMessage.sender
+          ) !== String(
+            currentUserRef.current?._id
+          )
+        ) {
+          socket.emit('message_delivered', {
+            messageId: incomingMessage._id,
+            conversationId:
+              incomingMessage.conversation,
+            senderId:
+              incomingMessage.sender?._id ||
+              incomingMessage.sender,
+          })
+        }
+
+        if (!incomingMessage?._id) {
+          return
+        }
+
+        const conversationId =
+          String(
+            incomingMessage.conversation
+          )
+
+        const activeConversationId =
+          String(
+            activeConversationRef.current || ''
+          )
+
+        const user =
+          currentUserRef.current
+
+        const senderId =
+          incomingMessage.sender?._id
+
+        const isOwnMessage =
+          user &&
+          String(senderId) ===
+          String(user._id)
+
+        const isActiveConversation =
+          conversationId ===
+          activeConversationId
+
+        /*
+         * =====================================
+         * OTHER CHAT / BACKGROUND CONVERSATION
+         * =====================================
+         */
+
+        if (
+          !isActiveConversation
+        ) {
+
+          /* =====================================================
+   NAVBAR UNREAD MESSAGE COUNT
+===================================================== */
+
+const getTotalUnreadMessages = (conversationList) => {
+  return conversationList.reduce(
+    (total, conversation) =>
+      total + Number(conversation?.unreadCount || 0),
+    0
   )
-) {
-  socket.emit('message_delivered', {
-    messageId: incomingMessage._id,
-    conversationId:
-      incomingMessage.conversation,
-    senderId:
-      incomingMessage.sender?._id ||
-      incomingMessage.sender,
-  })
 }
 
-    if (!incomingMessage?._id) {
-      return
-    }
+const syncNavbarUnreadCount = (conversationList) => {
+  const totalUnread =
+    getTotalUnreadMessages(conversationList)
 
-    const conversationId =
-      String(
-        incomingMessage.conversation
-      )
+  localStorage.setItem(
+    'unreadMessageCount',
+    String(totalUnread)
+  )
 
-    const activeConversationId =
-      String(
-        activeConversationRef.current || ''
-      )
+  window.dispatchEvent(
+    new Event('unreadMessagesUpdated')
+  )
+}
 
-    const user =
-      currentUserRef.current
 
-    const senderId =
-      incomingMessage.sender?._id
+          /*
+           * Chat open nahi hai.
+           *
+           * Isliye unread count +1
+           */
+          updateConversationPreview(
+            incomingMessage,
+            !isOwnMessage
+          )
 
-    const isOwnMessage =
-      user &&
-      String(senderId) ===
-        String(user._id)
+          return
+        }
 
-    const isActiveConversation =
-      conversationId ===
-      activeConversationId
+        /*
+         * =====================================
+         * CURRENTLY OPEN CHAT
+         * =====================================
+         */
 
-    /*
-     * =====================================
-     * OTHER CHAT / BACKGROUND CONVERSATION
-     * =====================================
-     */
-
-    if (
-      !isActiveConversation
-    ) {
-      /*
-       * Chat open nahi hai.
-       *
-       * Isliye unread count +1
-       */
-      updateConversationPreview(
-        incomingMessage,
-        !isOwnMessage
-      )
-
-      return
-    }
-
-    /*
-     * =====================================
-     * CURRENTLY OPEN CHAT
-     * =====================================
-     */
-
-    setMessages((current) => {
-      const exists =
-        current.some(
-          (message) =>
-            String(message._id) ===
-            String(
-              incomingMessage._id
+        setMessages((current) => {
+          const exists =
+            current.some(
+              (message) =>
+                String(message._id) ===
+                String(
+                  incomingMessage._id
+                )
             )
+
+          if (exists) {
+            return current
+          }
+
+          return [
+            ...current,
+            incomingMessage,
+          ]
+        })
+
+        /*
+         * Current chat open hai,
+         * isliye unread count increase nahi hoga.
+         */
+        updateConversationPreview(
+          incomingMessage,
+          false
         )
 
-      if (exists) {
-        return current
+        /*
+         * Agar incoming message dusre user ka hai,
+         * to immediately read mark karo.
+         */
+        if (
+          !isOwnMessage &&
+          !incomingMessage.read
+        ) {
+          markMessageAsRead(
+            incomingMessage._id
+          ).catch((readError) => {
+            console.error(
+              'Failed to mark realtime message as read:',
+              readError
+            )
+          })
+        }
       }
+    )
 
-      return [
-        ...current,
-        incomingMessage,
-      ]
+    socket.on('online_users', ({ userIds }) => {
+      setOnlineUsers(
+        new Set(
+          (userIds || []).map(String)
+        )
+      )
     })
 
-    /*
-     * Current chat open hai,
-     * isliye unread count increase nahi hoga.
-     */
-    updateConversationPreview(
-      incomingMessage,
-      false
-    )
+    socket.on('user_online', ({ userId }) => {
+      if (!userId) return
 
-    /*
-     * Agar incoming message dusre user ka hai,
-     * to immediately read mark karo.
-     */
-    if (
-      !isOwnMessage &&
-      !incomingMessage.read
-    ) {
-      markMessageAsRead(
-        incomingMessage._id
-      ).catch((readError) => {
-        console.error(
-          'Failed to mark realtime message as read:',
-          readError
-        )
+      setOnlineUsers((current) => {
+        const next = new Set(current)
+        next.add(String(userId))
+        return next
       })
-    }
-  }
-)
+    })
 
-socket.on('online_users', ({ userIds }) => {
-  setOnlineUsers(
-    new Set(
-      (userIds || []).map(String)
+    socket.on('user_offline', ({ userId }) => {
+      if (!userId) return
+
+      setOnlineUsers((current) => {
+        const next = new Set(current)
+        next.delete(String(userId))
+        return next
+      })
+    })
+
+    //typing 
+
+    socket.on('user_typing', ({
+      conversationId,
+      userId,
+    }) => {
+      if (
+        String(conversationId) !==
+        String(activeConversationRef.current)
+      ) {
+        return
+      }
+
+      if (
+        String(userId) ===
+        String(currentUserRef.current?._id)
+      ) {
+        return
+      }
+
+      setTypingUserId(String(userId))
+    })
+
+    socket.on(
+      'user_stopped_typing',
+      ({
+        conversationId,
+        userId,
+      }) => {
+        if (
+          String(conversationId) !==
+          String(activeConversationRef.current)
+        ) {
+          return
+        }
+
+        setTypingUserId(null)
+      }
     )
-  )
-})
 
-socket.on('user_online', ({ userId }) => {
-  if (!userId) return
+    //delevered
 
-  setOnlineUsers((current) => {
-    const next = new Set(current)
-    next.add(String(userId))
-    return next
-  })
-})
+    socket.on('message_delivered', (data) => {
+      console.log(
+        'MESSAGE DELIVERED RECEIVED:',
+        data
+      )
 
-socket.on('user_offline', ({ userId }) => {
-  if (!userId) return
+      if (!data?.messageId) {
+        return
+      }
 
-  setOnlineUsers((current) => {
-    const next = new Set(current)
-    next.delete(String(userId))
-    return next
-  })
-})
+      const messageId =
+        String(data.messageId)
 
-//typing 
+      // Event ko remember karo
+      deliveredMessageIdsRef.current.add(
+        messageId
+      )
 
-socket.on('user_typing', ({
-  conversationId,
-  userId,
-}) => {
-  if (
-    String(conversationId) !==
-    String(activeConversationRef.current)
-  ) {
-    return
-  }
+      // Agar message already UI mein hai
+      // to immediately delivered dikhao
+      setMessages((current) =>
+        current.map((message) =>
+          String(message._id) === messageId
+            ? {
+              ...message,
+              delivered: true,
+            }
+            : message
+        )
+      )
+    })
 
-  if (
-    String(userId) ===
-    String(currentUserRef.current?._id)
-  ) {
-    return
-  }
+    //read
+    socket.on('message_read', (readData) => {
+      console.log(
+        'MESSAGE READ EVENT:',
+        readData
+      )
 
-  setTypingUserId(String(userId))
-})
+      if (!readData?.messageId) return
 
-socket.on(
-  'user_stopped_typing',
-  ({
-    conversationId,
-    userId,
-  }) => {
-    if (
-      String(conversationId) !==
-      String(activeConversationRef.current)
-    ) {
-      return
-    }
+      const messageId = String(
+        readData.messageId
+      )
 
-    setTypingUserId(null)
-  }
-)
-
-//delevered
-
-socket.on('message_delivered', (data) => {
-  if (!data?.messageId) return
-
-  const messageId = String(
-    data.messageId
-  )
-
-  setMessages((current) =>
-    current.map((message) =>
-      String(message._id) === messageId
-        ? {
-            ...message,
-            delivered: true,
-          }
-        : message
-    )
-  )
-})
-
-//read
-socket.on('message_read', (readData) => {
-  console.log(
-    'MESSAGE READ EVENT:',
-    readData
-  )
-
-  if (!readData?.messageId) return
-
-  const messageId = String(
-    readData.messageId
-  )
-
-  setMessages((current) =>
-    current.map((message) =>
-      String(message._id) === messageId
-        ? {
-            ...message,
-            read: true,
-          }
-        : message
-    )
-  )
-})
+      setMessages((current) =>
+        current.map((message) =>
+          String(message._id) === messageId
+            ? {
+              ...message,
+              read: true,
+            }
+            : message
+        )
+      )
+    })
     return () => {
       socket.off('connect')
       socket.off('connect_error')
@@ -517,9 +576,9 @@ socket.on('message_read', (readData) => {
       socket.off('message_read')
       socket.off('online_users')
       socket.off('user_online')
-socket.off('user_offline')
-socket.off('user_typing')
-socket.off('user_stopped_typing') 
+      socket.off('user_offline')
+      socket.off('user_typing')
+      socket.off('user_stopped_typing')
 
       socket.disconnect()
 
@@ -527,7 +586,7 @@ socket.off('user_stopped_typing')
     }
   }, [])
 
-  
+
 
   /*
    * =========================
@@ -564,9 +623,11 @@ socket.off('user_stopped_typing')
           conversationData.conversations ||
           []
 
-        setConversations(
-          loadedConversations
-        )
+       setConversations(
+  loadedConversations
+)
+
+
 
         const requestedId =
           location.state?.conversationId
@@ -574,33 +635,33 @@ socket.off('user_stopped_typing')
         const requestedConversation =
           requestedId
             ? loadedConversations.find(
-                (conversation) =>
-                  conversation._id ===
-                  requestedId
-              )
+              (conversation) =>
+                conversation._id ===
+                requestedId
+            )
             : null
 
-if (requestedConversation) {
-  setSelectedConversation(
-    requestedConversation
-  )
+        if (requestedConversation) {
+          setSelectedConversation(
+            requestedConversation
+          )
 
-  navigate(
-    location.pathname,
-    {
-      replace: true,
-      state: {},
-    }
-  )
-} else {
-  /*
-   * Refresh / direct page load par
-   * koi chat automatically open nahi hogi.
-   */
-  setSelectedConversation(null)
-  activeConversationRef.current = null
-  setMessages([])
-}
+          navigate(
+            location.pathname,
+            {
+              replace: true,
+              state: {},
+            }
+          )
+        } else {
+          /*
+           * Refresh / direct page load par
+           * koi chat automatically open nahi hogi.
+           */
+          setSelectedConversation(null)
+          activeConversationRef.current = null
+          setMessages([])
+        }
       } catch (error) {
         console.error(
           'Failed to load messaging data:',
@@ -609,7 +670,7 @@ if (requestedConversation) {
 
         setError(
           error.message ||
-            'Failed to load messages'
+          'Failed to load messages'
         )
       } finally {
         setLoadingConversations(
@@ -660,7 +721,7 @@ if (requestedConversation) {
           const isOwnMessage =
             user &&
             String(senderId) ===
-              String(user._id)
+            String(user._id)
 
           if (
             !isOwnMessage &&
@@ -671,7 +732,7 @@ if (requestedConversation) {
                 message._id
               )
             } catch (
-              readError
+            readError
             ) {
               console.error(
                 'Failed to mark message as read:',
@@ -688,7 +749,7 @@ if (requestedConversation) {
 
         setError(
           error.message ||
-            'Failed to load messages'
+          'Failed to load messages'
         )
       } finally {
         setLoadingMessages(
@@ -697,37 +758,37 @@ if (requestedConversation) {
       }
     }
 
-    // =========================
-// AUTO SCROLL
-// =========================
+  // =========================
+  // AUTO SCROLL
+  // =========================
 
-const scrollToBottom = (behavior = 'smooth') => {
-  const container = chatMessagesRef.current
+  const scrollToBottom = (behavior = 'smooth') => {
+    const container = chatMessagesRef.current
 
-  if (!container) return
+    if (!container) return
 
-  if (behavior === 'smooth') {
-    container.scrollTo({
-      top: container.scrollHeight,
-      behavior: 'smooth',
+    if (behavior === 'smooth') {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth',
+      })
+    } else {
+      container.scrollTop = container.scrollHeight
+    }
+  }
+
+  useEffect(() => {
+    if (!selectedConversation?._id) {
+      return
+    }
+
+    requestAnimationFrame(() => {
+      scrollToBottom('smooth')
     })
-  } else {
-    container.scrollTop = container.scrollHeight
-  }
-}
-
-useEffect(() => {
-  if (!selectedConversation?._id) {
-    return
-  }
-
-  requestAnimationFrame(() => {
-    scrollToBottom('smooth')
-  })
-}, [
-  messages,
-  selectedConversation?._id,
-])
+  }, [
+    messages,
+    selectedConversation?._id,
+  ])
   /*
    * =========================
    * LOAD USERS
@@ -814,7 +875,7 @@ useEffect(() => {
   message,
   shouldIncrementUnread = false
 ) => {
-  if (!message?._id) return
+  if (!message?.['_id']) return
 
   const conversationId =
     String(message.conversation)
@@ -823,7 +884,7 @@ useEffect(() => {
     const existingConversation =
       current.find(
         (conversation) =>
-          String(conversation._id) ===
+          String(conversation?.['_id']) ===
           conversationId
       )
 
@@ -846,25 +907,34 @@ useEffect(() => {
     const updatedConversation = {
       ...existingConversation,
 
-      updatedAt: message.createdAt,
+      updatedAt:
+        message.createdAt,
 
       lastMessage,
 
-      unreadCount: shouldIncrementUnread
-        ? currentUnread + 1
-        : currentUnread,
+      unreadCount:
+        shouldIncrementUnread
+          ? currentUnread + 1
+          : currentUnread,
     }
 
-    const remaining = current.filter(
-      (conversation) =>
-        String(conversation._id) !==
-        conversationId
-    )
+    const remaining =
+      current.filter(
+        (conversation) =>
+          String(conversation?.['_id']) !==
+          conversationId
+      )
 
-    return [
+    const updatedConversations = [
       updatedConversation,
       ...remaining,
     ]
+
+    /*
+     * Navbar unread count sync
+     */
+    
+    return updatedConversations
   })
 }
   /*
@@ -931,37 +1001,33 @@ useEffect(() => {
    * =========================
    */
 
-  const handleSelectConversation =
+ const handleSelectConversation =
   (conversation) => {
-    /*
-     * Chat open hote hi local unread count
-     * immediately zero.
-     */
-    setConversations((current) =>
-      current.map((item) =>
-        String(item._id) ===
-        String(conversation._id)
-          ? {
-              ...item,
-              unreadCount: 0,
-            }
-          : item
-      )
-    )
 
-    setSelectedConversation(
-      {
-        ...conversation,
-        unreadCount: 0,
-      }
-    )
+    const conversationId =
+      String(conversation?.['_id'])
+
+    setConversations((current) =>
+  current.map((item) =>
+    String(item?._id) === conversationId
+      ? {
+          ...item,
+          unreadCount: 0,
+        }
+      : item
+  )
+)
+
+    setSelectedConversation({
+      ...conversation,
+      unreadCount: 0,
+    })
 
     setShowNewChat(false)
     setError('')
 
     clearSelectedFile()
   }
-
   /*
    * =========================
    * START NEW CONVERSATION
@@ -981,11 +1047,11 @@ useEffect(() => {
         const newConversation =
           data.conversation
 
-          const normalizedConversation = {
-  ...newConversation,
-  unreadCount: 0,
-  lastMessage: '',
-}
+        const normalizedConversation = {
+          ...newConversation,
+          unreadCount: 0,
+          lastMessage: '',
+        }
 
         setShowNewChat(false)
         setUserSearch('')
@@ -1012,12 +1078,12 @@ useEffect(() => {
           }
         )
 
-      if (socketRef.current) {
-  socketRef.current.emit(
-    'join_conversation',
-    newConversation._id
-  )
-}
+        if (socketRef.current) {
+          socketRef.current.emit(
+            'join_conversation',
+            newConversation._id
+          )
+        }
 
         setSelectedConversation(
           newConversation
@@ -1030,7 +1096,7 @@ useEffect(() => {
 
         setError(
           error.message ||
-            'Failed to start conversation'
+          'Failed to start conversation'
         )
       }
     }
@@ -1222,68 +1288,73 @@ useEffect(() => {
          * Socket event may also arrive,
          * so duplicate check is important.
          */
-        setMessages(
-          (current) => {
-            const exists =
-              current.some(
-                (message) =>
-                  String(
-                    message._id
-                  ) ===
-                  String(
-                    createdMessage._id
-                  )
-              )
+        setMessages((current) => {
+          const exists = current.some(
+            (message) =>
+              String(message._id) ===
+              String(createdMessage._id)
+          )
 
-            if (exists) {
-              return current
-            }
-
-            return [
-              ...current,
-              createdMessage,
-            ]
+          if (exists) {
+            return current
           }
+
+          const messageId =
+            String(createdMessage._id)
+
+          const wasAlreadyDelivered =
+            deliveredMessageIdsRef.current.has(
+              messageId
+            )
+
+          return [
+            ...current,
+            {
+              ...createdMessage,
+              delivered:
+                createdMessage.delivered ||
+                wasAlreadyDelivered,
+            },
+          ]
+        })
+        clearTimeout(
+          typingTimeoutRef.current
         )
 
-        clearTimeout(
-  typingTimeoutRef.current
-)
+        if (socketRef.current) {
+          socketRef.current.emit(
+            'typing_stop',
+            {
+              conversationId:
+                activeConversationRef.current,
+              userId:
+                currentUserRef.current?._id,
+            }
+          )
+        }
 
-if (socketRef.current) {
-  socketRef.current.emit(
-    'typing_stop',
-    {
-      conversationId:
-        activeConversationRef.current,
-      userId:
-        currentUserRef.current?._id,
-    }
-  )
-}
-
-updateConversationPreview(
+        updateConversationPreview(
           createdMessage
         )
 
-clearTimeout(
-  typingTimeoutRef.current
-)
+        clearTimeout(
+          typingTimeoutRef.current
+        )
 
-if (socketRef.current) {
-  socketRef.current.emit('typing_stop', {
-    conversationId:
-      activeConversationRef.current,
-    userId:
-      currentUserRef.current?._id,
-  })
-}
+        if (socketRef.current) {
+          socketRef.current.emit('typing_stop', {
+            conversationId:
+              activeConversationRef.current,
+            userId:
+              currentUserRef.current?._id,
+          })
+        }
 
         setNewMessage('')
 
         clearSelectedFile()
 
-       
+
       } catch (error) {
         console.error(
           'Failed to send message:',
@@ -1292,7 +1363,7 @@ if (socketRef.current) {
 
         setError(
           error.message ||
-            'Failed to send message'
+          'Failed to send message'
         )
 
         setUploading(false)
@@ -1318,6 +1389,23 @@ if (socketRef.current) {
         .charAt(0)
         .toUpperCase()
     }
+
+  const getUserAvatar = (
+    user,
+    className = ''
+  ) => {
+    if (user?.profileImage) {
+      return (
+        <img
+          src={user.profileImage}
+          alt={user?.name || 'Profile'}
+          className={className}
+        />
+      )
+    }
+
+    return null
+  }
 
   return (
     <div className="messages-page">
@@ -1357,12 +1445,11 @@ if (socketRef.current) {
       </section>
 
       <section
-  className={`chat-container ${
-    selectedConversation
-      ? 'mobile-chat-open'
-      : ''
-  }`}
->
+        className={`chat-container ${selectedConversation
+            ? 'mobile-chat-open'
+            : ''
+          }`}
+      >
 
         <aside className="conversation-list">
 
@@ -1422,8 +1509,14 @@ if (socketRef.current) {
                         >
 
                           <div className="user-search-avatar">
-                            {getUserInitial(
-                              user
+                            {user?.profileImage ? (
+                              <img
+                                src={user.profileImage}
+                                alt={user.name || 'Profile'}
+                                className="message-user-avatar-image"
+                              />
+                            ) : (
+                              getUserInitial(user)
                             )}
                           </div>
 
@@ -1478,7 +1571,7 @@ if (socketRef.current) {
                     type="button"
                     className={
                       selectedConversation?._id ===
-                      conversation._id
+                        conversation._id
                         ? 'conversation active'
                         : 'conversation'
                     }
@@ -1491,48 +1584,54 @@ if (socketRef.current) {
                   >
 
                     <div className="conversation-avatar">
-                      {getUserInitial(
-                        otherUser
+                      {otherUser?.profileImage ? (
+                        <img
+                          src={otherUser.profileImage}
+                          alt={otherUser.name || 'Profile'}
+                          className="message-user-avatar-image"
+                        />
+                      ) : (
+                        getUserInitial(otherUser)
                       )}
                     </div>
 
-                   <div className="conversation-info">
+                    <div className="conversation-info">
 
-  <div className="conversation-top">
+                      <div className="conversation-top">
 
-    <strong>
-      {otherUser?.name ||
-        'Campus student'}
-    </strong>
+                        <strong>
+                          {otherUser?.name ||
+                            'Campus student'}
+                        </strong>
 
-    <span>
-      {formatConversationTime(
-        conversation.updatedAt
-      )}
-    </span>
+                        <span>
+                          {formatConversationTime(
+                            conversation.updatedAt
+                          )}
+                        </span>
 
-  </div>
+                      </div>
 
-  <div className="conversation-bottom">
+                      <div className="conversation-bottom">
 
-    <p>
-      {conversation.lastMessage ||
-        'Click to open conversation'}
-    </p>
+                        <p>
+                          {conversation.lastMessage ||
+                            'Click to open conversation'}
+                        </p>
 
-    {Number(
-      conversation.unreadCount || 0
-    ) > 0 && (
-      <span className="unread-badge">
-        {conversation.unreadCount > 99
-          ? '99+'
-          : conversation.unreadCount}
-      </span>
-    )}
+                        {Number(
+                          conversation.unreadCount || 0
+                        ) > 0 && (
+                            <span className="unread-badge">
+                              {conversation.unreadCount > 99
+                                ? '99+'
+                                : conversation.unreadCount}
+                            </span>
+                          )}
 
-  </div>
+                      </div>
 
-</div>
+                    </div>
 
                   </button>
                 )
@@ -1553,50 +1652,56 @@ if (socketRef.current) {
 
               <div className="chat-header">
 
-  <button
-    type="button"
-    className="mobile-chat-back"
-    onClick={() => {
-      setSelectedConversation(null)
-      setMessages([])
-      setError('')
-    }}
-    aria-label="Back to conversations"
-  >
-    ←
-  </button>
+                <button
+                  type="button"
+                  className="mobile-chat-back"
+                  onClick={() => {
+                    setSelectedConversation(null)
+                    setMessages([])
+                    setError('')
+                  }}
+                  aria-label="Back to conversations"
+                >
+                  ←
+                </button>
 
-  <div className="chat-avatar">
-    {getUserInitial(
-      selectedUser
-    )}
-  </div>
+                <div className="chat-avatar">
+                  {selectedUser?.profileImage ? (
+                    <img
+                      src={selectedUser.profileImage}
+                      alt={selectedUser.name || 'Profile'}
+                      className="message-user-avatar-image"
+                    />
+                  ) : (
+                    getUserInitial(selectedUser)
+                  )}
+                </div>
 
- <div className="chat-user-info">
+                <div className="chat-user-info">
 
-  <h2>
-    {selectedUser?.name ||
-      'Campus student'}
-  </h2>
+                  <h2>
+                    {selectedUser?.name ||
+                      'Campus student'}
+                  </h2>
 
- {typingUserId ? (
-  <span className="typing-status">
-    typing
-  </span>
-) : selectedUser?._id &&
-  onlineUsers.has(
-    String(selectedUser._id)
-  ) ? (
-  <span className="online-status">
-    ● Online
-  </span>
-) : (
-  <span className="offline-status">
-    Offline
-  </span>
-)}
+                  {typingUserId ? (
+                    <span className="typing-status">
+                      typing
+                    </span>
+                  ) : selectedUser?._id &&
+                    onlineUsers.has(
+                      String(selectedUser._id)
+                    ) ? (
+                    <span className="online-status">
+                      Online
+                    </span>
+                  ) : (
+                    <span className="offline-status">
+                      Offline
+                    </span>
+                  )}
 
-</div>
+                </div>
               </div>
 
               {error && (
@@ -1606,9 +1711,9 @@ if (socketRef.current) {
               )}
 
               <div
-  className="chat-messages"
-  ref={chatMessagesRef}
->
+                className="chat-messages"
+                ref={chatMessagesRef}
+              >
 
                 {loadingMessages ? (
                   <div className="empty-chat">
@@ -1627,9 +1732,9 @@ if (socketRef.current) {
                         String(
                           message.sender?._id
                         ) ===
-                          String(
-                            currentUser._id
-                          )
+                        String(
+                          currentUser._id
+                        )
 
                       return (
                         <div
@@ -1649,7 +1754,7 @@ if (socketRef.current) {
                               <div className="message-attachment">
 
                                 {message.attachment.type ===
-                                'image' ? (
+                                  'image' ? (
                                   <a
                                     href={
                                       message
@@ -1706,26 +1811,29 @@ if (socketRef.current) {
                               </p>
                             )}
 
-                           <span className="message-meta">
-  {formatMessageTime(message.createdAt)}
+                            <span className="message-meta">
+                              <span className="message-time">
+                                {formatMessageTime(message.createdAt)}
+                              </span>
 
-  {isOwnMessage && (
-    <span
-      className={
-        message.read
-          ? 'read-receipt read'
-          : 'read-receipt'
-      }
-    >
-     {message.read
-  ? '✓✓'
-  : message.delivered
-    ? '✓✓'
-    : '✓'}
-    </span>
-  )}
-</span>
-
+                              {isOwnMessage && (
+                                <span
+                                  className={
+                                    message.read
+                                      ? 'read-receipt read'
+                                      : message.delivered
+                                        ? 'read-receipt delivered'
+                                        : 'read-receipt'
+                                  }
+                                >
+                                  {message.read
+                                    ? '✓✓'
+                                    : message.delivered
+                                      ? '✓✓'
+                                      : '✓'}
+                                </span>
+                              )}
+                            </span>
                           </div>
 
                         </div>
@@ -1752,7 +1860,7 @@ if (socketRef.current) {
                   </div>
                 )}
 
-                 
+
 
               </div>
 
@@ -1841,45 +1949,45 @@ if (socketRef.current) {
                 </button>
 
                 <input
-  type="text"
-  value={newMessage}
- onChange={(event) => {
-  const value = event.target.value
+                  type="text"
+                  value={newMessage}
+                  onChange={(event) => {
+                    const value = event.target.value
 
-  setNewMessage(value)
+                    setNewMessage(value)
 
-  const socket = socketRef.current
-  const user = currentUserRef.current
-  const conversationId =
-    activeConversationRef.current
+                    const socket = socketRef.current
+                    const user = currentUserRef.current
+                    const conversationId =
+                      activeConversationRef.current
 
-  if (
-    !socket ||
-    !user?._id ||
-    !conversationId
-  ) {
-    return
-  }
+                    if (
+                      !socket ||
+                      !user?._id ||
+                      !conversationId
+                    ) {
+                      return
+                    }
 
-  if (value.trim()) {
-    socket.emit('typing_start', {
-      conversationId,
-      userId: user._id,
-    })
-  } else {
-    socket.emit('typing_stop', {
-      conversationId,
-      userId: user._id,
-    })
-  }
-}}
-  placeholder="Type a message..."
-  maxLength={2000}
-  disabled={
-    sending ||
-    uploading
-  }
-/>
+                    if (value.trim()) {
+                      socket.emit('typing_start', {
+                        conversationId,
+                        userId: user._id,
+                      })
+                    } else {
+                      socket.emit('typing_stop', {
+                        conversationId,
+                        userId: user._id,
+                      })
+                    }
+                  }}
+                  placeholder="Type a message..."
+                  maxLength={2000}
+                  disabled={
+                    sending ||
+                    uploading
+                  }
+                />
 
                 <button
                   type="submit"

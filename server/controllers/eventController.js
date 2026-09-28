@@ -1,5 +1,6 @@
 const Event = require("../models/Event");
 const cloudinary = require("../config/cloudinary");
+const {createNotificationForAllUsers} = require("../utils/notificationHelper");
 
 const deleteCloudinaryImage = async (publicId) => {
     if (!publicId) {
@@ -77,12 +78,21 @@ const createEvent = async (req, res) => {
         });
 
         const populatedEvent =
-            await event.populate(
-                "createdBy",
-                "name email profileImage department year"
-            );
+    await event.populate(
+        "createdBy",
+        "name email profileImage department year"
+    );
 
-        return res.status(201).json({
+await createNotificationForAllUsers({
+    io: req.app.get("io"),
+    actorId: req.user._id,
+    type: "event",
+    title: "New Campus Event",
+    message: `${req.user.name || "A student"} added "${event.title}" to Events.`,
+    link: "/events"
+});
+
+return res.status(201).json({
             message:
                 "Event created successfully",
             event: populatedEvent

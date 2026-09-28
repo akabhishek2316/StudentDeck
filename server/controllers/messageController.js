@@ -479,9 +479,10 @@ const markMessageAsRead = async (req, res) => {
          * mat bhejo.
          */
         if (!message.read) {
-            message.read = true;
+    message.delivered = true;
+    message.read = true;
 
-            await message.save();
+    await message.save();
 
             /*
              * Realtime read event

@@ -1,5 +1,6 @@
 const Marketplace = require("../models/Marketplace");
 const cloudinary = require("../config/cloudinary");
+const {createNotificationForAllUsers} = require("../utils/notificationHelper");
 
 const deleteCloudinaryImage = async (publicId) => {
     if (!publicId) {
@@ -90,12 +91,21 @@ const createListing = async (req, res) => {
         });
 
         const populatedListing =
-            await listing.populate(
-                "seller",
-                "name email profileImage department year"
-            );
+    await listing.populate(
+        "seller",
+        "name email profileImage department year"
+    );
 
-        return res.status(201).json({
+await createNotificationForAllUsers({
+    io: req.app.get("io"),
+    actorId: req.user._id,
+    type: "marketplace",
+    title: "New Marketplace Listing",
+    message: `${req.user.name || "A student"} posted "${listing.title}" on Marketplace.`,
+    link: "/marketplace"
+});
+
+return res.status(201).json({
             message:
                 "Listing created successfully",
             listing: populatedListing

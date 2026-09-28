@@ -167,12 +167,35 @@ function CreateListing() {
     <div className="create-listing-page">
       <div className="create-listing-container">
 
+        <button
+        type="button"
+        className="listing-back-button"
+        onClick={() =>
+          navigate('/marketplace')
+        }
+      >
+        <span className="listing-back-icon">
+          ←
+        </span>
+
+        <span>
+          Back to Marketplace
+        </span>
+      </button>
+
+      <div className="listing-title-section">
+        <span className="listing-eyebrow">
+          MARKETPLACE
+        </span>
+
         <h1>Post an Item</h1>
 
         <p className="listing-form-subtitle">
           Sell or give away useful items to
           fellow students.
         </p>
+      </div>
+
 
         <form onSubmit={handleSubmit}>
 

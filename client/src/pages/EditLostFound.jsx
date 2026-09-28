@@ -286,11 +286,38 @@ function EditLostFound() {
 
       <div className="report-container">
 
-        <h2>
-          Edit Lost &amp; Found Post
-        </h2>
+  <button
+    type="button"
+    className="lost-found-edit-back-button"
+    onClick={() => navigate('/lost-found')}
+  >
+    <span className="lost-found-edit-back-icon">
+      ←
+    </span>
 
-        <form onSubmit={handleSubmit}>
+    <span>
+      Back to Lost &amp; Found
+    </span>
+  </button>
+
+  <div className="lost-found-edit-title-section">
+
+    <span className="lost-found-edit-eyebrow">
+      LOST &amp; FOUND
+    </span>
+
+    <h2>
+      Edit Lost &amp; Found Post
+    </h2>
+
+    <p>
+      Update your post details or replace
+      the item image.
+    </p>
+
+  </div>
+
+  <form onSubmit={handleSubmit}>
 
           <div className="form-group">
 

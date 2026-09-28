@@ -40,6 +40,21 @@ function LostFound() {
     }
   }, [imagePreview])
 
+  const formatDate = (value) => {
+  if (!value) {
+    return ''
+  }
+
+  return new Date(value).toLocaleDateString(
+    'en-IN',
+    {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    }
+  )
+}
+
   const loadPosts = async () => {
     try {
       setLoading(true)
@@ -722,8 +737,8 @@ function LostFound() {
                     </span>
 
                     <span>
-                      📅 {item.date}
-                    </span>
+  📅 {formatDate(item.date)}
+</span>
 
                   </div>
 

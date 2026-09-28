@@ -1,6 +1,7 @@
 import './Navbar.css'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { io } from 'socket.io-client'
 
 function Navbar() {
   const navigate = useNavigate()
@@ -9,8 +10,419 @@ function Navbar() {
     JSON.parse(localStorage.getItem('currentUser') || 'null')
   )
 
+  useEffect(() => {
+  const syncUser = () => {
+    const user = JSON.parse(
+      localStorage.getItem('currentUser') || 'null'
+    )
+
+    setCurrentUser(user)
+  }
+
+  window.addEventListener('profileUpdated', syncUser)
+  window.addEventListener('storage', syncUser)
+
+  return () => {
+    window.removeEventListener('profileUpdated', syncUser)
+    window.removeEventListener('storage', syncUser)
+  }
+}, [])
+
+
+useEffect(() => {
+    if (!currentUser?._id) {
+        setNotifications([]);
+        setNotificationUnreadCount(0);
+        return;
+    }
+
+    const SOCKET_URL =
+        import.meta.env.VITE_SOCKET_URL ||
+        "http://localhost:5000";
+
+    const socket = io(SOCKET_URL, {
+        transports: [
+            "websocket",
+            "polling"
+        ]
+    });
+
+    const loadNotifications =
+        async () => {
+            try {
+                const token =
+                    localStorage.getItem(
+                        "token"
+                    );
+
+                const response =
+                    await fetch(
+                        `${SOCKET_URL}/api/notifications`,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`
+                            }
+                        }
+                    );
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Failed to load notifications"
+                    );
+                }
+
+                const data =
+                    await response.json();
+
+                setNotifications(
+                    data.notifications || []
+                );
+
+                setNotificationUnreadCount(
+                    Number(
+                        data.unreadCount || 0
+                    )
+                );
+            } catch (error) {
+                console.error(
+                    "Notification load error:",
+                    error
+                );
+            }
+        };
+
+    socket.on("connect", () => {
+        socket.emit(
+            "join_user",
+            currentUser._id
+        );
+    });
+
+    socket.on(
+        "new_notification",
+        (notification) => {
+            if (!notification?._id) {
+                return;
+            }
+
+            setNotifications(
+                (current) => [
+                    notification,
+                    ...current
+                ].slice(0, 50)
+            );
+
+            setNotificationUnreadCount(
+                (current) =>
+                    current + 1
+            );
+        }
+    );
+
+    loadNotifications();
+
+    return () => {
+        socket.off(
+            "new_notification"
+        );
+
+        socket.disconnect();
+    };
+}, [currentUser?._id]);
+
+useEffect(() => {
+  if (!currentUser?._id) return
+
+  const SOCKET_URL =
+    import.meta.env.VITE_SOCKET_URL ||
+    'http://localhost:5000'
+
+  const socket = io(SOCKET_URL, {
+    transports: ['websocket', 'polling'],
+  })
+
+  socket.on('connect', () => {
+    socket.emit('join_user', currentUser._id)
+  })
+
+  socket.on('new_message', (message) => {
+    if (!message?._id) return
+
+    const senderId =
+      message.sender?._id ||
+      message.sender
+
+    // Apne khud ke message ko unread count mein mat add karo
+    if (
+      String(senderId) ===
+      String(currentUser._id)
+    ) {
+      return
+    }
+
+    const currentCount = Number(
+      localStorage.getItem('unreadMessageCount') || 0
+    )
+
+    const newCount = currentCount + 1
+
+    localStorage.setItem(
+      'unreadMessageCount',
+      String(newCount)
+    )
+
+    setUnreadMessageCount(newCount)
+
+    window.dispatchEvent(
+      new Event('unreadMessagesUpdated')
+    )
+  })
+
+  return () => {
+    socket.off('new_message')
+    socket.disconnect()
+  }
+}, [currentUser?._id])
+
   const [showMenu, setShowMenu] = useState(false)
   const [showProfileMenu, setShowProfileMenu] = useState(false)
+
+  const [unreadMessageCount, setUnreadMessageCount] = useState(
+  Number(localStorage.getItem('unreadMessageCount') || 0))
+
+  const [notifications, setNotifications] =
+    useState([]);
+
+const [notificationUnreadCount, setNotificationUnreadCount] =
+    useState(0);
+
+const [showNotifications, setShowNotifications] =
+    useState(false);
+
+const navbarRef = useRef(null)
+const menuRef = useRef(null)
+const notificationRef = useRef(null)
+const profileRef = useRef(null)
+
+
+useEffect(() => {
+  const syncUnreadMessages = () => {
+    setUnreadMessageCount(
+      Number(localStorage.getItem('unreadMessageCount') || 0)
+    )
+  }
+
+  window.addEventListener('unreadMessagesUpdated', syncUnreadMessages)
+
+  return () => {
+    window.removeEventListener(
+      'unreadMessagesUpdated',
+      syncUnreadMessages
+    )
+  }
+}, [])
+
+
+useEffect(() => {
+  const handleOutsideClick = (event) => {
+    const target = event.target
+
+    const clickedInsideMenu =
+      menuRef.current?.contains(target)
+
+    const clickedInsideNotification =
+      notificationRef.current?.contains(target)
+
+    const clickedInsideProfile =
+      profileRef.current?.contains(target)
+
+    const clickedHamburger =
+      target.closest('.hamburger-button')
+
+    if (clickedHamburger) {
+      return
+    }
+
+    if (
+      !clickedInsideMenu &&
+      !clickedInsideNotification &&
+      !clickedInsideProfile
+    ) {
+      setShowMenu(false)
+      setShowNotifications(false)
+      setShowProfileMenu(false)
+    }
+  }
+
+  document.addEventListener(
+    'mousedown',
+    handleOutsideClick
+  )
+
+  return () => {
+    document.removeEventListener(
+      'mousedown',
+      handleOutsideClick
+    )
+  }
+}, [])
+
+
+//notification
+
+const handleNotificationClick =
+    async (notification) => {
+        try {
+            if (!notification.read) {
+                const token =
+                    localStorage.getItem(
+                        "token"
+                    );
+
+                await fetch(
+                    `${import.meta.env.VITE_SOCKET_URL || "http://localhost:5000"}/api/notifications/${notification._id}/read`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+
+                setNotifications(
+                    (current) =>
+                        current.map(
+                            (item) =>
+                                item._id ===
+                                notification._id
+                                    ? {
+                                        ...item,
+                                        read: true
+                                    }
+                                    : item
+                        )
+                );
+
+                setNotificationUnreadCount(
+                    (current) =>
+                        Math.max(
+                            0,
+                            current - 1
+                        )
+                );
+            }
+
+            setShowNotifications(false);
+
+            if (notification.link) {
+                navigate(
+                    notification.link
+                );
+            }
+        } catch (error) {
+            console.error(
+                "Notification read error:",
+                error
+            );
+
+            if (notification.link) {
+                setShowNotifications(false);
+                navigate(
+                    notification.link
+                );
+            }
+        }
+    };
+
+    const handleMarkAllNotificationsRead =
+    async () => {
+        try {
+            const SOCKET_URL =
+                import.meta.env.VITE_SOCKET_URL ||
+                "http://localhost:5000";
+
+            const token =
+                localStorage.getItem(
+                    "token"
+                );
+
+            await fetch(
+                `${SOCKET_URL}/api/notifications/read-all`,
+                {
+                    method: "PUT",
+                    headers: {
+                        Authorization:
+                            `Bearer ${token}`
+                    }
+                }
+            );
+
+            setNotifications(
+                (current) =>
+                    current.map(
+                        (notification) => ({
+                            ...notification,
+                            read: true
+                        })
+                    )
+            );
+
+            setNotificationUnreadCount(0);
+        } catch (error) {
+            console.error(
+                "Mark all notifications error:",
+                error
+            );
+        }
+    };
+
+
+    const formatNotificationTime =
+    (date) => {
+        if (!date) return "";
+
+        const now = new Date();
+        const created =
+            new Date(date);
+
+        const diff =
+            Math.floor(
+                (now - created) / 1000
+            );
+
+        if (diff < 60) {
+            return "Just now";
+        }
+
+        if (diff < 3600) {
+            return `${Math.floor(
+                diff / 60
+            )} min ago`;
+        }
+
+        if (diff < 86400) {
+            return `${Math.floor(
+                diff / 3600
+            )} hr ago`;
+        }
+
+        if (diff < 604800) {
+            return `${Math.floor(
+                diff / 86400
+            )} days ago`;
+        }
+
+        return created.toLocaleDateString(
+            "en-IN",
+            {
+                day: "numeric",
+                month: "short"
+            }
+        );
+    };
+
 
   const handleLogout = () => {
     localStorage.removeItem('currentUser')
@@ -37,13 +449,17 @@ function Navbar() {
 
         {/* HAMBURGER */}
         <button
-          className="hamburger-button"
-          onClick={() => setShowMenu(!showMenu)}
-          aria-label="Open navigation menu"
-          aria-expanded={showMenu}
-        >
-          {showMenu ? '✕' : '☰'}
-        </button>
+  className="hamburger-button"
+  onClick={() => {
+    setShowMenu(prev => !prev)
+    setShowNotifications(false)
+    setShowProfileMenu(false)
+  }}
+  aria-label="Open navigation menu"
+  aria-expanded={showMenu}
+>
+  {showMenu ? '✕' : '☰'}
+</button>
 
         {/* LOGO */}
         <NavLink
@@ -61,37 +477,199 @@ function Navbar() {
       <div className="navbar-links">
 
         <NavLink
-          to="/messages"
-          className={linkClass}
-        >
-          Messages
-        </NavLink>
+  to="/messages"
+  className={linkClass}
+>
+  <span className="navbar-message-link">
+    <span className="navbar-message-text">
+      Messages
+    </span>
 
-        <NavLink
+    <span className="navbar-message-icon">
+      💬
+    </span>
+
+    {unreadMessageCount > 0 && (
+      <span className="navbar-message-badge">
+        {unreadMessageCount > 99
+          ? '99+'
+          : unreadMessageCount}
+      </span>
+    )}
+  </span>
+</NavLink>
+
+<div
+  ref={notificationRef}
+  className="navbar-notification-wrapper"
+>
+    <button
+        type="button"
+        className="navbar-notification-button"
+        onClick={() => {
+    setShowNotifications(prev => !prev)
+    setShowMenu(false)
+    setShowProfileMenu(false)
+}}
+        aria-label="Notifications"
+        aria-expanded={showNotifications}
+    >
+        <span className="navbar-bell-icon">
+            🔔
+        </span>
+
+        {notificationUnreadCount > 0 && (
+            <span className="navbar-notification-badge">
+                {notificationUnreadCount > 99
+                    ? "99+"
+                    : notificationUnreadCount}
+            </span>
+        )}
+    </button>
+
+    {showNotifications && (
+        <div className="navbar-notification-dropdown">
+
+    <div className="notification-dropdown-header">
+        <div>
+            <strong>
+                Notifications
+            </strong>
+
+            {notificationUnreadCount > 0 && (
+                <span>
+                    {notificationUnreadCount} unread
+                </span>
+            )}
+        </div>
+
+        {notificationUnreadCount > 0 && (
+            <button
+                type="button"
+                onClick={handleMarkAllNotificationsRead}
+            >
+                Mark all as read
+            </button>
+        )}
+    </div>
+
+    <div className="notification-list">
+
+        {notifications.length === 0 ? (
+            <div className="notification-empty">
+                <div>
+                    🔔
+                </div>
+
+                <strong>
+                    No notifications
+                </strong>
+
+                <span>
+                    You're all caught up.
+                </span>
+            </div>
+        ) : (
+            notifications.map(
+                (notification) => (
+                    <button
+                        type="button"
+                        key={notification._id}
+                        className={`notification-item ${
+                            notification.read
+                                ? ""
+                                : "notification-item-unread"
+                        }`}
+                        onClick={() =>
+                            handleNotificationClick(
+                                notification
+                            )
+                        }
+                    >
+                        <span
+                            className={`notification-type-icon notification-${notification.type}`}
+                        >
+                            {notification.type ===
+                                "marketplace"
+                                ? "🛒"
+                                : notification.type ===
+                                    "lost-found"
+                                    ? "🔎"
+                                    : notification.type ===
+                                        "academic"
+                                        ? "📚"
+                                        : "📅"}
+                        </span>
+
+                        <span className="notification-content">
+                            <strong>
+                                {notification.title}
+                            </strong>
+
+                            <span>
+                                {notification.message}
+                            </span>
+
+                            <small>
+                                {formatNotificationTime(
+                                    notification.createdAt
+                                )}
+                            </small>
+                        </span>
+
+                        {!notification.read && (
+                            <span className="notification-unread-dot" />
+                        )}
+                    </button>
+                )
+            )
+        )}
+
+    </div>
+</div>
+    )}
+</div>
+
+        {/* <NavLink
           to="/saved"
           className={linkClass}
         >
           Saved
-        </NavLink>
+        </NavLink> */}
 
 
         {/* ================= PROFILE ================= */}
-        {currentUser ? (
+       {currentUser ? (
 
-          <div className="profile-menu">
+  <div
+    ref={profileRef}
+    className="profile-menu"
+  >
 
-            <button
-              className="profile-trigger"
-              onClick={() =>
-                setShowProfileMenu(!showProfileMenu)
-              }
-            >
+    <button
+      className="profile-trigger"
+      onClick={() => {
+        setShowProfileMenu(prev => !prev)
+        setShowMenu(false)
+        setShowNotifications(false)
+      }}
+    >
 
-              <span className="profile-avatar">
-                {currentUser.name
-                  ? currentUser.name.charAt(0).toUpperCase()
-                  : 'U'}
-              </span>
+  <span className="navbar-profile-avatar">
+  {currentUser.profileImage ? (
+    <img
+      src={currentUser.profileImage}
+      alt="Profile"
+      className="navbar-profile-avatar-image"
+    />
+  ) : (
+    <span className="navbar-profile-avatar-initial">
+      {currentUser.name
+        ? currentUser.name.charAt(0).toUpperCase()
+        : 'U'}
+    </span>
+  )}
+</span>
 
               <span className="profile-name">
                 Profile
@@ -146,9 +724,12 @@ function Navbar() {
 
 
       {/* ================= HAMBURGER MENU ================= */}
-      {showMenu && (
+    {showMenu && (
 
-        <div className="service-menu">
+  <div
+    ref={menuRef}
+    className="service-menu"
+  >
 
           <div className="service-menu-header">
             <span>Campus Services</span>

@@ -329,16 +329,21 @@ function Profile() {
   // Keep existing photo
   // =========================================
 
-  const handleRemoveSelectedImage = () => {
-    setSelectedImage(null)
+  const handleRestoreExistingImage = () => {
+  setSelectedImage(null)
 
-    setEditProfileImage(profileImage)
+  setEditProfileImage(profileImage)
 
-    setEditProfileImagePublicId(
-      profileImagePublicId
-    )
-  }
+  setEditProfileImagePublicId(
+    profileImagePublicId
+  )
+}
 
+const handleRemoveProfileImage = () => {
+  setSelectedImage(null)
+  setEditProfileImage(null)
+  setEditProfileImagePublicId('')
+}
   // =========================================
   // Save profile
   // =========================================
@@ -444,6 +449,8 @@ function Profile() {
         JSON.stringify(updatedUser)
       )
 
+      window.dispatchEvent(new Event('profileUpdated'))
+
       setSelectedImage(null)
 
       setIsEditing(false)
@@ -470,16 +477,26 @@ function Profile() {
   // =========================================
 
   const handleCancel = () => {
-    setSelectedImage(null)
+  setSelectedImage(null)
 
-    setEditProfileImage(profileImage)
+  setEditProfileImage(profileImage)
 
-    setEditProfileImagePublicId(
-      profileImagePublicId
-    )
+  setEditProfileImagePublicId(
+    profileImagePublicId
+  )
 
-    setIsEditing(false)
-  }
+  setCropImage(null)
+  setShowCropper(false)
+
+  setCrop({
+    x: 0,
+    y: 0,
+  })
+
+  setZoom(1)
+
+  setIsEditing(false)
+}
 
   return (
     <div className="profile-page">
@@ -603,6 +620,7 @@ function Profile() {
 
 <section className="profile-header">
 
+  {/* BACK BUTTON */}
   <button
     type="button"
     className="profile-back-button"
@@ -619,7 +637,34 @@ function Profile() {
     <span>Back</span>
   </button>
 
+  {/* HEADER CONTENT */}
   <div className="profile-header-content">
+
+    {/* PROFILE PHOTO */}
+    <div className="profile-avatar-wrapper">
+
+      <div className="profile-avatar">
+
+        {profileImage ? (
+          <img
+            src={profileImage}
+            alt={`${name || 'Student'} profile`}
+          />
+        ) : (
+          <span className="profile-avatar-placeholder">
+            {name
+              ? name.charAt(0).toUpperCase()
+              : 'S'}
+          </span>
+        )}
+
+      </div>
+
+      <div className="profile-avatar-status">
+        <span></span>
+      </div>
+
+    </div>
 
     <div className="profile-eyebrow">
       <span className="profile-eyebrow-dot"></span>
@@ -637,6 +682,7 @@ function Profile() {
 
   </div>
 
+  {/* EDIT BUTTON */}
   <div className="profile-header-action">
 
     {!isEditing && (
@@ -652,7 +698,6 @@ function Profile() {
   </div>
 
 </section>
-
         {/* ================= EDIT FORM ================= */}
 
         {isEditing ? (
@@ -661,6 +706,85 @@ function Profile() {
             className="profile-form"
             onSubmit={handleSave}
           >
+
+         {/* ================= PROFILE PHOTO ================= */}
+
+<div className="profile-photo-editor">
+
+  {/* PHOTO PREVIEW */}
+  <div className="profile-photo-editor-preview">
+
+    <div className="profile-edit-avatar">
+
+      {editProfileImage ? (
+        <img
+          src={editProfileImage}
+          alt="Profile preview"
+        />
+      ) : (
+        <span>
+          {editName
+            ? editName.charAt(0).toUpperCase()
+            : 'S'}
+        </span>
+      )}
+
+    </div>
+
+  </div>
+
+  {/* PHOTO CONTENT */}
+<div className="profile-photo-editor-content">
+
+  <div className="profile-photo-editor-heading">
+    <h3>Profile Photo</h3>
+
+    <p>
+      Add a clear photo so other students
+      can recognize you.
+    </p>
+  </div>
+
+  <div className="profile-image-actions">
+
+    {/* ADD PHOTO BUTTON */}
+    <label
+      htmlFor="profile-image-upload"
+      className="photo-upload"
+    >
+      <span>＋</span>
+      Add Photo
+    </label>
+
+    <input
+      id="profile-image-upload"
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+      onChange={handleImageChange}
+      hidden
+    />
+
+    {/* REMOVE PHOTO BUTTON */}
+    {editProfileImage && (
+      <button
+        type="button"
+        className="remove-photo-button"
+        onClick={handleRemoveProfileImage}
+      >
+        <span>×</span>
+        Remove Photo
+      </button>
+    )}
+
+  </div>
+
+  <span className="profile-photo-hint">
+    JPG, PNG or WEBP • Max 5 MB • Square photo recommended
+  </span>
+
+</div>
+
+</div>
 
             <div className="profile-form-grid">
 

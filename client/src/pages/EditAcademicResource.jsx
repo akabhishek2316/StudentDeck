@@ -313,12 +313,47 @@ function EditAcademicResource() {
   return (
     <div className="academic-page">
       <section className="academic-header">
-        <h1>Edit Academic Resource</h1>
 
-        <p>
-          Update the details of your academic resource.
-        </p>
-      </section>
+  <div className="academic-header-inner">
+
+    <button
+      type="button"
+      className="academic-back-button"
+      onClick={() => navigate('/academic')}
+    >
+      <span className="academic-back-icon">
+        ←
+      </span>
+
+      <span>
+        Back to Academic
+      </span>
+    </button>
+
+    <div className="academic-header-center">
+
+      <span className="academic-eyebrow">
+        ACADEMIC RESOURCES
+      </span>
+
+      <h1>
+        Edit Academic Resource
+      </h1>
+
+      <p>
+        Update the details of your academic resource.
+      </p>
+
+    </div>
+
+    <div
+      className="academic-header-spacer"
+      aria-hidden="true"
+    />
+
+  </div>
+
+</section>
 
       <section className="academic-form-section">
         <div className="academic-form-container">

@@ -1697,13 +1697,6 @@ a:focus-visible {
 }
 
 
-.typing-status {
-  display: inline-flex;
-  align-items: center;
-  color: #0ea5e9;
-  font-size: 12px;
-  font-weight: 600;
-}
 
 .typing-status::after {
   content: '...';
@@ -1727,11 +1720,7 @@ a:focus-visible {
 }
 
 
-.message-meta {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
+
 
 .read-receipt {
   color: #94a3b8;
@@ -1747,15 +1736,373 @@ a:focus-visible {
 .read-receipt.read {
   color: #0ea5e9;
 }
+/* =========================================================
+   CHAT USER STATUS
+========================================================= */
 
-.online-status {
-  color: #16a34a;
+/* Typing */
+
+.typing-status {
+  display: inline-flex;
+  align-items: center;
+
+  color: #0284c7;
+
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+
+  line-height: 1.2;
 }
 
+.typing-status::before {
+  content: '';
+
+  width: 6px;
+  height: 6px;
+
+  margin-right: 6px;
+
+  border-radius: 50%;
+
+  background: #0ea5e9;
+
+  box-shadow:
+    0 0 0 3px rgba(14, 165, 233, 0.10);
+
+  animation: typingPulse 1.2s ease-in-out infinite;
+}
+
+.typing-status::after {
+  content: '...';
+
+  margin-left: 1px;
+
+  animation: typingDots 1.2s infinite;
+}
+
+
+/* Online */
+
+.online-status {
+  display: inline-flex;
+  align-items: center;
+
+  color: #16a34a;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+.online-status::before {
+  content: '';
+
+  width: 6px;
+  height: 6px;
+
+  margin-right: 6px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.10);
+}
+
+
+/* Offline */
+
 .offline-status {
-  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+
+  color: #64748b;
+
   font-size: 12px;
   font-weight: 500;
+
+  line-height: 1.2;
+}
+
+.offline-status::before {
+  content: '';
+
+  width: 6px;
+  height: 6px;
+
+  margin-right: 6px;
+
+  border-radius: 50%;
+
+  background: #94a3b8;
+}
+
+
+/* =========================================================
+   STATUS ANIMATION
+========================================================= */
+
+@keyframes typingPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes typingDots {
+  0%,
+  20% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+}
+
+/* =========================================================
+   EXISTING AVATARS — PROFILE PHOTO
+========================================================= */
+
+.message-user-avatar-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+  object-position: center;
+
+  border-radius: 50%;
+}
+
+
+/* Conversation avatar */
+
+.conversation-avatar {
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+
+/* New chat/search avatar */
+
+.user-search-avatar {
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+
+/* Open chat header avatar */
+
+.chat-avatar {
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+/* =========================================================
+   CHAT STATUS — FORCE STATUS COLORS
+========================================================= */
+
+/* Typing */
+.chat-header .typing-status {
+  display: inline-flex;
+  align-items: center;
+
+  margin-top: 3px;
+
+  color: #0284c7 !important;
+
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chat-header .typing-status::before {
+  content: '';
+
+  width: 6px;
+  height: 6px;
+
+  margin-right: 6px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #0ea5e9;
+
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
+
+  animation: typingPulse 1.2s ease-in-out infinite;
+}
+
+.chat-header .typing-status::after {
+  content: '...';
+
+  margin-left: 1px;
+
+  animation: typingDots 1.2s infinite;
+}
+
+
+/* Online */
+.chat-header .online-status {
+  display: inline-flex;
+  align-items: center;
+
+  margin-top: 3px;
+
+  color: #16a34a !important;
+
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chat-header .online-status::before {
+  content: '';
+
+  width: 6px;
+  height: 6px;
+
+  margin-right: 6px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+}
+
+
+/* Offline */
+.chat-header .offline-status {
+  display: inline-flex;
+  align-items: center;
+
+  margin-top: 3px;
+
+  color: #64748b !important;
+
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.chat-header .offline-status::before {
+  content: '';
+
+  width: 6px;
+  height: 6px;
+
+  margin-right: 6px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #94a3b8;
+}
+
+
+/* =========================================================
+   TYPING ANIMATION
+========================================================= */
+
+@keyframes typingPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes typingDots {
+  0%,
+  20% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  80%,
+  100% {
+    opacity: 0.25;
+  }
+}
+
+/* =========================================================
+   MESSAGE META — TIME + READ STATUS
+========================================================= */
+
+.message-bubble > .message-meta {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: flex-end;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  margin-top: 6px;
+  gap: 7px;
+
+  color: #94a3b8;
+  font-size: 10px;
+  line-height: 1;
+  text-align: right;
+
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.message-row.own .message-bubble > .message-meta {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.message-bubble > .message-meta .message-time {
+  display: inline-flex;
+  align-items: center;
+
+  margin: 0;
+  padding: 0;
+
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.message-bubble > .message-meta .read-receipt {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: auto;
+  margin: 0;
+  padding: 0;
+
+  line-height: 1;
+  white-space: nowrap;
 }

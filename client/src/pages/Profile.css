@@ -27,13 +27,10 @@
   margin: 0 auto;
 }
 
+
 /* =========================================================
    PROFILE HEADER
 ========================================================= */
-
-/* =========================================
-   PREMIUM PROFILE HEADER
-========================================= */
 
 .profile-header {
   position: relative;
@@ -41,6 +38,7 @@
   display: grid;
   grid-template-columns: 160px minmax(0, 1fr) 160px;
   align-items: center;
+
   gap: 24px;
 
   min-height: 150px;
@@ -48,11 +46,18 @@
 
   margin-bottom: 28px;
 
+  box-sizing: border-box;
+
   background:
     radial-gradient(
       circle at 50% 0%,
       rgba(37, 169, 255, 0.10),
       transparent 42%
+    ),
+    radial-gradient(
+      circle at 92% 100%,
+      rgba(99, 102, 241, 0.07),
+      transparent 30%
     ),
     linear-gradient(
       135deg,
@@ -64,6 +69,9 @@
   border-radius: 22px;
 
   overflow: hidden;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.035);
 }
 
 .profile-header::before {
@@ -71,25 +79,45 @@
 
   position: absolute;
 
-  width: 270px;
-  height: 270px;
+  width: 280px;
+  height: 280px;
 
-  top: -185px;
+  top: -190px;
   left: 42%;
 
   border-radius: 50%;
 
   background: rgba(37, 169, 255, 0.08);
 
-  filter: blur(12px);
+  filter: blur(14px);
+
+  pointer-events: none;
+}
+
+.profile-header::after {
+  content: '';
+
+  position: absolute;
+
+  width: 240px;
+  height: 240px;
+
+  right: -150px;
+  bottom: -180px;
+
+  border-radius: 50%;
+
+  background: rgba(99, 102, 241, 0.06);
+
+  filter: blur(14px);
 
   pointer-events: none;
 }
 
 
-/* =========================================
+/* =========================================================
    HEADER CONTENT
-========================================= */
+========================================================= */
 
 .profile-header-content {
   position: relative;
@@ -97,13 +125,133 @@
 
   min-width: 0;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   text-align: center;
 }
+
+
+/* =========================================================
+   PROFILE AVATAR
+========================================================= */
+
+.profile-avatar-wrapper {
+  position: relative;
+
+  width: 92px;
+  height: 92px;
+
+  margin: 0 auto 12px;
+}
+
+.profile-avatar {
+  width: 92px;
+  height: 92px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dbeafe,
+      #e0e7ff
+    );
+
+  border: 4px solid #ffffff;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 10px 28px rgba(15, 23, 42, 0.12),
+    0 0 0 1px #dbe7f2;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.profile-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb
+    );
+
+  color: #ffffff;
+
+  font-size: 34px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   ONLINE STATUS
+========================================================= */
+
+.profile-avatar-status {
+  position: absolute;
+
+  right: 1px;
+  bottom: 2px;
+
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 3px 8px rgba(15, 23, 42, 0.13);
+}
+
+.profile-avatar-status span {
+  width: 11px;
+  height: 11px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.10);
+}
+
+
+/* =========================================================
+   PROFILE EYEBROW
+========================================================= */
 
 .profile-eyebrow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   gap: 8px;
 
   margin-bottom: 7px;
@@ -113,12 +261,16 @@
   font-size: 11px;
   font-weight: 800;
 
+  line-height: 1;
+
   letter-spacing: 0.14em;
 }
 
 .profile-eyebrow-dot {
   width: 7px;
   height: 7px;
+
+  flex-shrink: 0;
 
   border-radius: 50%;
 
@@ -128,12 +280,18 @@
     0 0 0 4px rgba(14, 165, 233, 0.10);
 }
 
+
+/* =========================================================
+   HEADER TITLE
+========================================================= */
+
 .profile-header-content h1 {
   margin: 0;
 
   color: #0f172a;
 
   font-size: clamp(28px, 3vw, 40px);
+
   line-height: 1.05;
 
   font-weight: 850;
@@ -142,11 +300,12 @@
 }
 
 .profile-header-content h1 span {
-  background: linear-gradient(
-    135deg,
-    #0ea5e9,
-    #2563eb
-  );
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb
+    );
 
   -webkit-background-clip: text;
   background-clip: text;
@@ -162,21 +321,25 @@
   color: #64748b;
 
   font-size: 14px;
+
   line-height: 1.6;
 }
 
 
-/* =========================================
+/* =========================================================
    BACK BUTTON
-========================================= */
+========================================================= */
 
 .profile-back-button {
   position: relative;
   z-index: 2;
 
+  justify-self: start;
+
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+
   gap: 9px;
 
   width: fit-content;
@@ -190,23 +353,30 @@
 
   color: #334155;
 
+  font-family: inherit;
+
   font-size: 13px;
   font-weight: 700;
 
   cursor: pointer;
 
+  box-shadow:
+    0 4px 12px rgba(15, 23, 42, 0.035);
+
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
     background 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    color 0.2s ease;
 }
 
 .profile-back-button span:first-child {
   font-size: 19px;
   line-height: 1;
 
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.2s ease;
 }
 
 .profile-back-button:hover {
@@ -216,8 +386,10 @@
 
   background: #f0f9ff;
 
+  color: #0f172a;
+
   box-shadow:
-    0 6px 18px rgba(15, 23, 42, 0.07);
+    0 7px 18px rgba(15, 23, 42, 0.07);
 }
 
 .profile-back-button:hover span:first-child {
@@ -225,16 +397,16 @@
 }
 
 
-/* =========================================
-   EDIT BUTTON
-========================================= */
+/* =========================================================
+   HEADER EDIT BUTTON
+========================================================= */
 
 .profile-header-action {
-  display: flex;
-  justify-content: flex-end;
-
   position: relative;
   z-index: 2;
+
+  display: flex;
+  justify-content: flex-end;
 }
 
 .profile-header .edit-profile-button {
@@ -243,18 +415,22 @@
   justify-content: center;
 
   min-height: 44px;
+
   padding: 0 17px;
 
-  border: none;
+  border: 1px solid #2563eb;
   border-radius: 12px;
 
-  background: linear-gradient(
-    135deg,
-    #0ea5e9,
-    #2563eb
-  );
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb
+    );
 
   color: #ffffff;
+
+  font-family: inherit;
 
   font-size: 13px;
   font-weight: 800;
@@ -281,135 +457,16 @@
 }
 
 
-/* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 850px) {
-
-  .profile-header {
-    grid-template-columns: 120px minmax(0, 1fr) 120px;
-
-    gap: 16px;
-
-    padding: 24px;
-  }
-
-  .profile-header-content h1 {
-    font-size: 30px;
-  }
-
-  .profile-header-content p {
-    font-size: 13px;
-  }
-}
-
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 650px) {
-
-  .profile-header {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-
-    gap: 12px;
-
-    min-height: 125px;
-
-    padding: 20px 16px;
-
-    margin-bottom: 20px;
-
-    border-radius: 18px;
-  }
-
-  .profile-back-button {
-    padding: 9px 10px;
-  }
-
-  .profile-back-button span:last-child {
-    display: none;
-  }
-
-  .profile-header-content h1 {
-    font-size: 24px;
-
-    letter-spacing: -0.035em;
-  }
-
-  .profile-eyebrow {
-    font-size: 9px;
-
-    letter-spacing: 0.10em;
-  }
-
-  .profile-eyebrow-dot {
-    width: 5px;
-    height: 5px;
-  }
-
-  .profile-header-content p {
-    margin-top: 6px;
-
-    font-size: 11px;
-    line-height: 1.45;
-  }
-
-  .profile-header .edit-profile-button {
-    min-height: 40px;
-
-    padding: 0 11px;
-
-    font-size: 11px;
-  }
-}
-
-
-/* =========================================
-   SMALL MOBILE
-========================================= */
-
-@media (max-width: 430px) {
-
-  .profile-header {
-    gap: 8px;
-
-    padding: 17px 12px;
-  }
-
-  .profile-header-content h1 {
-    font-size: 20px;
-  }
-
-  .profile-header-content p {
-    font-size: 10px;
-  }
-
-  .profile-eyebrow {
-    margin-bottom: 5px;
-
-    font-size: 8px;
-  }
-
-  .profile-header .edit-profile-button {
-    min-height: 37px;
-
-    padding: 0 9px;
-
-    font-size: 10px;
-  }
-}
-
 /* =========================================================
    EDIT FORM
 ========================================================= */
 
 .profile-form {
-  margin-top: 26px;
+  margin-top: 0;
 
   padding: 34px;
+
+  box-sizing: border-box;
 
   background: rgba(255, 255, 255, 0.96);
 
@@ -419,14 +476,253 @@
   box-shadow:
     0 15px 40px rgba(15, 23, 42, 0.055),
     0 2px 8px rgba(15, 23, 42, 0.025);
+}
+
+
+/* =========================================================
+   PROFILE PHOTO EDITOR
+========================================================= */
+
+.profile-photo-editor {
+  display: flex;
+  align-items: center;
+
+  gap: 24px;
+
+  margin-bottom: 30px;
+
+  padding: 24px;
 
   box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8fbff,
+      #ffffff
+    );
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
 }
+
+.profile-photo-editor-preview {
+  flex: 0 0 auto;
+}
+
+.profile-edit-avatar {
+  width: 105px;
+  height: 105px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dbeafe,
+      #e0e7ff
+    );
+
+  border: 4px solid #ffffff;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 8px 22px rgba(15, 23, 42, 0.10),
+    0 0 0 1px #dbe5ef;
+}
+
+.profile-edit-avatar img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.profile-edit-avatar span {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb
+    );
+
+  color: #ffffff;
+
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.profile-photo-editor-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.profile-photo-editor-heading h3 {
+  margin: 0 0 5px;
+
+  color: #0f172a;
+
+  font-size: 17px;
+  font-weight: 800;
+
+  letter-spacing: -0.2px;
+}
+
+.profile-photo-editor-heading p {
+  max-width: 520px;
+
+  margin: 0 0 15px;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   PHOTO ACTIONS
+========================================================= */
+
+.profile-image-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+}
+
+.photo-upload,
+.remove-photo-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 40px;
+
+  padding: 9px 15px;
+
+  box-sizing: border-box;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+
+/* ADD PHOTO */
+
+.photo-upload {
+  border: 1px solid #2563eb;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 16px rgba(37, 99, 235, 0.16);
+}
+
+.photo-upload:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 9px 20px rgba(37, 99, 235, 0.22);
+}
+
+
+/* REMOVE PHOTO */
+
+.remove-photo-button {
+  border: 1px solid #fecaca;
+
+  background: #ffffff;
+
+  color: #dc2626;
+}
+
+.remove-photo-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  background: #fef2f2;
+
+  border-color: #fca5a5;
+
+  box-shadow:
+    0 5px 14px rgba(220, 38, 38, 0.08);
+}
+
+.remove-photo-button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+}
+
+
+/* PHOTO HINT */
+
+.profile-photo-hint {
+  display: block;
+
+  margin-top: 11px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   PROFILE FORM GRID
+========================================================= */
 
 .profile-form-grid {
   display: grid;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 
   column-gap: 24px;
   row-gap: 24px;
@@ -456,6 +752,8 @@
 .year-select {
   width: 100%;
 
+  box-sizing: border-box;
+
   border: 1px solid #d5dee9;
   border-radius: 12px;
 
@@ -463,11 +761,9 @@
 
   color: #0f172a;
 
-  font-size: 15px;
-
   font-family: inherit;
 
-  box-sizing: border-box;
+  font-size: 15px;
 
   transition:
     border-color 0.2s ease,
@@ -513,6 +809,7 @@
   cursor: not-allowed;
 }
 
+
 /* =========================================================
    YEAR SELECT
 ========================================================= */
@@ -524,9 +821,9 @@
 
   cursor: pointer;
 
-  -moz-appearance: auto;
   appearance: auto;
   -webkit-appearance: auto;
+  -moz-appearance: auto;
 }
 
 .year-select option {
@@ -536,6 +833,7 @@
 
   font-size: 15px;
 }
+
 
 /* =========================================================
    BIO
@@ -554,6 +852,7 @@
 
   line-height: 1.55;
 }
+
 
 /* =========================================================
    FORM ACTIONS
@@ -580,6 +879,8 @@
   padding: 12px 20px;
 
   border-radius: 11px;
+
+  font-family: inherit;
 
   font-size: 14px;
 
@@ -629,6 +930,8 @@
   background: #f8fafc;
 
   border-color: #b8c5d5;
+
+  transform: translateY(-1px);
 }
 
 .save-profile-button:disabled,
@@ -642,6 +945,7 @@
   box-shadow: none;
 }
 
+
 /* =========================================================
    PROFILE INFORMATION
 ========================================================= */
@@ -651,7 +955,8 @@
 
   display: grid;
 
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 
   gap: 18px;
 }
@@ -666,6 +971,8 @@
 
   gap: 18px;
 
+  box-sizing: border-box;
+
   background:
     linear-gradient(
       145deg,
@@ -679,8 +986,6 @@
 
   box-shadow:
     0 10px 25px rgba(15, 23, 42, 0.045);
-
-  box-sizing: border-box;
 
   transition:
     transform 0.22s ease,
@@ -713,10 +1018,10 @@
     linear-gradient(
       135deg,
       rgba(37, 169, 255, 0.11),
-      rgba(99, 102, 241, 0.1)
+      rgba(99, 102, 241, 0.10)
     );
 
-  border: 1px solid rgba(37, 169, 255, 0.1);
+  border: 1px solid rgba(37, 169, 255, 0.10);
 
   font-size: 23px;
 }
@@ -751,6 +1056,7 @@
   word-break: break-word;
 }
 
+
 /* =========================================================
    BIO DISPLAY
 ========================================================= */
@@ -759,6 +1065,8 @@
   grid-column: 1 / -1;
 
   padding: 28px 30px;
+
+  box-sizing: border-box;
 
   background:
     linear-gradient(
@@ -801,6 +1109,7 @@
   white-space: pre-wrap;
 }
 
+
 /* =========================================================
    BACK HOME
 ========================================================= */
@@ -837,12 +1146,14 @@
   transform: translateX(-2px);
 }
 
+
 /* =========================================================
    CROP MODAL
 ========================================================= */
 
 .crop-modal-overlay {
   position: fixed;
+
   inset: 0;
 
   z-index: 9999;
@@ -852,6 +1163,8 @@
   justify-content: center;
 
   padding: 20px;
+
+  box-sizing: border-box;
 
   background: rgba(15, 23, 42, 0.76);
 
@@ -874,13 +1187,15 @@
 .crop-modal {
   width: min(580px, 95vw);
 
+  max-height: calc(100vh - 40px);
+
+  overflow: hidden;
+
   background: #ffffff;
 
   border: 1px solid rgba(255, 255, 255, 0.4);
 
   border-radius: 22px;
-
-  overflow: hidden;
 
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.38);
@@ -891,14 +1206,21 @@
 @keyframes cropModalIn {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.98);
+
+    transform:
+      translateY(12px)
+      scale(0.98);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+
+    transform:
+      translateY(0)
+      scale(1);
   }
 }
+
 
 /* =========================================================
    CROP HEADER
@@ -960,6 +1282,8 @@
 
   color: #475569;
 
+  font-family: inherit;
+
   font-size: 23px;
   line-height: 1;
 
@@ -979,6 +1303,7 @@
   transform: rotate(4deg);
 }
 
+
 /* =========================================================
    CROP AREA
 ========================================================= */
@@ -996,6 +1321,7 @@
       #0f172a
     );
 }
+
 
 /* =========================================================
    CROP CONTROLS
@@ -1044,6 +1370,7 @@
   text-align: right;
 }
 
+
 /* =========================================================
    CROP BUTTONS
 ========================================================= */
@@ -1067,6 +1394,8 @@
   padding: 11px 17px;
 
   border-radius: 10px;
+
+  font-family: inherit;
 
   font-size: 14px;
 
@@ -1107,7 +1436,7 @@
   color: #ffffff;
 
   box-shadow:
-    0 7px 17px rgba(37, 99, 235, 0.2);
+    0 7px 17px rgba(37, 99, 235, 0.20);
 }
 
 .crop-confirm-button:hover {
@@ -1117,106 +1446,212 @@
     0 10px 22px rgba(37, 99, 235, 0.28);
 }
 
+
 /* =========================================================
    TABLET
 ========================================================= */
 
 @media (max-width: 900px) {
+
+  .profile-page {
+    padding: 30px 18px 50px;
+  }
+
   .profile-header {
-    padding: 30px;
+    grid-template-columns:
+      130px minmax(0, 1fr) 130px;
 
-    min-height: 210px;
+    gap: 18px;
+
+    padding: 26px 24px;
+
+    min-height: 145px;
   }
 
-  .profile-photo-section {
-    width: 160px;
+  .profile-avatar-wrapper,
+  .profile-avatar {
+    width: 84px;
+    height: 84px;
   }
 
-  .profile-photo {
-    width: 125px;
-    height: 125px;
+  .profile-avatar-placeholder {
+    font-size: 31px;
   }
 
-  .profile-heading {
-    padding: 0 24px;
+  .profile-header-content h1 {
+    font-size: 32px;
   }
 
-  .profile-heading h1 {
-    font-size: 36px;
+  .profile-header-content p {
+    font-size: 13px;
   }
 
-  .profile-heading p {
-    font-size: 16px;
+  .profile-form {
+    padding: 28px;
   }
 
-  .edit-profile-button {
-    padding: 12px 17px;
+  .profile-photo-editor {
+    padding: 22px;
   }
 }
+
 
 /* =========================================================
    MOBILE
 ========================================================= */
 
 @media (max-width: 700px) {
+
   .profile-page {
     padding: 24px 14px 45px;
   }
 
   .profile-header {
-    flex-direction: column;
+    grid-template-columns:
+      auto minmax(0, 1fr) auto;
 
-    gap: 18px;
+    gap: 12px;
 
-    padding: 32px 20px 28px;
+    min-height: 125px;
 
-    text-align: center;
+    padding: 20px 16px;
 
-    border-radius: 20px;
+    margin-bottom: 20px;
+
+    border-radius: 18px;
   }
 
-  .profile-photo-section {
-    width: 100%;
+  .profile-back-button {
+    padding: 9px 10px;
   }
 
-  .profile-photo {
-    width: 125px;
-    height: 125px;
+  .profile-back-button span:last-child {
+    display: none;
   }
 
-  .profile-heading {
-    width: 100%;
-
-    padding: 0;
-
-    text-align: center;
+  .profile-header-content {
+    min-width: 0;
   }
 
-  .profile-heading h1 {
-    font-size: 32px;
-
-    letter-spacing: -0.8px;
+  .profile-avatar-wrapper,
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
   }
 
-  .profile-heading p {
-    margin-top: 7px;
-
-    font-size: 15px;
+  .profile-avatar-wrapper {
+    margin-bottom: 8px;
   }
 
-  .edit-profile-button {
-    width: 100%;
-
-    max-width: 250px;
+  .profile-avatar-placeholder {
+    font-size: 27px;
   }
+
+  .profile-avatar-status {
+    width: 17px;
+    height: 17px;
+
+    right: 0;
+    bottom: 0;
+  }
+
+  .profile-avatar-status span {
+    width: 9px;
+    height: 9px;
+  }
+
+  .profile-eyebrow {
+    gap: 6px;
+
+    margin-bottom: 5px;
+
+    font-size: 8px;
+
+    letter-spacing: 0.10em;
+  }
+
+  .profile-eyebrow-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .profile-header-content h1 {
+    font-size: 23px;
+
+    letter-spacing: -0.035em;
+  }
+
+  .profile-header-content p {
+    margin-top: 5px;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+  }
+
+  .profile-header .edit-profile-button {
+    min-height: 38px;
+
+    padding: 0 10px;
+
+    border-radius: 10px;
+
+    font-size: 10px;
+  }
+
+
+  /* EDIT FORM */
 
   .profile-form {
-    margin-top: 18px;
+    margin-top: 0;
 
     padding: 22px 18px;
 
     border-radius: 18px;
   }
+
+  .profile-photo-editor {
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 17px;
+
+    padding: 22px 18px;
+
+    margin-bottom: 24px;
+
+    text-align: center;
+  }
+
+  .profile-photo-editor-content {
+    width: 100%;
+  }
+
+  .profile-photo-editor-heading p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .profile-image-actions {
+    justify-content: center;
+  }
+
+  .profile-photo-hint {
+    text-align: center;
+  }
+
+  .profile-edit-avatar {
+    width: 92px;
+    height: 92px;
+  }
+
+  .profile-edit-avatar span {
+    font-size: 33px;
+  }
+
+
+  /* FORM */
 
   .profile-form-grid {
     grid-template-columns: 1fr;
@@ -1238,6 +1673,9 @@
   .cancel-profile-button {
     width: 100%;
   }
+
+
+  /* INFORMATION */
 
   .profile-information {
     margin-top: 18px;
@@ -1289,40 +1727,105 @@
   }
 }
 
+
 /* =========================================================
    SMALL MOBILE
 ========================================================= */
 
 @media (max-width: 480px) {
+
   .profile-page {
     padding: 18px 10px 35px;
   }
 
   .profile-header {
-    padding: 28px 16px 24px;
+    grid-template-columns:
+      auto minmax(0, 1fr) auto;
 
-    border-radius: 18px;
+    gap: 7px;
+
+    padding: 16px 11px;
+
+    border-radius: 17px;
   }
 
-  .profile-photo {
-    width: 112px;
-    height: 112px;
+  .profile-avatar-wrapper,
+  .profile-avatar {
+    width: 62px;
+    height: 62px;
   }
 
-  .profile-photo span {
-    font-size: 40px;
+  .profile-avatar-placeholder {
+    font-size: 24px;
   }
 
-  .profile-heading h1 {
-    font-size: 28px;
+  .profile-avatar-status {
+    width: 16px;
+    height: 16px;
   }
 
-  .profile-heading p {
-    font-size: 14px;
+  .profile-avatar-status span {
+    width: 8px;
+    height: 8px;
+  }
+
+  .profile-header-content h1 {
+    font-size: 19px;
+  }
+
+  .profile-header-content p {
+    font-size: 9px;
+  }
+
+  .profile-eyebrow {
+    font-size: 7px;
+    letter-spacing: 0.08em;
+  }
+
+  .profile-header .edit-profile-button {
+    min-height: 35px;
+
+    padding: 0 8px;
+
+    font-size: 9px;
   }
 
   .profile-form {
     padding: 19px 15px;
+  }
+
+  .profile-photo-editor {
+    padding: 20px 14px;
+  }
+
+  .profile-edit-avatar {
+    width: 86px;
+    height: 86px;
+  }
+
+  .profile-photo-editor-heading h3 {
+    font-size: 16px;
+  }
+
+  .profile-photo-editor-heading p {
+    font-size: 12px;
+  }
+
+  .profile-image-actions {
+    flex-direction: column;
+
+    width: 100%;
+  }
+
+  .photo-upload,
+  .remove-photo-button {
+    width: 100%;
+
+    min-height: 40px;
+  }
+
+  .profile-photo-hint {
+    font-size: 10px;
   }
 
   .form-group input,
@@ -1359,16 +1862,8 @@
     font-size: 15px;
   }
 
-  .profile-image-actions {
-    flex-direction: column;
-  }
 
-  .photo-upload,
-  .remove-photo-button {
-    width: 100%;
-  }
-
-  /* Crop modal */
+  /* CROP MODAL */
 
   .crop-modal-overlay {
     padding: 10px;
@@ -1412,11 +1907,61 @@
   }
 }
 
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .profile-header {
+    gap: 5px;
+
+    padding: 14px 8px;
+  }
+
+  .profile-avatar-wrapper,
+  .profile-avatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  .profile-header-content h1 {
+    font-size: 17px;
+  }
+
+  .profile-header-content p {
+    font-size: 8px;
+  }
+
+  .profile-eyebrow {
+    display: none;
+  }
+
+  .profile-header .edit-profile-button {
+    min-height: 33px;
+
+    padding: 0 7px;
+
+    font-size: 8px;
+  }
+
+  .profile-back-button {
+    padding: 7px 8px;
+  }
+
+  .profile-photo-editor {
+    padding: 18px 12px;
+  }
+}
+
+
 /* =========================================================
    REDUCED MOTION
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1425,6 +1970,7 @@
     transition-duration: 0.01ms !important;
 
     animation-duration: 0.01ms !important;
+
     animation-iteration-count: 1 !important;
   }
 }

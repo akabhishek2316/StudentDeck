@@ -293,17 +293,13 @@ function Academic() {
   )
 
   const openResource = (fileUrl) => {
-    if (!fileUrl) {
-      alert('No resource file available')
-      return
-    }
-
-    window.open(
-      fileUrl,
-      '_blank',
-      'noopener,noreferrer'
-    )
+  if (!fileUrl) {
+    alert('No resource file available')
+    return
   }
+
+  window.location.href = fileUrl
+}
 
   return (
     <div className="academic-page">
@@ -751,17 +747,24 @@ function Academic() {
                         View Details
                       </Link>
 
-                      <button
-                        type="button"
-                        className="view-resource-button"
-                        onClick={() =>
-                          openResource(
-                            resource.fileUrl
-                          )
-                        }
-                      >
-                        Open Resource
-                      </button>
+                      {resource.fileUrl ? (
+  <a
+    href={resource.fileUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="view-resource-button"
+  >
+    Open Resource
+  </a>
+) : (
+  <button
+    type="button"
+    className="view-resource-button"
+    disabled
+  >
+    Resource Unavailable
+  </button>
+)}
                     </div>
                   </div>
                 </div>

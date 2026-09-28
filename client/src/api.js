@@ -838,13 +838,18 @@ export const uploadToCloudinary = async (file) => {
     uploadPreset
   )
 
-  const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
-    {
-      method: 'POST',
-      body: formData,
-    }
-  )
+  const resourceType =
+  file.type === 'application/pdf'
+    ? 'raw'
+    : 'image'
+
+const response = await fetch(
+  `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
+  {
+    method: 'POST',
+    body: formData,
+  }
+)
 
   const data = await response.json()
 

@@ -64,6 +64,20 @@ function EventDetails() {
     return new Date(value).toLocaleDateString()
   }
 
+  const formatTime = (value) => {
+  if (!value) {
+    return ''
+  }
+
+  const [hours, minutes] = value.split(':')
+  const hour = Number(hours)
+
+  const period = hour >= 12 ? 'PM' : 'AM'
+  const hour12 = hour % 12 || 12
+
+  return `${hour12}:${minutes} ${period}`
+}
+
   const openRegistration = () => {
     if (!event?.registrationLink) {
       alert('No registration link available')
@@ -202,12 +216,12 @@ function EventDetails() {
                   <small>Time</small>
 
                   <p>
-                    {event.startTime}
+  {formatTime(event.startTime)}
 
-                    {event.endTime
-                      ? ` - ${event.endTime}`
-                      : ''}
-                  </p>
+  {event.endTime
+    ? ` - ${formatTime(event.endTime)}`
+    : ''}
+</p>
                 </div>
 
               </div>

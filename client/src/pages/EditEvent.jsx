@@ -413,13 +413,46 @@ function EditEvent() {
 
       <section className="events-header">
 
-        <h1>Edit Event</h1>
+  <div className="events-header-inner">
 
-        <p>
-          Update your event details.
-        </p>
+    <button
+      type="button"
+      className="events-back-button"
+      onClick={() => navigate('/events')}
+    >
+      <span className="events-back-icon">
+        ←
+      </span>
 
-      </section>
+      <span>
+        Back to Events
+      </span>
+    </button>
+
+    <div className="events-header-center">
+
+      <span className="events-eyebrow">
+        CAMPUS EVENTS
+      </span>
+
+      <h1>
+        Edit Event
+      </h1>
+
+      <p>
+        Update your event details.
+      </p>
+
+    </div>
+
+    <div
+      className="events-header-spacer"
+      aria-hidden="true"
+    />
+
+  </div>
+
+</section>
 
       <section className="event-form-section">
 

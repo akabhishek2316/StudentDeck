@@ -299,12 +299,34 @@ function EditListing() {
 
       <div className="create-listing-container">
 
+        <button
+        type="button"
+        className="listing-back-button"
+        onClick={() =>
+          navigate('/marketplace')
+        }
+      >
+        <span className="listing-back-icon">
+          ←
+        </span>
+
+        <span>
+          Back to Marketplace
+        </span>
+      </button>
+
+      <div className="listing-title-section">
+        <span className="listing-eyebrow">
+          MARKETPLACE
+        </span>
+
         <h1>Edit Listing</h1>
 
         <p className="listing-form-subtitle">
           Update your item details or
           replace its image.
         </p>
+      </div>
 
         <form onSubmit={handleSubmit}>
 

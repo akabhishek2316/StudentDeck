@@ -1454,6 +1454,241 @@
   }
 }
 
+/* =========================================================
+   EDIT LOST & FOUND — BACK BUTTON + TITLE
+   ========================================================= */
+
+.lost-found-edit-back-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  margin-bottom: 27px;
+
+  padding: 9px 14px;
+
+  border: 1px solid #dbe3ec;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #475569;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 10px rgba(15, 23, 42, 0.035);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lost-found-edit-back-button:hover {
+  transform: translateX(-2px);
+
+  border-color: #cbd5e1;
+
+  background: #f8fafc;
+
+  color: #0f172a;
+
+  box-shadow:
+    0 7px 17px rgba(15, 23, 42, 0.07);
+}
+
+.lost-found-edit-back-button:active {
+  transform: translateX(-1px);
+}
+
+
+/* Back icon */
+
+.lost-found-edit-back-icon {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 25px;
+  height: 25px;
+
+  border-radius: 7px;
+
+  background: #f1f5f9;
+
+  color: #475569;
+
+  font-size: 16px;
+
+  line-height: 1;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.lost-found-edit-back-button:hover
+.lost-found-edit-back-icon {
+  background: #e0f2fe;
+
+  color: #0284c7;
+}
+
+
+/* =========================================================
+   EDIT TITLE
+   ========================================================= */
+
+.lost-found-edit-title-section {
+  margin-bottom: 30px;
+}
+
+.lost-found-edit-eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  margin-bottom: 9px;
+
+  color: #0284c7;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}
+
+.lost-found-edit-title-section h2 {
+  margin: 0 0 8px;
+
+  color: #0f172a;
+
+  font-size: 30px;
+
+  font-weight: 800;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.7px;
+
+  text-align: left;
+}
+
+.lost-found-edit-title-section p {
+  margin: 0;
+
+  max-width: 560px;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   EDIT FORM — SLIGHTLY MORE PREMIUM
+   ========================================================= */
+
+.lost-found-edit-title-section
++ form {
+  padding-top: 2px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .lost-found-edit-back-button {
+    margin-bottom: 22px;
+
+    padding: 8px 12px;
+
+    font-size: 12px;
+  }
+
+  .lost-found-edit-back-icon {
+    width: 23px;
+    height: 23px;
+
+    font-size: 15px;
+  }
+
+  .lost-found-edit-title-section {
+    margin-bottom: 25px;
+  }
+
+  .lost-found-edit-eyebrow {
+    font-size: 9px;
+
+    letter-spacing: 1.3px;
+  }
+
+  .lost-found-edit-title-section h2 {
+    font-size: 24px;
+
+    letter-spacing: -0.5px;
+  }
+
+  .lost-found-edit-title-section p {
+    font-size: 12px;
+
+    line-height: 1.55;
+  }
+}
+
+
+@media (max-width: 400px) {
+
+  .lost-found-edit-back-button {
+    padding: 7px 10px;
+
+    font-size: 11px;
+  }
+
+  .lost-found-edit-title-section h2 {
+    font-size: 22px;
+  }
+
+  .lost-found-edit-title-section p {
+    font-size: 11px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .lost-found-edit-back-button,
+  .lost-found-edit-back-icon {
+    transition: none;
+  }
+}
+
 
 /* =========================================================
    REDUCED MOTION

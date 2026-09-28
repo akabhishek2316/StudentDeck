@@ -6,7 +6,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 
 const connectDB = require("./config/db");
-
+const Message = require("./models/Message");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const marketplaceRoutes = require("./routes/marketplaceRoutes");
@@ -16,6 +16,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const saveRoutes = require("./routes/saveRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 
 const app = express();
 
@@ -81,6 +82,7 @@ app.use("/api/events", eventRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/saves", saveRoutes);
 app.use("/api/uploads", uploadRoutes);
+app.use("/api/notifications",notificationRoutes);
 
 /* =========================
    ROOT ROUTE
@@ -160,26 +162,87 @@ socket.on("join_conversation", (conversationId) => {
   );
 });
 
-socket.on("message_delivered", ({
-  messageId,
-  conversationId,
-  senderId
-}) => {
-  if (!messageId || !senderId) return;
+socket.on(
+  "message_delivered",
+  async ({
+    messageId,
+    conversationId,
+    senderId
+  }) => {
+    console.log(
+      "DELIVERY ACK RECEIVED:",
+      {
+        messageId,
+        conversationId,
+        senderId,
+        deliveredBy: socket.userId
+      }
+    )
 
-  io.to(`user:${senderId}`).emit(
-    "message_delivered",
-    {
-      messageId,
-      conversationId,
-      deliveredTo: socket.userId
+    if (
+      !messageId ||
+      !senderId ||
+      !socket.userId
+    ) {
+      console.log(
+        "DELIVERY ACK MISSING DATA"
+      )
+
+      return
     }
-  );
 
-  console.log(
-    `Message delivered: ${messageId} → ${senderId}`
-  );
-});
+    try {
+      const message =
+        await Message.findOneAndUpdate(
+          {
+            _id: messageId,
+            sender: senderId
+          },
+          {
+            delivered: true
+          },
+          {
+            new: true
+          }
+        )
+
+      if (!message) {
+        console.log(
+          "Message not found for delivery:",
+          messageId
+        )
+
+        return
+      }
+
+      io.to(
+        `user:${String(senderId)}`
+      ).emit(
+        "message_delivered",
+        {
+          messageId:
+            String(messageId),
+
+          conversationId:
+            String(conversationId),
+
+          deliveredTo:
+            String(socket.userId)
+        }
+      )
+
+      console.log(
+        `Message delivered: ${messageId} → ${senderId}`
+      )
+
+    } catch (error) {
+      console.error(
+        "Message delivery update error:",
+        error.message
+      )
+    }
+  }
+)
 
   socket.on("typing_start", ({ conversationId, userId }) => {
     if (!conversationId || !userId) return;

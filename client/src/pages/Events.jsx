@@ -60,6 +60,35 @@ function Events() {
     }
   }, [imagePreview])
 
+  const formatTime = (value) => {
+  if (!value) {
+    return ''
+  }
+
+  const [hours, minutes] = value.split(':')
+  const hour = Number(hours)
+
+  const period = hour >= 12 ? 'PM' : 'AM'
+  const hour12 = hour % 12 || 12
+
+  return `${hour12}:${minutes} ${period}`
+}
+
+const formatDate = (value) => {
+  if (!value) {
+    return ''
+  }
+
+  return new Date(value).toLocaleDateString(
+    'en-IN',
+    {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    }
+  )
+}
+
   const loadEvents = async () => {
     try {
       setLoading(true)
@@ -727,16 +756,16 @@ function Events() {
 
                   <div className="event-info">
 
-                    <span>
-                      📅 {event.date}
-                    </span>
+                   <span>
+  📅 {formatDate(event.date)}
+</span>
 
                     <span>
-                      🕐 {event.startTime}
-                      {event.endTime
-                        ? ` - ${event.endTime}`
-                        : ''}
-                    </span>
+  🕐 {formatTime(event.startTime)}
+  {event.endTime
+    ? ` - ${formatTime(event.endTime)}`
+    : ''}
+</span>
 
                     <span>
                       📍 {event.location}

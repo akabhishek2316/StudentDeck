@@ -218,7 +218,7 @@ const [year, setYear] = useState('')
           </div>
 
           <div className="form-group">
-  <label>Department</label>
+  <label>Department with Branch</label>
 
   <input
     type="text"

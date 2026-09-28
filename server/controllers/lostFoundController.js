@@ -1,5 +1,6 @@
 const LostFound = require("../models/LostFound");
 const cloudinary = require("../config/cloudinary");
+const {createNotificationForAllUsers} = require("../utils/notificationHelper");
 
 const deleteCloudinaryImage = async (publicId) => {
     if (!publicId) {
@@ -68,12 +69,21 @@ const createPost = async (req, res) => {
         });
 
         const populatedPost =
-            await post.populate(
-                "user",
-                "name email profileImage department year"
-            );
+    await post.populate(
+        "user",
+        "name email profileImage department year"
+    );
 
-        return res.status(201).json({
+await createNotificationForAllUsers({
+    io: req.app.get("io"),
+    actorId: req.user._id,
+    type: "lost-found",
+    title: "New Lost & Found Post",
+    message: `${req.user.name || "A student"} added "${post.title}" to Lost & Found.`,
+    link: "/lost-found"
+});
+
+return res.status(201).json({
             message:
                 "Lost & Found post created successfully",
             post: populatedPost
