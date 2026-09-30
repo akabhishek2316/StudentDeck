@@ -1,0 +1,290 @@
+/* =====================================================
+   UNAUTHORIZED ACCESS
+   ===================================================== */
+
+.unauthorized-page {
+  min-height: 70vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(37, 169, 255, 0.08),
+      transparent 35%
+    ),
+    #f7faff;
+}
+
+
+/* =====================================================
+   CARD
+   ===================================================== */
+
+.unauthorized-card {
+  width: 100%;
+  max-width: 460px;
+
+  padding: 42px 32px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  border: 1px solid #dfe8ef;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 15px 45px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =====================================================
+   ICON
+   ===================================================== */
+
+.unauthorized-icon {
+  width: 64px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  border-radius: 18px;
+
+  background: #eef7ff;
+
+  border: 1px solid #cfe8fa;
+
+  font-size: 27px;
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.08);
+}
+
+
+/* =====================================================
+   LABEL
+   ===================================================== */
+
+.unauthorized-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #0786d1;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+
+/* =====================================================
+   TITLE
+   ===================================================== */
+
+.unauthorized-card h1 {
+  margin: 0;
+
+  color: #10233f;
+
+  font-size: 28px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+}
+
+
+/* =====================================================
+   MESSAGE
+   ===================================================== */
+
+.unauthorized-card p {
+  max-width: 370px;
+
+  margin: 12px auto 0;
+
+  color: #718096;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   ACTIONS
+   ===================================================== */
+
+.unauthorized-actions {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-top: 24px;
+}
+
+
+/* =====================================================
+   LOGIN BUTTON
+   ===================================================== */
+
+.unauthorized-button {
+  min-height: 42px;
+
+  padding: 0 20px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #087fc5,
+      #2563eb
+    );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 18px rgba(37, 99, 235, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.unauthorized-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 24px rgba(37, 99, 235, 0.25);
+}
+
+
+/* =====================================================
+   BACK BUTTON
+   ===================================================== */
+
+.unauthorized-back-button {
+  min-height: 42px;
+
+  padding: 0 20px;
+
+  border: 1px solid #d8e3ec;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #40566f;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.unauthorized-back-button:hover {
+  background: #f5f9fd;
+
+  border-color: #b9d1e3;
+
+  color: #087fc5;
+
+  transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .unauthorized-page {
+    min-height: 70vh;
+
+    padding: 25px 15px;
+  }
+
+
+  .unauthorized-card {
+    padding: 35px 22px;
+
+    border-radius: 17px;
+  }
+
+
+  .unauthorized-icon {
+    width: 58px;
+    height: 58px;
+
+    font-size: 24px;
+  }
+
+
+  .unauthorized-card h1 {
+    font-size: 24px;
+  }
+
+
+  .unauthorized-card p {
+    font-size: 13px;
+  }
+
+
+  .unauthorized-actions {
+    flex-direction: column;
+
+    width: 100%;
+  }
+
+
+  .unauthorized-button,
+  .unauthorized-back-button {
+    width: 100%;
+  }
+
+}

@@ -6,21 +6,28 @@ import Footer from '../components/Footer'
 function MainLayout() {
   const location = useLocation()
 
-  // Always start a newly-navigated page at the top instead of
-  // keeping the previous page's scroll position.
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
+  const isMessagesPage =
+    location.pathname === '/messages'
+
   return (
-    <div className="app-shell">
-      <Navbar />
+    <div
+      className={
+        isMessagesPage
+          ? 'app-shell messages-layout'
+          : 'app-shell'
+      }
+    >
+      {!isMessagesPage && <Navbar />}
 
       <main className="app-main">
         <Outlet />
       </main>
 
-      <Footer />
+      {!isMessagesPage && <Footer />}
     </div>
   )
 }

@@ -1,9 +1,17 @@
 /* =========================================================
-   LOST & FOUND — PREMIUM CAMPUS UI
+   LOST & FOUND — STUDENTDECK
+   PREMIUM + FULLY RESPONSIVE
    ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
 
 .lost-found-page {
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+
   background:
     radial-gradient(
       circle at 8% 0%,
@@ -22,24 +30,18 @@
 
 
 /* =========================================================
-   HERO / HEADER
-   ========================================================= */
-/* =========================================================
-   LOST & FOUND — COMPACT HORIZONTAL HEADER
+   HEADER
    ========================================================= */
 
 .lost-found-header {
   position: relative;
-
   width: 100%;
-  min-height: 142px;
 
-  box-sizing: border-box;
+  min-height: 142px;
+  padding: 22px 6%;
 
   display: flex;
   align-items: center;
-
-  padding: 22px 6%;
 
   overflow: hidden;
 
@@ -64,29 +66,7 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
-
-/* Decorative glow */
-
-.lost-found-header::before {
-  content: '';
-
-  position: absolute;
-
-  width: 280px;
-  height: 280px;
-
-  left: -150px;
-  top: -180px;
-
-  border-radius: 50%;
-
-  background: rgba(37, 169, 255, 0.12);
-
-  filter: blur(12px);
-
-  pointer-events: none;
-}
-
+.lost-found-header::before,
 .lost-found-header::after {
   content: '';
 
@@ -95,21 +75,30 @@
   width: 280px;
   height: 280px;
 
-  right: -140px;
-  bottom: -190px;
-
   border-radius: 50%;
-
-  background: rgba(99, 102, 241, 0.10);
 
   filter: blur(12px);
 
   pointer-events: none;
 }
 
+.lost-found-header::before {
+  left: -150px;
+  top: -180px;
+
+  background: rgba(37, 169, 255, 0.12);
+}
+
+.lost-found-header::after {
+  right: -140px;
+  bottom: -190px;
+
+  background: rgba(99, 102, 241, 0.10);
+}
+
 
 /* =========================================================
-   HEADER INNER — 3 COLUMN LAYOUT
+   HEADER INNER
    ========================================================= */
 
 .lost-found-header-inner {
@@ -123,7 +112,7 @@
 
   display: grid;
 
-  grid-template-columns: 150px 1fr 170px;
+  grid-template-columns: 150px minmax(0, 1fr) 170px;
 
   align-items: center;
 
@@ -132,14 +121,13 @@
 
 
 /* =========================================================
-   LEFT — BACK BUTTON
+   BACK BUTTON
    ========================================================= */
 
 .lost-found-back-button {
   justify-self: start;
 
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
 
@@ -150,20 +138,19 @@
   padding: 9px 15px;
 
   border: 1px solid #d6e0ea;
-
   border-radius: 9px;
 
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.86);
 
   color: #334155;
 
   font-family: inherit;
-
   font-size: 13px;
-
   font-weight: 700;
 
   cursor: pointer;
+
+  white-space: nowrap;
 
   box-shadow:
     0 3px 10px rgba(15, 23, 42, 0.035);
@@ -188,7 +175,7 @@
 
 
 /* =========================================================
-   CENTER — TITLE
+   HEADER CENTER
    ========================================================= */
 
 .lost-found-header-center {
@@ -197,18 +184,14 @@
   text-align: center;
 }
 
-
-/* Small label */
-
 .lost-found-eyebrow {
   display: block;
 
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 
   color: #0284c7;
 
   font-size: 9px;
-
   font-weight: 800;
 
   letter-spacing: 1.5px;
@@ -216,11 +199,8 @@
   text-transform: uppercase;
 }
 
-
-/* Main heading */
-
 .lost-found-header h1 {
-  margin: 0 0 4px;
+  margin: 0 0 5px;
 
   color: #0f172a;
 
@@ -233,9 +213,6 @@
   letter-spacing: -1px;
 }
 
-
-/* Subtitle */
-
 .lost-found-header p {
   margin: 0;
 
@@ -243,12 +220,12 @@
 
   font-size: 13px;
 
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 
 /* =========================================================
-   RIGHT — REPORT BUTTON
+   REPORT BUTTON
    ========================================================= */
 
 .report-button {
@@ -260,7 +237,6 @@
   justify-content: center;
 
   min-width: 165px;
-
   min-height: 43px;
 
   padding: 10px 18px;
@@ -279,12 +255,12 @@
   color: #ffffff;
 
   font-family: inherit;
-
   font-size: 13px;
-
   font-weight: 700;
 
-  cursor: pointer;
+  text-decoration: none;
+
+  white-space: nowrap;
 
   box-shadow:
     0 8px 20px rgba(15, 23, 42, 0.15);
@@ -304,648 +280,13 @@
     0 12px 25px rgba(15, 23, 42, 0.20);
 }
 
-.report-button:active {
-  transform: translateY(0);
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 850px) {
-
-  .lost-found-header {
-    padding: 20px 24px;
-  }
-
-  .lost-found-header-inner {
-    grid-template-columns: 120px 1fr 145px;
-
-    gap: 18px;
-  }
-
-  .lost-found-header h1 {
-    font-size: 30px;
-  }
-
-  .lost-found-header p {
-    font-size: 12px;
-  }
-
-  .lost-found-back-button {
-    padding: 8px 12px;
-  }
-
-  .report-button {
-    min-width: 140px;
-  }
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 650px) {
-
-  .lost-found-header {
-    min-height: 120px;
-
-    padding: 18px 15px;
-  }
-
-  .lost-found-header-inner {
-    grid-template-columns: auto 1fr auto;
-
-    gap: 10px;
-  }
-
-  .lost-found-back-button {
-    min-height: 38px;
-
-    padding: 8px 10px;
-
-    font-size: 12px;
-  }
-
-  .lost-found-back-button span {
-    display: none;
-  }
-
-  .lost-found-eyebrow {
-    font-size: 7px;
-
-    letter-spacing: 1px;
-
-    margin-bottom: 3px;
-  }
-
-  .lost-found-header h1 {
-    font-size: 23px;
-
-    letter-spacing: -0.6px;
-  }
-
-  .lost-found-header p {
-    font-size: 10px;
-
-    line-height: 1.3;
-  }
-
-  .report-button {
-    min-width: auto;
-
-    min-height: 38px;
-
-    padding: 8px 11px;
-
-    font-size: 10px;
-  }
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 420px) {
-
-  .lost-found-header {
-    padding: 16px 10px;
-  }
-
-  .lost-found-header-inner {
-    gap: 6px;
-  }
-
-  .lost-found-header h1 {
-    font-size: 20px;
-  }
-
-  .lost-found-header p {
-    font-size: 8px;
-  }
-
-  .lost-found-eyebrow {
-    display: none;
-  }
-
-  .lost-found-back-button {
-    padding: 7px 9px;
-  }
-
-  .report-button {
-    padding: 7px 9px;
-
-    font-size: 9px;
-  }
-}
-
-/* =========================================================
-   REPORT FORM SECTION
-   ========================================================= */
-
-.report-section {
-  padding: 46px 20px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #f8fafc 100%
-    );
-
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.report-container {
-  max-width: 760px;
-
-  margin: 0 auto;
-
-  padding: 34px;
-
-  box-sizing: border-box;
-
-  background: rgba(255, 255, 255, 0.96);
-
-  border: 1px solid #e2e8f0;
-
-  border-radius: 22px;
-
-  box-shadow:
-    0 20px 55px rgba(15, 23, 42, 0.08),
-    0 3px 10px rgba(15, 23, 42, 0.03);
-}
-
-.report-container h2 {
-  margin: 0 0 30px;
-
-  color: #0f172a;
-
-  font-size: 26px;
-
-  font-weight: 800;
-
-  letter-spacing: -0.5px;
-
-  text-align: center;
-}
-
-
-/* =========================================================
-   FORM
-   ========================================================= */
-
-.form-group {
-  margin-bottom: 21px;
-}
-
-.form-group label {
-  display: block;
-
-  margin-bottom: 8px;
-
-  color: #334155;
-
-  font-size: 14px;
-
-  font-weight: 700;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-
-  box-sizing: border-box;
-
-  padding: 13px 14px;
-
-  border: 1px solid #dbe3ec;
-
-  border-radius: 11px;
-
-  outline: none;
-
-  background: #ffffff;
-
-  color: #0f172a;
-
-  font-family: inherit;
-
-  font-size: 14px;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: #94a3b8;
-}
-
-.form-group input:hover,
-.form-group textarea:hover,
-.form-group select:hover {
-  border-color: #b9c8d8;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-  border-color: #38aaf0;
-
-  box-shadow:
-    0 0 0 4px rgba(37, 169, 255, 0.10);
-}
-
-.form-group textarea {
-  min-height: 125px;
-
-  resize: vertical;
-
-  line-height: 1.6;
-}
-
-.form-group input[type="date"] {
-  color-scheme: light;
-}
-
-
-/* =========================================================
-   LOST / FOUND TYPE
-   ========================================================= */
-
-.type-buttons {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 12px;
-}
-
-.type-button {
-  min-height: 48px;
-
-  padding: 12px 15px;
-
-  border: 1px solid #dbe3ec;
-
-  border-radius: 11px;
-
-  background: #ffffff;
-
-  color: #475569;
-
-  font-family: inherit;
-
-  font-size: 14px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.type-button:hover {
-  transform: translateY(-1px);
-
-  border-color: #94a3b8;
-
-  background: #f8fafc;
-}
-
-.type-button.active {
-  border-color: #0f172a;
-
-  background:
-    linear-gradient(
-      135deg,
-      #0f172a,
-      #1e3a5f
-    );
-
-  color: #ffffff;
-
-  box-shadow:
-    0 8px 18px rgba(15, 23, 42, 0.14);
-}
-
-
-/* =========================================================
-   IMAGE UPLOAD
-   ========================================================= */
-
-.image-upload-box {
-  width: 100%;
-
-  min-height: 235px;
-
-  box-sizing: border-box;
-
-  padding: 34px 24px;
-
-  border: 1.5px dashed #cbd5e1;
-
-  border-radius: 16px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #f8fbff,
-      #f8fafc
-    );
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  text-align: center;
-
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.image-upload-box:hover {
-  border-color: #38aaf0;
-
-  background: #f8fcff;
-
-  box-shadow:
-    0 10px 28px rgba(15, 23, 42, 0.06);
-}
-
-.image-upload-icon {
-  width: 62px;
-  height: 62px;
-
-  margin-bottom: 15px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid #dbeafe;
-
-  border-radius: 16px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #eff6ff,
-      #eef2ff
-    );
-
-  font-size: 28px;
-}
-
-.image-upload-box p {
-  margin: 0 0 7px;
-
-  color: #0f172a;
-
-  font-size: 16px;
-
-  font-weight: 700;
-}
-
-.image-upload-box > span {
-  display: block;
-
-  margin-bottom: 21px;
-
-  color: #64748b;
-
-  font-size: 12px;
-}
-
-
-/* Hide file input */
-
-.image-select-button input[type="file"],
-.image-change-button input[type="file"] {
-  position: absolute;
-
-  width: 1px;
-  height: 1px;
-
-  padding: 0;
-  margin: -1px;
-
-  overflow: hidden;
-
-  clip: rect(0, 0, 0, 0);
-
-  white-space: nowrap;
-
-  border: 0;
-}
-
-
-/* Upload buttons */
-
-.image-select-button,
-.image-change-button {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  min-width: 145px;
-
-  padding: 11px 20px;
-
-  border: 0;
-
-  border-radius: 10px;
-
-  background: #0f172a;
-
-  color: #ffffff !important;
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-.image-select-button:hover,
-.image-change-button:hover {
-  transform: translateY(-1px);
-
-  background: #1e293b;
-
-  box-shadow:
-    0 8px 18px rgba(15, 23, 42, 0.14);
-}
-
-
-/* Image preview */
-
-.image-preview-wrapper {
-  width: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  gap: 18px;
-}
-
-.image-preview {
-  display: block;
-
-  width: 100%;
-
-  max-width: 620px;
-
-  height: auto;
-
-  max-height: 420px;
-
-  object-fit: contain;
-
-  object-position: center;
-
-  border: 1px solid #e2e8f0;
-
-  border-radius: 14px;
-
-  background: #ffffff;
-
-  box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.08);
-}
-
-.image-preview-actions {
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  gap: 10px;
-}
-
-.image-remove-button {
-  padding: 10px 19px;
-
-  border: 1px solid #fecaca;
-
-  border-radius: 10px;
-
-  background: #ffffff;
-
-  color: #dc2626;
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.image-remove-button:hover {
-  transform: translateY(-1px);
-
-  border-color: #fca5a5;
-
-  background: #fef2f2;
-}
-
-
-/* =========================================================
-   SUBMIT BUTTON
-   ========================================================= */
-
-.submit-report-button {
-  width: 100%;
-
-  min-height: 50px;
-
-  margin-top: 8px;
-
-  padding: 13px 20px;
-
-  border: none;
-
-  border-radius: 11px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #0f172a,
-      #1e3a5f
-    );
-
-  color: #ffffff;
-
-  font-family: inherit;
-
-  font-size: 14px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 10px 22px rgba(15, 23, 42, 0.14);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    opacity 0.2s ease;
-}
-
-.submit-report-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 15px 28px rgba(15, 23, 42, 0.18);
-}
-
-.submit-report-button:disabled {
-  cursor: not-allowed;
-
-  opacity: 0.6;
-}
-
 
 /* =========================================================
    CONTENT
    ========================================================= */
 
 .lost-found-content {
+  width: 100%;
   max-width: 1240px;
 
   margin: 0 auto;
@@ -959,19 +300,18 @@
    ========================================================= */
 
 .lost-found-toolbar {
-  display: flex;
-
-  gap: 12px;
-
+  width: 100%;
   max-width: 900px;
 
   margin: 0 auto 38px;
+
+  display: flex;
+
+  gap: 12px;
 }
 
 .lost-found-toolbar input,
 .lost-found-toolbar select {
-  box-sizing: border-box;
-
   min-height: 48px;
 
   padding: 12px 14px;
@@ -987,7 +327,6 @@
   color: #334155;
 
   font-family: inherit;
-
   font-size: 14px;
 
   box-shadow:
@@ -999,7 +338,12 @@
 }
 
 .lost-found-toolbar input {
+  min-width: 0;
   flex: 1;
+}
+
+.lost-found-toolbar select {
+  flex: 0 0 170px;
 }
 
 .lost-found-toolbar input::placeholder {
@@ -1014,13 +358,17 @@
     0 0 0 4px rgba(37, 169, 255, 0.09);
 }
 
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
 .lost-found-content > h2 {
   margin: 0 0 24px;
 
   color: #0f172a;
 
   font-size: 25px;
-
   font-weight: 800;
 
   letter-spacing: -0.5px;
@@ -1032,28 +380,34 @@
    ========================================================= */
 
 .lost-found-grid {
+  width: 100%;
+
   display: grid;
 
   grid-template-columns:
     repeat(3, minmax(0, 1fr));
 
   gap: 22px;
+
+  align-items: stretch;
 }
 
 
 /* =========================================================
-   ITEM CARD
+   CARD
    ========================================================= */
 
 .lost-found-card {
+  min-width: 0;
+
   position: relative;
 
-  display: block;
+  display: flex;
+  flex-direction: column;
 
   overflow: hidden;
 
-  background:
-    rgba(255, 255, 255, 0.96);
+  background: rgba(255, 255, 255, 0.97);
 
   border: 1px solid #e2e8f0;
 
@@ -1073,7 +427,7 @@
 }
 
 .lost-found-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
 
   border-color: #cbd5e1;
 
@@ -1083,13 +437,17 @@
 
 
 /* =========================================================
-   ITEM IMAGE
+   IMAGE CONTAINER
    ========================================================= */
 
 .lost-found-image {
   position: relative;
 
+  width: 100%;
+
   height: 215px;
+
+  flex-shrink: 0;
 
   overflow: hidden;
 
@@ -1129,10 +487,15 @@
 }
 
 .lost-found-image img {
+  display: block;
+
   width: 100%;
   height: 100%;
 
+  max-width: 100%;
+
   object-fit: cover;
+  object-position: center;
 
   transition:
     transform 0.35s ease;
@@ -1149,14 +512,22 @@
    ========================================================= */
 
 .lost-found-details {
+  min-width: 0;
+
+  flex: 1;
+
   padding: 20px;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .card-title-row {
+  width: 100%;
+
   display: flex;
 
   align-items: flex-start;
-
   justify-content: space-between;
 
   gap: 12px;
@@ -1170,16 +541,19 @@
   color: #0f172a;
 
   font-size: 17px;
-
   font-weight: 750;
 
   line-height: 1.35;
 
   letter-spacing: -0.2px;
+
+  overflow-wrap: anywhere;
 }
 
 
-/* Status badge */
+/* =========================================================
+   STATUS
+   ========================================================= */
 
 .status {
   flex-shrink: 0;
@@ -1189,12 +563,13 @@
   border-radius: 999px;
 
   font-size: 11px;
-
   font-weight: 800;
 
   letter-spacing: 0.2px;
 
   text-transform: uppercase;
+
+  white-space: nowrap;
 }
 
 .status.lost {
@@ -1214,7 +589,9 @@
 }
 
 
-/* Description */
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
 
 .lost-found-details > p {
   display: -webkit-box;
@@ -1230,19 +607,25 @@
   line-height: 1.65;
 
   -webkit-box-orient: vertical;
-
   -webkit-line-clamp: 2;
+
+  overflow-wrap: anywhere;
 }
 
 
-/* Item info */
+/* =========================================================
+   ITEM INFO
+   ========================================================= */
 
 .item-info {
-  display: flex;
+  width: 100%;
 
+  display: flex;
   flex-direction: column;
 
   gap: 8px;
+
+  margin-top: auto;
 
   padding-top: 15px;
 
@@ -1254,7 +637,11 @@
 }
 
 .item-info span {
+  min-width: 0;
+
   line-height: 1.4;
+
+  overflow-wrap: anywhere;
 }
 
 
@@ -1263,6 +650,8 @@
    ========================================================= */
 
 .no-items {
+  width: 100%;
+
   min-height: 220px;
 
   margin-top: 15px;
@@ -1270,11 +659,9 @@
   padding: 50px 20px;
 
   display: flex;
-
   flex-direction: column;
 
   align-items: center;
-
   justify-content: center;
 
   text-align: center;
@@ -1283,8 +670,7 @@
 
   border-radius: 18px;
 
-  background:
-    rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .no-items h3 {
@@ -1308,16 +694,67 @@
    TABLET
    ========================================================= */
 
-@media (max-width: 1000px) {
-
-  .lost-found-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
+@media (max-width: 1050px) {
 
   .lost-found-content {
     padding-left: 22px;
     padding-right: 22px;
+  }
+
+  .lost-found-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+  }
+
+  .lost-found-image {
+    height: 220px;
+  }
+}
+
+
+/* =========================================================
+   TABLET HEADER
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .lost-found-header {
+    min-height: 135px;
+
+    padding: 20px 24px;
+  }
+
+  .lost-found-header-inner {
+    grid-template-columns:
+      120px
+      minmax(0, 1fr)
+      145px;
+
+    gap: 18px;
+  }
+
+  .lost-found-header h1 {
+    font-size: 30px;
+  }
+
+  .lost-found-header p {
+    font-size: 12px;
+  }
+
+  .lost-found-back-button {
+    min-height: 38px;
+
+    padding: 8px 12px;
+  }
+
+  .report-button {
+    min-width: 140px;
+
+    min-height: 40px;
+
+    padding: 9px 13px;
   }
 }
 
@@ -1329,94 +766,233 @@
 @media (max-width: 650px) {
 
   .lost-found-header {
-    min-height: 200px;
+    min-height: auto;
 
-    padding: 42px 20px 38px;
+    padding: 18px 16px 20px;
+  }
+
+  .lost-found-header-inner {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+      auto
+      minmax(0, 1fr);
+
+    grid-template-rows:
+      auto
+      auto;
+
+    column-gap: 12px;
+    row-gap: 10px;
+  }
+
+
+  /* Back */
+
+  .lost-found-back-button {
+    grid-column: 1;
+    grid-row: 1 / 3;
+
+    align-self: start;
+
+    min-height: 38px;
+
+    padding: 8px 10px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+  }
+
+  .lost-found-back-button span {
+    display: none;
+  }
+
+
+  /* Header text */
+
+  .lost-found-header-center {
+    grid-column: 2;
+    grid-row: 1;
+
+    width: 100%;
+
+    min-width: 0;
+
+    text-align: left;
+  }
+
+  .lost-found-eyebrow {
+    margin-bottom: 4px;
+
+    font-size: 8px;
+
+    letter-spacing: 1.1px;
   }
 
   .lost-found-header h1 {
-    font-size: 35px;
+    margin: 0;
 
-    letter-spacing: -1px;
+    font-size: 25px;
+
+    line-height: 1.1;
+
+    letter-spacing: -0.6px;
+
+    overflow-wrap: anywhere;
   }
 
   .lost-found-header p {
-    font-size: 15px;
+    margin: 6px 0 0;
 
-    line-height: 1.6;
+    font-size: 11px;
+
+    line-height: 1.45;
+
+    overflow-wrap: anywhere;
   }
 
-  .report-section {
-    padding: 28px 14px;
+
+  /* Report */
+
+  .report-button {
+    grid-column: 2;
+    grid-row: 2;
+
+    justify-self: start;
+
+    min-width: 0;
+
+    min-height: 38px;
+
+    padding: 8px 13px;
+
+    border-radius: 9px;
+
+    font-size: 11px;
   }
 
-  .report-container {
-    padding: 23px 17px;
 
-    border-radius: 18px;
-  }
-
-  .report-container h2 {
-    font-size: 22px;
-  }
-
-  .type-buttons {
-    grid-template-columns: 1fr;
-  }
+  /* Content */
 
   .lost-found-content {
-    padding: 36px 15px 60px;
+    width: 100%;
+
+    padding:
+      28px
+      14px
+      55px;
   }
+
+
+  /* Toolbar */
 
   .lost-found-toolbar {
+    width: 100%;
+
+    margin-bottom: 28px;
+
+    display: flex;
     flex-direction: column;
 
-    margin-bottom: 30px;
+    gap: 10px;
   }
+
+  .lost-found-toolbar input,
+  .lost-found-toolbar select {
+    width: 100%;
+
+    min-height: 46px;
+
+    flex: none;
+
+    font-size: 13px;
+  }
+
+  .lost-found-toolbar select {
+    flex-basis: auto;
+  }
+
+
+  /* Section title */
 
   .lost-found-content > h2 {
-    font-size: 22px;
+    margin-bottom: 18px;
 
-    margin-bottom: 20px;
+    font-size: 21px;
   }
+
+
+  /* Grid */
 
   .lost-found-grid {
+    width: 100%;
+
     grid-template-columns: 1fr;
 
-    gap: 17px;
+    gap: 18px;
   }
 
+
+  /* Card */
+
+  .lost-found-card {
+    width: 100%;
+
+    border-radius: 16px;
+  }
+
+
+  /* Image */
+
   .lost-found-image {
+    width: 100%;
+
     height: 210px;
   }
 
+
+  /* Details */
+
   .lost-found-details {
-    padding: 18px;
+    padding: 17px;
+  }
+
+  .card-title-row {
+    gap: 9px;
   }
 
   .card-title-row h3 {
     font-size: 16px;
+
+    line-height: 1.35;
   }
 
-  .image-upload-box {
-    min-height: 210px;
+  .status {
+    padding: 4px 8px;
 
-    padding: 26px 18px;
+    font-size: 9px;
   }
 
-  .image-preview {
-    height: 220px;
+  .lost-found-details > p {
+    margin:
+      10px
+      0
+      16px;
+
+    font-size: 12px;
+
+    line-height: 1.6;
   }
 
-  .image-preview-actions {
-    width: 100%;
+  .item-info {
+    gap: 7px;
 
-    flex-direction: column;
-  }
+    padding-top: 13px;
 
-  .image-change-button,
-  .image-remove-button {
-    width: 100%;
+    font-size: 11px;
   }
 }
 
@@ -1425,37 +1001,587 @@
    SMALL MOBILE
    ========================================================= */
 
-@media (max-width: 400px) {
+@media (max-width: 430px) {
 
   .lost-found-header {
-    min-height: 185px;
+    padding:
+      16px
+      12px
+      18px;
+  }
 
-    padding: 36px 16px 32px;
+  .lost-found-header-inner {
+    column-gap: 9px;
+    row-gap: 8px;
+  }
+
+  .lost-found-back-button {
+    min-height: 36px;
+
+    padding: 7px 9px;
+
+    font-size: 11px;
+  }
+
+  .lost-found-eyebrow {
+    margin-bottom: 3px;
+
+    font-size: 7px;
+
+    letter-spacing: 0.9px;
   }
 
   .lost-found-header h1 {
-    font-size: 31px;
+    font-size: 22px;
+
+    letter-spacing: -0.5px;
   }
 
   .lost-found-header p {
-    font-size: 14px;
+    margin-top: 5px;
+
+    font-size: 10px;
+
+    line-height: 1.4;
   }
 
   .report-button {
-    width: 100%;
+    min-height: 36px;
+
+    padding: 7px 10px;
+
+    font-size: 10px;
   }
 
-  .report-container {
-    padding: 20px 14px;
+
+  /* Content */
+
+  .lost-found-content {
+    padding:
+      24px
+      10px
+      45px;
   }
+
+
+  /* Toolbar */
+
+  .lost-found-toolbar {
+    margin-bottom: 24px;
+  }
+
+  .lost-found-toolbar input,
+  .lost-found-toolbar select {
+    min-height: 44px;
+
+    padding: 10px 12px;
+
+    font-size: 12px;
+
+    border-radius: 10px;
+  }
+
+
+  /* Title */
+
+  .lost-found-content > h2 {
+    margin-bottom: 16px;
+
+    font-size: 19px;
+  }
+
+
+  /* Grid */
+
+  .lost-found-grid {
+    gap: 15px;
+  }
+
+
+  /* Card */
+
+  .lost-found-card {
+    border-radius: 14px;
+  }
+
+
+  /* Image */
 
   .lost-found-image {
-    height: 190px;
+    height: 195px;
+  }
+
+
+  /* Details */
+
+  .lost-found-details {
+    padding: 15px;
+  }
+
+  .card-title-row {
+    gap: 7px;
+  }
+
+  .card-title-row h3 {
+    font-size: 15px;
+  }
+
+  .status {
+    padding: 4px 7px;
+
+    font-size: 8px;
+  }
+
+  .lost-found-details > p {
+    font-size: 11px;
+
+    line-height: 1.55;
+  }
+
+  .item-info {
+    font-size: 10.5px;
   }
 }
 
+
 /* =========================================================
-   EDIT LOST & FOUND — BACK BUTTON + TITLE
+   EXTRA SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 350px) {
+
+  .lost-found-header {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .lost-found-header-inner {
+    column-gap: 7px;
+  }
+
+  .lost-found-header h1 {
+    font-size: 20px;
+  }
+
+  .lost-found-header p {
+    font-size: 9px;
+  }
+
+  .lost-found-eyebrow {
+    font-size: 6.5px;
+  }
+
+  .report-button {
+    min-height: 34px;
+
+    padding: 6px 9px;
+
+    font-size: 9px;
+  }
+
+
+  .lost-found-content {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .lost-found-image {
+    height: 180px;
+  }
+
+  .lost-found-details {
+    padding: 13px;
+  }
+
+  .card-title-row h3 {
+    font-size: 14px;
+  }
+
+  .lost-found-details > p {
+    font-size: 10.5px;
+  }
+
+  .item-info {
+    font-size: 10px;
+  }
+}
+
+
+/* =========================================================
+   REPORT FORM
+   ========================================================= */
+
+.report-section {
+  padding: 46px 20px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f8fafc 100%
+    );
+
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.report-container {
+  width: 100%;
+  max-width: 760px;
+
+  margin: 0 auto;
+
+  padding: 34px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 20px 55px rgba(15, 23, 42, 0.08),
+    0 3px 10px rgba(15, 23, 42, 0.03);
+}
+
+.report-container h2 {
+  margin: 0 0 30px;
+
+  color: #0f172a;
+
+  font-size: 26px;
+  font-weight: 800;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-group {
+  margin-bottom: 21px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #334155;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+
+  padding: 13px 14px;
+
+  border: 1px solid #dbe3ec;
+
+  border-radius: 11px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #0f172a;
+
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.form-group textarea {
+  min-height: 125px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #38aaf0;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 169, 255, 0.10);
+}
+
+
+/* =========================================================
+   TYPE BUTTONS
+   ========================================================= */
+
+.type-buttons {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+.type-button {
+  min-height: 48px;
+
+  padding: 12px 15px;
+
+  border: 1px solid #dbe3ec;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #475569;
+
+  font-family: inherit;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.type-button.active {
+  border-color: #0f172a;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #1e3a5f
+    );
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   IMAGE UPLOAD
+   ========================================================= */
+
+.image-upload-box {
+  width: 100%;
+
+  min-height: 235px;
+
+  padding: 34px 24px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: 1.5px dashed #cbd5e1;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8fbff,
+      #f8fafc
+    );
+}
+
+.image-upload-icon {
+  width: 62px;
+  height: 62px;
+
+  margin-bottom: 15px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #dbeafe;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #eef2ff
+    );
+
+  font-size: 28px;
+}
+
+.image-upload-box p {
+  margin: 0 0 7px;
+
+  color: #0f172a;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.image-upload-box > span {
+  display: block;
+
+  margin-bottom: 21px;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.image-select-button input[type="file"],
+.image-change-button input[type="file"] {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+}
+
+.image-select-button,
+.image-change-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 145px;
+
+  padding: 11px 20px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background: #0f172a;
+
+  color: #ffffff !important;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   IMAGE PREVIEW
+   ========================================================= */
+
+.image-preview-wrapper {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+.image-preview {
+  display: block;
+
+  width: 100%;
+  max-width: 620px;
+
+  height: auto;
+  max-height: 420px;
+
+  object-fit: contain;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.image-preview-actions {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.image-remove-button {
+  padding: 10px 19px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #dc2626;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   SUBMIT
+   ========================================================= */
+
+.submit-report-button {
+  width: 100%;
+
+  min-height: 50px;
+
+  margin-top: 8px;
+
+  padding: 13px 20px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0f172a,
+      #1e3a5f
+    );
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.submit-report-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   EDIT PAGE
    ========================================================= */
 
 .lost-found-edit-back-button {
@@ -1481,41 +1607,10 @@
   font-family: inherit;
 
   font-size: 13px;
-
   font-weight: 700;
 
   cursor: pointer;
-
-  box-shadow:
-    0 3px 10px rgba(15, 23, 42, 0.035);
-
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease;
 }
-
-.lost-found-edit-back-button:hover {
-  transform: translateX(-2px);
-
-  border-color: #cbd5e1;
-
-  background: #f8fafc;
-
-  color: #0f172a;
-
-  box-shadow:
-    0 7px 17px rgba(15, 23, 42, 0.07);
-}
-
-.lost-found-edit-back-button:active {
-  transform: translateX(-1px);
-}
-
-
-/* Back icon */
 
 .lost-found-edit-back-icon {
   display: inline-flex;
@@ -1533,25 +1628,7 @@
   color: #475569;
 
   font-size: 16px;
-
-  line-height: 1;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
 }
-
-.lost-found-edit-back-button:hover
-.lost-found-edit-back-icon {
-  background: #e0f2fe;
-
-  color: #0284c7;
-}
-
-
-/* =========================================================
-   EDIT TITLE
-   ========================================================= */
 
 .lost-found-edit-title-section {
   margin-bottom: 30px;
@@ -1567,7 +1644,6 @@
   color: #0284c7;
 
   font-size: 10px;
-
   font-weight: 800;
 
   letter-spacing: 1.5px;
@@ -1581,14 +1657,9 @@
   color: #0f172a;
 
   font-size: 30px;
-
   font-weight: 800;
 
   line-height: 1.15;
-
-  letter-spacing: -0.7px;
-
-  text-align: left;
 }
 
 .lost-found-edit-title-section p {
@@ -1605,17 +1676,7 @@
 
 
 /* =========================================================
-   EDIT FORM — SLIGHTLY MORE PREMIUM
-   ========================================================= */
-
-.lost-found-edit-title-section
-+ form {
-  padding-top: 2px;
-}
-
-
-/* =========================================================
-   MOBILE
+   EDIT MOBILE
    ========================================================= */
 
 @media (max-width: 650px) {
@@ -1641,14 +1702,10 @@
 
   .lost-found-edit-eyebrow {
     font-size: 9px;
-
-    letter-spacing: 1.3px;
   }
 
   .lost-found-edit-title-section h2 {
     font-size: 24px;
-
-    letter-spacing: -0.5px;
   }
 
   .lost-found-edit-title-section p {
@@ -1656,10 +1713,22 @@
 
     line-height: 1.55;
   }
+
+  .report-container {
+    padding: 24px 16px;
+  }
 }
 
 
+/* =========================================================
+   EDIT / FORM EXTRA SMALL
+   ========================================================= */
+
 @media (max-width: 400px) {
+
+  .report-container {
+    padding: 20px 14px;
+  }
 
   .lost-found-edit-back-button {
     padding: 7px 10px;
@@ -1674,18 +1743,27 @@
   .lost-found-edit-title-section p {
     font-size: 11px;
   }
-}
 
+  .type-buttons {
+    gap: 8px;
+  }
 
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
+  .type-button {
+    min-height: 44px;
 
-@media (prefers-reduced-motion: reduce) {
+    padding: 10px;
 
-  .lost-found-edit-back-button,
-  .lost-found-edit-back-icon {
-    transition: none;
+    font-size: 12px;
+  }
+
+  .image-upload-box {
+    min-height: 205px;
+
+    padding: 25px 15px;
+  }
+
+  .image-preview {
+    max-height: 300px;
   }
 }
 
@@ -1699,11 +1777,385 @@
   .lost-found-card,
   .lost-found-image img,
   .report-button,
+  .lost-found-back-button,
   .type-button,
   .submit-report-button,
   .image-select-button,
   .image-change-button,
-  .image-remove-button {
+  .image-remove-button,
+  .lost-found-edit-back-button {
     transition: none;
   }
+}
+
+
+/* =====================================================
+   PREMIUM AUTHORIZATION SCREEN
+   ===================================================== */
+
+.lost-found-access-page {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(14, 165, 233, 0.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 85%,
+      rgba(99, 102, 241, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #f8fbff 0%,
+      #f4f7fc 100%
+    );
+}
+
+
+.lost-found-access-card {
+  position: relative;
+
+  width: min(560px, 100%);
+
+  padding: 48px 42px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  border: 1px solid rgba(226, 232, 240, 0.9);
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.97),
+      rgba(248, 251, 255, 0.94)
+    );
+
+  box-shadow:
+    0 24px 70px rgba(15, 23, 42, 0.10),
+    0 4px 18px rgba(15, 23, 42, 0.04);
+
+  overflow: hidden;
+}
+
+
+.lost-found-access-card::before {
+  content: '';
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  top: -145px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(14, 165, 233, 0.16),
+      transparent 70%
+    );
+
+  pointer-events: none;
+}
+
+
+.lost-found-access-icon {
+  position: relative;
+
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 20px;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eff9ff,
+      #eef2ff
+    );
+
+  border: 1px solid #d8e9f7;
+
+  box-shadow:
+    0 10px 28px rgba(37, 99, 235, 0.10);
+
+  font-size: 29px;
+}
+
+
+.lost-found-access-label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #0284c7;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.15em;
+}
+
+
+.lost-found-access-card h1 {
+  position: relative;
+
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: clamp(26px, 4vw, 34px);
+
+  line-height: 1.15;
+
+  letter-spacing: -0.035em;
+}
+
+
+.lost-found-access-card p {
+  max-width: 450px;
+
+  margin: 15px auto 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+
+  line-height: 1.75;
+}
+
+
+/* =====================================================
+   ACTIONS
+   ===================================================== */
+
+.lost-found-access-actions {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 11px;
+
+  margin-top: 28px;
+}
+
+
+.lost-found-login-button,
+.lost-found-home-button {
+  min-height: 44px;
+
+  padding: 0 18px;
+
+  border-radius: 11px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.lost-found-login-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  border: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb
+    );
+
+  color: white;
+
+  box-shadow:
+    0 9px 24px rgba(37, 99, 235, 0.22);
+}
+
+
+.lost-found-login-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 13px 30px rgba(37, 99, 235, 0.28);
+}
+
+
+.lost-found-login-button span {
+  font-size: 17px;
+
+  transition:
+    transform 0.2s ease;
+}
+
+
+.lost-found-login-button:hover span {
+  transform: translateX(3px);
+}
+
+
+.lost-found-home-button {
+  border: 1px solid #dbe4ec;
+
+  background: rgba(255, 255, 255, 0.9);
+
+  color: #475569;
+}
+
+
+.lost-found-home-button:hover {
+  transform: translateY(-2px);
+
+  border-color: #bfdbfe;
+
+  background: #f8fbff;
+}
+
+
+/* =====================================================
+   NOTE
+   ===================================================== */
+
+.lost-found-access-note {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-top: 28px;
+  padding-top: 20px;
+
+  border-top: 1px solid #edf2f7;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+.lost-found-access-note span {
+  color: #0ea5e9;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .lost-found-access-page {
+    padding: 25px 15px;
+  }
+
+  .lost-found-access-card {
+    padding: 38px 22px;
+
+    border-radius: 20px;
+  }
+
+  .lost-found-access-icon {
+    width: 64px;
+    height: 64px;
+
+    border-radius: 17px;
+
+    font-size: 25px;
+  }
+
+  .lost-found-access-label {
+    font-size: 8px;
+  }
+
+  .lost-found-access-card h1 {
+    font-size: 26px;
+  }
+
+  .lost-found-access-card p {
+    font-size: 13px;
+
+    line-height: 1.65;
+  }
+
+  .lost-found-access-actions {
+    flex-direction: column;
+
+    width: 100%;
+  }
+
+  .lost-found-login-button,
+  .lost-found-home-button {
+    width: 100%;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 380px) {
+
+  .lost-found-access-card {
+    padding: 32px 18px;
+  }
+
+  .lost-found-access-card h1 {
+    font-size: 23px;
+  }
+
+  .lost-found-access-card p {
+    font-size: 12px;
+  }
+
 }

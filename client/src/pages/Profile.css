@@ -123,6 +123,9 @@
   position: relative;
   z-index: 1;
 
+  grid-column: 1 / -1;
+
+  width: 100%;
   min-width: 0;
 
   display: flex;
@@ -244,44 +247,6 @@
 
 
 /* =========================================================
-   PROFILE EYEBROW
-========================================================= */
-
-.profile-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 8px;
-
-  margin-bottom: 7px;
-
-  color: #0284c7;
-
-  font-size: 11px;
-  font-weight: 800;
-
-  line-height: 1;
-
-  letter-spacing: 0.14em;
-}
-
-.profile-eyebrow-dot {
-  width: 7px;
-  height: 7px;
-
-  flex-shrink: 0;
-
-  border-radius: 50%;
-
-  background: #0ea5e9;
-
-  box-shadow:
-    0 0 0 4px rgba(14, 165, 233, 0.10);
-}
-
-
-/* =========================================================
    HEADER TITLE
 ========================================================= */
 
@@ -323,137 +288,6 @@
   font-size: 14px;
 
   line-height: 1.6;
-}
-
-
-/* =========================================================
-   BACK BUTTON
-========================================================= */
-
-.profile-back-button {
-  position: relative;
-  z-index: 2;
-
-  justify-self: start;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 9px;
-
-  width: fit-content;
-
-  padding: 10px 14px;
-
-  border: 1px solid #e2e8f0;
-  border-radius: 11px;
-
-  background: rgba(255, 255, 255, 0.88);
-
-  color: #334155;
-
-  font-family: inherit;
-
-  font-size: 13px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 4px 12px rgba(15, 23, 42, 0.035);
-
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease,
-    color 0.2s ease;
-}
-
-.profile-back-button span:first-child {
-  font-size: 19px;
-  line-height: 1;
-
-  transition:
-    transform 0.2s ease;
-}
-
-.profile-back-button:hover {
-  transform: translateX(-2px);
-
-  border-color: #bae6fd;
-
-  background: #f0f9ff;
-
-  color: #0f172a;
-
-  box-shadow:
-    0 7px 18px rgba(15, 23, 42, 0.07);
-}
-
-.profile-back-button:hover span:first-child {
-  transform: translateX(-3px);
-}
-
-
-/* =========================================================
-   HEADER EDIT BUTTON
-========================================================= */
-
-.profile-header-action {
-  position: relative;
-  z-index: 2;
-
-  display: flex;
-  justify-content: flex-end;
-}
-
-.profile-header .edit-profile-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 44px;
-
-  padding: 0 17px;
-
-  border: 1px solid #2563eb;
-  border-radius: 12px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #0ea5e9,
-      #2563eb
-    );
-
-  color: #ffffff;
-
-  font-family: inherit;
-
-  font-size: 13px;
-  font-weight: 800;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 8px 22px rgba(37, 99, 235, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.20);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    filter 0.2s ease;
-}
-
-.profile-header .edit-profile-button:hover {
-  transform: translateY(-2px);
-
-  filter: brightness(1.04);
-
-  box-shadow:
-    0 12px 28px rgba(37, 99, 235, 0.28);
 }
 
 
@@ -571,7 +405,6 @@
 
 .profile-photo-editor-content {
   min-width: 0;
-
   flex: 1;
 }
 
@@ -644,9 +477,6 @@
     color 0.2s ease;
 }
 
-
-/* ADD PHOTO */
-
 .photo-upload {
   border: 1px solid #2563eb;
 
@@ -670,9 +500,6 @@
     0 9px 20px rgba(37, 99, 235, 0.22);
 }
 
-
-/* REMOVE PHOTO */
-
 .remove-photo-button {
   border: 1px solid #fecaca;
 
@@ -694,12 +521,8 @@
 
 .remove-photo-button:disabled {
   opacity: 0.55;
-
   cursor: not-allowed;
 }
-
-
-/* PHOTO HINT */
 
 .profile-photo-hint {
   display: block;
@@ -820,15 +643,10 @@
   padding: 0 44px 0 15px;
 
   cursor: pointer;
-
-  appearance: auto;
-  -webkit-appearance: auto;
-  -moz-appearance: auto;
 }
 
 .year-select option {
   color: #0f172a;
-
   background: #ffffff;
 
   font-size: 15px;
@@ -1221,11 +1039,6 @@
   }
 }
 
-
-/* =========================================================
-   CROP HEADER
-========================================================= */
-
 .crop-modal-header {
   display: flex;
   align-items: flex-start;
@@ -1458,14 +1271,11 @@
   }
 
   .profile-header {
-    grid-template-columns:
-      130px minmax(0, 1fr) 130px;
-
-    gap: 18px;
+    min-height: 145px;
 
     padding: 26px 24px;
 
-    min-height: 145px;
+    border-radius: 20px;
   }
 
   .profile-avatar-wrapper,
@@ -1480,10 +1290,6 @@
 
   .profile-header-content h1 {
     font-size: 32px;
-  }
-
-  .profile-header-content p {
-    font-size: 13px;
   }
 
   .profile-form {
@@ -1507,10 +1313,10 @@
   }
 
   .profile-header {
-    grid-template-columns:
-      auto minmax(0, 1fr) auto;
+    display: flex;
 
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
 
     min-height: 125px;
 
@@ -1521,16 +1327,8 @@
     border-radius: 18px;
   }
 
-  .profile-back-button {
-    padding: 9px 10px;
-  }
-
-  .profile-back-button span:last-child {
-    display: none;
-  }
-
   .profile-header-content {
-    min-width: 0;
+    width: 100%;
   }
 
   .profile-avatar-wrapper,
@@ -1560,51 +1358,13 @@
     height: 9px;
   }
 
-  .profile-eyebrow {
-    gap: 6px;
-
-    margin-bottom: 5px;
-
-    font-size: 8px;
-
-    letter-spacing: 0.10em;
-  }
-
-  .profile-eyebrow-dot {
-    width: 5px;
-    height: 5px;
-  }
-
   .profile-header-content h1 {
     font-size: 23px;
 
     letter-spacing: -0.035em;
   }
 
-  .profile-header-content p {
-    margin-top: 5px;
-
-    font-size: 10px;
-
-    line-height: 1.4;
-  }
-
-  .profile-header .edit-profile-button {
-    min-height: 38px;
-
-    padding: 0 10px;
-
-    border-radius: 10px;
-
-    font-size: 10px;
-  }
-
-
-  /* EDIT FORM */
-
   .profile-form {
-    margin-top: 0;
-
     padding: 22px 18px;
 
     border-radius: 18px;
@@ -1650,9 +1410,6 @@
     font-size: 33px;
   }
 
-
-  /* FORM */
-
   .profile-form-grid {
     grid-template-columns: 1fr;
 
@@ -1673,9 +1430,6 @@
   .cancel-profile-button {
     width: 100%;
   }
-
-
-  /* INFORMATION */
 
   .profile-information {
     margin-top: 18px;
@@ -1725,6 +1479,21 @@
 
     margin: 22px auto 0;
   }
+
+  .header-photo-buttons {
+    gap: 6px;
+  }
+
+  .header-photo-upload,
+  .header-remove-photo {
+    min-height: 32px;
+
+    padding: 0 9px;
+
+    font-size: 10px;
+
+    border-radius: 8px;
+  }
 }
 
 
@@ -1739,14 +1508,20 @@
   }
 
   .profile-header {
-    grid-template-columns:
-      auto minmax(0, 1fr) auto;
+    display: flex;
 
-    gap: 7px;
+    align-items: center;
+    justify-content: center;
 
-    padding: 16px 11px;
+    min-height: 130px;
 
-    border-radius: 17px;
+    padding: 22px 14px;
+
+    margin-bottom: 18px;
+  }
+
+  .profile-header-content {
+    width: 100%;
   }
 
   .profile-avatar-wrapper,
@@ -1771,23 +1546,6 @@
 
   .profile-header-content h1 {
     font-size: 19px;
-  }
-
-  .profile-header-content p {
-    font-size: 9px;
-  }
-
-  .profile-eyebrow {
-    font-size: 7px;
-    letter-spacing: 0.08em;
-  }
-
-  .profile-header .edit-profile-button {
-    min-height: 35px;
-
-    padding: 0 8px;
-
-    font-size: 9px;
   }
 
   .profile-form {
@@ -1862,6 +1620,19 @@
     font-size: 15px;
   }
 
+  .header-photo-upload,
+  .header-remove-photo {
+    min-height: 30px;
+
+    padding: 0 8px;
+
+    font-size: 9px;
+  }
+
+  .header-photo-upload span,
+  .header-remove-photo span {
+    font-size: 12px;
+  }
 
   /* CROP MODAL */
 
@@ -1930,24 +1701,8 @@
     font-size: 17px;
   }
 
-  .profile-header-content p {
-    font-size: 8px;
-  }
-
   .profile-eyebrow {
     display: none;
-  }
-
-  .profile-header .edit-profile-button {
-    min-height: 33px;
-
-    padding: 0 7px;
-
-    font-size: 8px;
-  }
-
-  .profile-back-button {
-    padding: 7px 8px;
   }
 
   .profile-photo-editor {
@@ -1972,5 +1727,250 @@
     animation-duration: 0.01ms !important;
 
     animation-iteration-count: 1 !important;
+  }
+}
+
+/* =========================================================
+   PROFILE PAGE HEADER
+========================================================= */
+
+/* =========================================================
+   PROFILE PAGE HEADER
+========================================================= */
+
+.profile-page-header {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  padding: 16px 0 26px;
+  margin: 0 0 6px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.profile-back-button {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 1px;
+
+  border: 1px solid #dbe3ee;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #475569;
+
+  text-decoration: none;
+
+  font-size: 19px;
+  line-height: 1;
+
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.profile-back-button:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateX(-2px);
+}
+
+.profile-back-button span {
+  display: block;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   HEADER CONTENT
+========================================================= */
+
+.profile-page-header-content {
+  min-width: 0;
+  flex: 1;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.profile-page-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin: 0 0 4px;
+
+  color: #2563eb;
+
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.profile-page-eyebrow span {
+  width: 6px;
+  height: 6px;
+
+  display: inline-block;
+
+  border-radius: 50%;
+
+  background: #2196f3;
+
+  box-shadow:
+    0 0 0 3px rgba(33, 150, 243, 0.10);
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.profile-page-header h1 {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.profile-page-header p {
+  max-width: 600px;
+
+  margin: 6px 0 0;
+
+  color: #64748b;
+
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   UPDATE PROFILE BUTTON
+========================================================= */
+
+.profile-edit-button {
+  margin-top: 10px;
+
+  min-height: 34px;
+  padding: 0 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border: none;
+  border-radius: 7px;
+
+  background: linear-gradient(
+    135deg,
+    #199fe5,
+    #2563eb
+  );
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 14px rgba(37, 99, 235, 0.20);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profile-edit-button:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, 0.25);
+}
+
+.profile-edit-button:active {
+  transform: translateY(0);
+}
+
+
+/* PLUS ICON */
+
+.profile-edit-icon {
+  width: 16px;
+  height: 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .profile-page-header {
+    gap: 10px;
+    padding: 14px 0 22px;
+  }
+
+  .profile-back-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .profile-page-header h1 {
+    font-size: 22px;
+  }
+
+  .profile-page-header p {
+    font-size: 11px;
+  }
+
+  .profile-edit-button {
+    margin-top: 9px;
   }
 }

@@ -6,6 +6,7 @@ import {
   deleteLostFoundPost,
 } from '../api'
 import './LostFoundDetails.css'
+import UnauthorizedAccess from '../components/UnauthorizedAccess'
 
 function LostFoundDetails() {
   const { id } = useParams()
@@ -16,6 +17,7 @@ function LostFoundDetails() {
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState('')
+  const [unauthorized, setUnauthorized] = useState(false)
 
   useEffect(() => {
     loadPost()
@@ -25,6 +27,14 @@ function LostFoundDetails() {
     try {
       setLoading(true)
       setError('')
+      setUnauthorized(false)
+
+      const token = localStorage.getItem('token')
+
+      if (!token) {
+        setUnauthorized(true)
+        return
+      }
 
       const [postData, userData] = await Promise.all([
         getLostFoundPost(id),
@@ -33,15 +43,29 @@ function LostFoundDetails() {
 
       setItem(postData.post)
       setCurrentUser(userData.user)
+
     } catch (error) {
       console.error(
         'Failed to load Lost & Found post:',
         error
       )
 
+      const message =
+        error.message?.toLowerCase() || ''
+
+      if (
+        message.includes('unauthorized') ||
+        message.includes('not authorized') ||
+        message.includes('invalid token') ||
+        message.includes('token')
+      ) {
+        setUnauthorized(true)
+        return
+      }
+
       setError(
         error.message ||
-          'Failed to load Lost & Found post'
+        'Failed to load Lost & Found post'
       )
     } finally {
       setLoading(false)
@@ -52,7 +76,7 @@ function LostFoundDetails() {
     item &&
     currentUser &&
     String(item.user?._id) ===
-      String(currentUser._id)
+    String(currentUser._id)
 
   const handleDelete = async () => {
     const confirmed = window.confirm(
@@ -81,7 +105,7 @@ function LostFoundDetails() {
 
       alert(
         error.message ||
-          'Failed to delete Lost & Found post'
+        'Failed to delete Lost & Found post'
       )
     } finally {
       setDeleting(false)
@@ -111,6 +135,16 @@ function LostFoundDetails() {
         </div>
 
       </div>
+    )
+  }
+
+  if (unauthorized) {
+    return (
+      <UnauthorizedAccess
+        title="Login Required"
+        message="You need to login to view Lost & Found item details."
+        buttonText="Login to Continue"
+      />
     )
   }
 
@@ -206,20 +240,12 @@ function LostFoundDetails() {
           </div>
 
 
-          <div className="lost-found-header-action">
 
-            {isOwner && (
-              <Link
-                to={`/lost-found/${id}/edit`}
-                className="lost-found-header-edit"
-              >
-                Edit Post
-              </Link>
-            )}
-
-          </div>
 
         </section>
+
+
+
 
 
         {/* =================================================
@@ -373,8 +399,8 @@ function LostFoundDetails() {
               <div className="reported-user-avatar">
                 {item.user?.name
                   ? item.user.name
-                      .charAt(0)
-                      .toUpperCase()
+                    .charAt(0)
+                    .toUpperCase()
                   : 'U'}
               </div>
 

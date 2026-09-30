@@ -52,6 +52,16 @@ body {
   width: 100%;
 }
 
+/* Fixed navbar ke liye content ko navbar ke neeche rakho */
+.app-shell:not(.messages-layout) .app-main {
+  padding-top: 64px;
+}
+
+/* Messages page par navbar hidden hai */
+.messages-layout .app-main {
+  padding-top: 0;
+}
+
 h1,
 h2,
 h3,

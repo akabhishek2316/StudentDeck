@@ -88,7 +88,7 @@ function EditListing() {
     } catch (error) {
       alert(
         error.message ||
-          'Failed to load listing'
+        'Failed to load listing'
       )
 
       navigate('/marketplace')
@@ -278,7 +278,7 @@ function EditListing() {
 
       alert(
         error.message ||
-          'Failed to update listing'
+        'Failed to update listing'
       )
     } finally {
       setUploadingImage(false)
@@ -300,33 +300,33 @@ function EditListing() {
       <div className="create-listing-container">
 
         <button
-        type="button"
-        className="listing-back-button"
-        onClick={() =>
-          navigate('/marketplace')
-        }
-      >
-        <span className="listing-back-icon">
-          ←
-        </span>
+          type="button"
+          className="listing-back-button"
+          onClick={() =>
+            navigate('/marketplace')
+          }
+        >
+          <span className="listing-back-icon">
+            ←
+          </span>
 
-        <span>
-          Back to Marketplace
-        </span>
-      </button>
+          <span>
+            Back to Marketplace
+          </span>
+        </button>
 
-      <div className="listing-title-section">
-        <span className="listing-eyebrow">
-          MARKETPLACE
-        </span>
+        <div className="listing-title-section">
+          <span className="listing-eyebrow">
+            MARKETPLACE
+          </span>
 
-        <h1>Edit Listing</h1>
+          <h1>Edit Listing</h1>
 
-        <p className="listing-form-subtitle">
-          Update your item details or
-          replace its image.
-        </p>
-      </div>
+          <p className="listing-form-subtitle">
+            Update your item details or
+            replace its image.
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit}>
 

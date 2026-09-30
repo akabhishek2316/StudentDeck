@@ -1,12 +1,11 @@
+import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
 import {
-  getAcademicResource,
-  getMe,
-  updateAcademicResource,
+  createAcademicResource,
   uploadToCloudinary,
 } from '../api'
-import './EditAcademicResource.css'
+import './CreateAcademic.css'
+import PageHeader from '../components/PageHeader'
 
 const resourceTypeOptions = [
   {
@@ -31,12 +30,8 @@ const resourceTypeOptions = [
   },
 ]
 
-function EditAcademicResource() {
-  const { id } = useParams()
+function CreateAcademic() {
   const navigate = useNavigate()
-
-  const [resource, setResource] = useState(null)
-  const [currentUser, setCurrentUser] = useState(null)
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -50,72 +45,8 @@ function EditAcademicResource() {
   const [filePreview, setFilePreview] = useState('')
   const [fileName, setFileName] = useState('')
 
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [uploadingFile, setUploadingFile] = useState(false)
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    loadResource()
-  }, [id])
-
-  const loadResource = async () => {
-    try {
-      setLoading(true)
-      setError('')
-
-      const [resourceData, userData] =
-        await Promise.all([
-          getAcademicResource(id),
-          getMe(),
-        ])
-
-      const loadedResource = resourceData.resource
-
-      setResource(loadedResource)
-      setCurrentUser(userData.user)
-
-      setTitle(loadedResource.title || '')
-      setDescription(
-        loadedResource.description || ''
-      )
-      setSubject(loadedResource.subject || '')
-      setDepartment(
-        loadedResource.department || ''
-      )
-      setYear(
-        loadedResource.year
-          ? String(loadedResource.year)
-          : ''
-      )
-      setSemester(
-        loadedResource.semester
-          ? String(loadedResource.semester)
-          : ''
-      )
-      setResourceType(
-        loadedResource.resourceType || ''
-      )
-    } catch (error) {
-      console.error(
-        'Failed to load academic resource:',
-        error
-      )
-
-      setError(
-        error.message ||
-        'Failed to load academic resource'
-      )
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const isOwner =
-    resource &&
-    currentUser &&
-    String(resource.uploadedBy?._id) ===
-    String(currentUser._id)
 
   const handleFileChange = (event) => {
     const file = event.target.files?.[0]
@@ -170,7 +101,7 @@ function EditAcademicResource() {
     }
   }
 
-  const handleRemoveSelectedFile = () => {
+  const handleRemoveFile = () => {
     setSelectedFile(null)
     setFilePreview('')
     setFileName('')
@@ -178,13 +109,6 @@ function EditAcademicResource() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
-    if (!isOwner) {
-      alert(
-        'You can only edit your own academic resources'
-      )
-      return
-    }
 
     if (!title.trim()) {
       alert('Please enter a resource title')
@@ -216,25 +140,21 @@ function EditAcademicResource() {
       return
     }
 
+    if (!selectedFile) {
+      alert('Please select a resource file')
+      return
+    }
+
     try {
-      setSaving(true)
+      setSubmitting(true)
+      setUploadingFile(true)
 
-      let fileUrl = resource.fileUrl
-      let filePublicId = resource.filePublicId || ''
+      const uploadResult =
+        await uploadToCloudinary(selectedFile)
 
-      if (selectedFile) {
-        setUploadingFile(true)
+      setUploadingFile(false)
 
-        const uploadResult =
-          await uploadToCloudinary(selectedFile)
-
-        setUploadingFile(false)
-
-        fileUrl = uploadResult.secureUrl
-        filePublicId = uploadResult.publicId
-      }
-
-      await updateAcademicResource(id, {
+      await createAcademicResource({
         title: title.trim(),
         description: description.trim(),
         subject: subject.trim(),
@@ -242,111 +162,61 @@ function EditAcademicResource() {
         year: Number(year),
         semester: Number(semester),
         resourceType,
-        fileUrl,
-        filePublicId,
+        fileUrl: uploadResult.secureUrl,
+        filePublicId: uploadResult.publicId,
       })
 
       alert(
-        'Academic resource updated successfully'
+        'Academic resource added successfully!'
       )
 
-      navigate(`/academic/${id}`)
+      navigate('/academic')
     } catch (error) {
       console.error(
-        'Failed to update academic resource:',
+        'Create academic resource error:',
         error
       )
 
       alert(
         error.message ||
-        'Failed to update academic resource'
+        'Failed to create academic resource'
       )
     } finally {
       setUploadingFile(false)
-      setSaving(false)
+      setSubmitting(false)
     }
-  }
-
-  if (loading) {
-    return (
-      <div className="academic-details-page">
-        <div className="academic-details-not-found">
-          <h1>Loading...</h1>
-        </div>
-      </div>
-    )
-  }
-
-  if (error || !resource) {
-    return (
-      <div className="academic-details-page">
-        <div className="academic-details-not-found">
-          <h1>Resource Not Found</h1>
-
-          <p>
-            {error ||
-              'This academic resource is no longer available.'}
-          </p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!isOwner) {
-    return (
-      <div className="academic-details-page">
-        <div className="academic-details-not-found">
-          <h1>Access Denied</h1>
-
-          <p>
-            You can only edit your own academic resources.
-          </p>
-
-          <a href={`/academic/${id}`}>
-            ← Back to Resource
-          </a>
-        </div>
-      </div>
-    )
   }
 
   return (
     <div className="academic-page">
-      <section className="academic-header">
-
-        <div className="academic-header-inner">
-
-          <button
-            type="button"
-            className="academic-back-button"
-            onClick={() => navigate('/academic')}
-          >
-            <span className="academic-back-icon">
-              ←
-            </span>
-
-            <span>
-              Back to Academic
-            </span>
-          </button>
 
 
-          <div
-            className="academic-header-spacer"
-            aria-hidden="true"
-          />
 
-        </div>
 
-      </section>
+      <PageHeader
+        eyebrow="CAMPUS ACADEMICS"
+        title="Add Academic Resource"
+        description="Share notes, previous year papers,
+              and study materials."
+        backTo="/academic"
+
+      />
 
       <section className="academic-form-section">
+
         <div className="academic-form-container">
-          <h2>Edit Resource</h2>
+
+          <h2>
+            Add Academic Resource
+          </h2>
 
           <form onSubmit={handleSubmit}>
+
             <div className="form-group">
-              <label>Resource Title</label>
+
+              <label>
+                Resource Title
+              </label>
 
               <input
                 type="text"
@@ -354,11 +224,16 @@ function EditAcademicResource() {
                 onChange={(event) =>
                   setTitle(event.target.value)
                 }
+                placeholder="Example: DBMS Notes"
               />
+
             </div>
 
             <div className="form-group">
-              <label>Subject</label>
+
+              <label>
+                Subject
+              </label>
 
               <input
                 type="text"
@@ -366,11 +241,16 @@ function EditAcademicResource() {
                 onChange={(event) =>
                   setSubject(event.target.value)
                 }
+                placeholder="Example: DBMS"
               />
+
             </div>
 
             <div className="form-group">
-              <label>Department</label>
+
+              <label>
+                Department
+              </label>
 
               <input
                 type="text"
@@ -378,11 +258,16 @@ function EditAcademicResource() {
                 onChange={(event) =>
                   setDepartment(event.target.value)
                 }
+                placeholder="Example: ECE"
               />
+
             </div>
 
             <div className="form-group">
-              <label>Year</label>
+
+              <label>
+                Year
+              </label>
 
               <select
                 value={year}
@@ -410,10 +295,14 @@ function EditAcademicResource() {
                   4th Year
                 </option>
               </select>
+
             </div>
 
             <div className="form-group">
-              <label>Semester</label>
+
+              <label>
+                Semester
+              </label>
 
               <select
                 value={semester}
@@ -437,10 +326,14 @@ function EditAcademicResource() {
                   )
                 )}
               </select>
+
             </div>
 
             <div className="form-group">
-              <label>Resource Type</label>
+
+              <label>
+                Resource Type
+              </label>
 
               <select
                 value={resourceType}
@@ -464,11 +357,16 @@ function EditAcademicResource() {
                     </option>
                   )
                 )}
+
               </select>
+
             </div>
 
             <div className="form-group">
-              <label>Description</label>
+
+              <label>
+                Description
+              </label>
 
               <textarea
                 value={description}
@@ -477,61 +375,37 @@ function EditAcademicResource() {
                     event.target.value
                   )
                 }
+                placeholder="Describe the resource..."
               />
+
             </div>
 
             <div className="form-group">
-              <label>Resource File</label>
+
+              <label>
+                Resource File
+              </label>
 
               <div className="academic-file-upload-box">
-                {selectedFile ? (
-                  filePreview ? (
-                    <div className="academic-file-preview-wrapper">
-                      <img
-                        src={filePreview}
-                        alt="New resource preview"
-                        className="academic-file-preview"
-                      />
 
-                      <div className="academic-file-info">
-                        <strong>{fileName}</strong>
+                {filePreview ? (
 
-                        <div className="academic-file-actions">
-                          <label className="academic-file-change-button">
-                            Replace File
+                  <div className="academic-file-preview-wrapper">
 
-                            <input
-                              type="file"
-                              accept=".pdf,image/jpeg,image/png,image/webp"
-                              onChange={handleFileChange}
-                            />
-                          </label>
+                    <img
+                      src={filePreview}
+                      alt="Resource preview"
+                      className="academic-file-preview"
+                    />
 
-                          <button
-                            type="button"
-                            className="academic-file-remove-button"
-                            onClick={
-                              handleRemoveSelectedFile
-                            }
-                          >
-                            Keep Existing
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="academic-selected-file">
-                      <div className="academic-file-icon">
-                        📄
-                      </div>
+                    <div className="academic-file-info">
 
-                      <strong>{fileName}</strong>
-
-                      <span>
-                        New resource file selected
-                      </span>
+                      <strong>
+                        {fileName}
+                      </strong>
 
                       <div className="academic-file-actions">
+
                         <label className="academic-file-change-button">
                           Replace File
 
@@ -545,28 +419,71 @@ function EditAcademicResource() {
                         <button
                           type="button"
                           className="academic-file-remove-button"
-                          onClick={
-                            handleRemoveSelectedFile
-                          }
+                          onClick={handleRemoveFile}
                         >
-                          Keep Existing
+                          Remove
                         </button>
+
                       </div>
+
                     </div>
-                  )
+
+                  </div>
+
+                ) : selectedFile ? (
+
+                  <div className="academic-selected-file">
+
+                    <div className="academic-file-icon">
+                      📄
+                    </div>
+
+                    <strong>
+                      {fileName}
+                    </strong>
+
+                    <span>
+                      PDF document selected
+                    </span>
+
+                    <div className="academic-file-actions">
+
+                      <label className="academic-file-change-button">
+                        Replace File
+
+                        <input
+                          type="file"
+                          accept=".pdf,image/jpeg,image/png,image/webp"
+                          onChange={handleFileChange}
+                        />
+                      </label>
+
+                      <button
+                        type="button"
+                        className="academic-file-remove-button"
+                        onClick={handleRemoveFile}
+                      >
+                        Remove
+                      </button>
+
+                    </div>
+
+                  </div>
+
                 ) : (
+
                   <>
                     <div className="academic-upload-icon">
                       📚
                     </div>
 
                     <h3>
-                      Replace Academic Resource
+                      Upload Academic Resource
                     </h3>
 
                     <p>
-                      Upload a new PDF, JPG, PNG, or
-                      WEBP file
+                      Choose a PDF, JPG, PNG, or WEBP
+                      file
                     </p>
 
                     <span>
@@ -574,7 +491,7 @@ function EditAcademicResource() {
                     </span>
 
                     <label className="academic-file-select-button">
-                      Choose New File
+                      Choose File
 
                       <input
                         type="file"
@@ -583,26 +500,36 @@ function EditAcademicResource() {
                       />
                     </label>
                   </>
+
                 )}
+
               </div>
+
             </div>
 
             <button
               className="submit-resource-button"
               type="submit"
-              disabled={saving || uploadingFile}
+              disabled={
+                submitting ||
+                uploadingFile
+              }
             >
               {uploadingFile
                 ? 'Uploading file...'
-                : saving
-                  ? 'Saving...'
-                  : 'Save Changes'}
+                : submitting
+                  ? 'Adding...'
+                  : 'Add Resource'}
             </button>
+
           </form>
+
         </div>
+
       </section>
+
     </div>
   )
 }
 
-export default EditAcademicResource
+export default CreateAcademic

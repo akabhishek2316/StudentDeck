@@ -7,43 +7,63 @@ import {
   uploadToCloudinary,
 } from '../api'
 import './Profile.css'
+import PageHeader from '../components/PageHeader'
 
 function Profile() {
   const [isEditing, setIsEditing] = useState(false)
 
+  // =========================================
   // Saved profile data
+  // =========================================
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [department, setDepartment] = useState('')
   const [year, setYear] = useState('')
   const [hostel, setHostel] = useState('')
   const [bio, setBio] = useState('')
+
   const [profileImage, setProfileImage] =
     useState(null)
+
   const [profileImagePublicId, setProfileImagePublicId] =
     useState('')
 
+  // =========================================
   // Temporary editing data
+  // =========================================
+
   const [editName, setEditName] = useState('')
   const [editDepartment, setEditDepartment] =
     useState('')
+
   const [editYear, setEditYear] = useState('')
   const [editHostel, setEditHostel] = useState('')
   const [editBio, setEditBio] = useState('')
+
   const [editProfileImage, setEditProfileImage] =
     useState(null)
+
   const [editProfileImagePublicId, setEditProfileImagePublicId] =
     useState('')
 
-  // Profile image upload state
+  // =========================================
+  // Upload / Save state
+  // =========================================
+
   const [selectedImage, setSelectedImage] =
     useState(null)
+
   const [uploadingImage, setUploadingImage] =
     useState(false)
+
   const [savingProfile, setSavingProfile] =
     useState(false)
 
+  // =========================================
   // Cropper state
+  // =========================================
+
   const [crop, setCrop] = useState({
     x: 0,
     y: 0,
@@ -59,6 +79,10 @@ function Profile() {
 
   const [cropImage, setCropImage] =
     useState(null)
+
+  // =========================================
+  // Load profile
+  // =========================================
 
   useEffect(() => {
     loadProfile()
@@ -148,10 +172,15 @@ function Profile() {
       setName(user.name || '')
       setEmail(user.email || '')
       setDepartment(user.department || '')
-      setYear(yearLabels[user.year] || '')
+
+      setYear(
+        yearLabels[user.year] || ''
+      )
+
       setProfileImage(
         user.profileImage || null
       )
+
       setProfileImagePublicId(
         user.profileImagePublicId || ''
       )
@@ -192,6 +221,16 @@ function Profile() {
     )
 
     setSelectedImage(null)
+
+    setShowCropper(false)
+    setCropImage(null)
+
+    setCrop({
+      x: 0,
+      y: 0,
+    })
+
+    setZoom(1)
 
     setIsEditing(true)
   }
@@ -296,7 +335,6 @@ function Profile() {
       setEditProfileImage(previewUrl)
 
       setShowCropper(false)
-
       setCropImage(null)
     } catch (error) {
       console.error(
@@ -314,7 +352,6 @@ function Profile() {
 
   const handleCropCancel = () => {
     setShowCropper(false)
-
     setCropImage(null)
 
     setCrop({
@@ -326,24 +363,15 @@ function Profile() {
   }
 
   // =========================================
-  // Keep existing photo
+  // Remove profile image
   // =========================================
 
-  const handleRestoreExistingImage = () => {
-  setSelectedImage(null)
+  const handleRemoveProfileImage = () => {
+    setSelectedImage(null)
+    setEditProfileImage(null)
+    setEditProfileImagePublicId('')
+  }
 
-  setEditProfileImage(profileImage)
-
-  setEditProfileImagePublicId(
-    profileImagePublicId
-  )
-}
-
-const handleRemoveProfileImage = () => {
-  setSelectedImage(null)
-  setEditProfileImage(null)
-  setEditProfileImagePublicId('')
-}
   // =========================================
   // Save profile
   // =========================================
@@ -379,7 +407,10 @@ const handleRemoveProfileImage = () => {
       let finalProfileImagePublicId =
         editProfileImagePublicId || ''
 
-      // Upload cropped image to Cloudinary
+      // =====================================
+      // Upload cropped image
+      // =====================================
+
       if (selectedImage) {
         setUploadingImage(true)
 
@@ -396,6 +427,10 @@ const handleRemoveProfileImage = () => {
 
         setUploadingImage(false)
       }
+
+      // =====================================
+      // Update backend profile
+      // =====================================
 
       const data = await updateProfile({
         name: editName.trim(),
@@ -417,6 +452,7 @@ const handleRemoveProfileImage = () => {
 
       setName(updatedUser.name || '')
       setEmail(updatedUser.email || '')
+
       setDepartment(
         updatedUser.department || ''
       )
@@ -432,6 +468,10 @@ const handleRemoveProfileImage = () => {
       setProfileImagePublicId(
         updatedUser.profileImagePublicId || ''
       )
+
+      // =====================================
+      // Local extra profile
+      // =====================================
 
       setHostel(editHostel.trim())
       setBio(editBio.trim())
@@ -449,7 +489,9 @@ const handleRemoveProfileImage = () => {
         JSON.stringify(updatedUser)
       )
 
-      window.dispatchEvent(new Event('profileUpdated'))
+      window.dispatchEvent(
+        new Event('profileUpdated')
+      )
 
       setSelectedImage(null)
 
@@ -477,26 +519,26 @@ const handleRemoveProfileImage = () => {
   // =========================================
 
   const handleCancel = () => {
-  setSelectedImage(null)
+    setSelectedImage(null)
 
-  setEditProfileImage(profileImage)
+    setEditProfileImage(profileImage)
 
-  setEditProfileImagePublicId(
-    profileImagePublicId
-  )
+    setEditProfileImagePublicId(
+      profileImagePublicId
+    )
 
-  setCropImage(null)
-  setShowCropper(false)
+    setCropImage(null)
+    setShowCropper(false)
 
-  setCrop({
-    x: 0,
-    y: 0,
-  })
+    setCrop({
+      x: 0,
+      y: 0,
+    })
 
-  setZoom(1)
+    setZoom(1)
 
-  setIsEditing(false)
-}
+    setIsEditing(false)
+  }
 
   return (
     <div className="profile-page">
@@ -527,9 +569,7 @@ const handleRemoveProfileImage = () => {
               <button
                 type="button"
                 className="crop-close-button"
-                onClick={
-                  handleCropCancel
-                }
+                onClick={handleCropCancel}
                 aria-label="Close"
               >
                 ×
@@ -588,9 +628,7 @@ const handleRemoveProfileImage = () => {
               <button
                 type="button"
                 className="crop-cancel-button"
-                onClick={
-                  handleCropCancel
-                }
+                onClick={handleCropCancel}
               >
                 Cancel
               </button>
@@ -598,9 +636,7 @@ const handleRemoveProfileImage = () => {
               <button
                 type="button"
                 className="crop-confirm-button"
-                onClick={
-                  handleCropConfirm
-                }
+                onClick={handleCropConfirm}
               >
                 Crop Photo
               </button>
@@ -614,91 +650,106 @@ const handleRemoveProfileImage = () => {
 
       <div className="profile-container">
 
-        {/* ================= HEADER ================= */}
-
-   {/* ================= PROFILE HEADER ================= */}
-
-<section className="profile-header">
+        {/* =========================================
+            PAGE HEADER
+        ========================================= */}
+<header className="profile-page-header">
 
   {/* BACK BUTTON */}
-  <button
-    type="button"
-    className="profile-back-button"
-    onClick={() => {
-      if (window.history.length > 1) {
-        window.history.back()
-      } else {
-        window.location.href = '/'
-      }
-    }}
-    aria-label="Go back"
-  >
+  <Link to="/" className="profile-back-button">
     <span>←</span>
-    <span>Back</span>
-  </button>
+  </Link>
 
   {/* HEADER CONTENT */}
-  <div className="profile-header-content">
+  <div className="profile-page-header-content">
 
-    {/* PROFILE PHOTO */}
-    <div className="profile-avatar-wrapper">
-
-      <div className="profile-avatar">
-
-        {profileImage ? (
-          <img
-            src={profileImage}
-            alt={`${name || 'Student'} profile`}
-          />
-        ) : (
-          <span className="profile-avatar-placeholder">
-            {name
-              ? name.charAt(0).toUpperCase()
-              : 'S'}
-          </span>
-        )}
-
-      </div>
-
-      <div className="profile-avatar-status">
-        <span></span>
-      </div>
-
-    </div>
-
-    <div className="profile-eyebrow">
-      <span className="profile-eyebrow-dot"></span>
+    <div className="profile-page-eyebrow">
+      <span></span>
       STUDENT PROFILE
     </div>
 
     <h1>
-      {name || 'Student'} <span>Profile.</span>
+      {name || 'Student'} Profile.
     </h1>
 
     <p>
-      Manage your profile, academic information,
-      and personal details.
+      Manage your profile, academic information, and personal details.
     </p>
 
-  </div>
-
-  {/* EDIT BUTTON */}
-  <div className="profile-header-action">
-
+    {/* UPDATE BUTTON */}
     {!isEditing && (
       <button
         type="button"
-        className="edit-profile-button"
+        className="profile-edit-button"
         onClick={startEditing}
       >
-        Edit Profile
+        <span className="profile-edit-icon">+</span>
+        Update Profile
       </button>
     )}
 
   </div>
 
-</section>
-        {/* ================= EDIT FORM ================= */}
+</header>
+        {/* =========================================
+            PROFILE HEADER
+        ========================================= */}
+  {!isEditing && (
+        <section className="profile-header">
+
+          <div className="profile-header-content">
+
+            {/* =====================================
+                PROFILE PHOTO
+                NORMAL MODE ONLY
+            ===================================== */}
+
+            
+              <div className="profile-avatar-wrapper">
+
+                <div className="profile-avatar">
+
+                  {profileImage ? (
+                    <img
+                      src={profileImage}
+                      alt={`${name || 'Student'} profile`}
+                    />
+                  ) : (
+                    <span className="profile-avatar-placeholder">
+                      {name
+                        ? name
+                            .charAt(0)
+                            .toUpperCase()
+                        : 'S'}
+                    </span>
+                  )}
+
+                </div>
+
+                <div className="profile-avatar-status">
+                  <span></span>
+                </div>
+
+              </div>
+            
+
+            {/* =====================================
+                PROFILE TITLE
+                ===================================== */}
+                <h1>
+                  {name || 'Student'}{' '}
+                  <span>Profile.</span>
+                </h1>
+
+
+          </div>
+
+        </section>
+        )}
+
+        {/* =========================================
+            EDIT FORM
+        ========================================= */}
 
         {isEditing ? (
 
@@ -707,84 +758,97 @@ const handleRemoveProfileImage = () => {
             onSubmit={handleSave}
           >
 
-         {/* ================= PROFILE PHOTO ================= */}
+            {/* =====================================
+                PROFILE PHOTO EDITOR
+            ===================================== */}
 
-<div className="profile-photo-editor">
+            <div className="profile-photo-editor">
 
-  {/* PHOTO PREVIEW */}
-  <div className="profile-photo-editor-preview">
+              <div className="profile-photo-editor-preview">
 
-    <div className="profile-edit-avatar">
+                <div className="profile-edit-avatar">
 
-      {editProfileImage ? (
-        <img
-          src={editProfileImage}
-          alt="Profile preview"
-        />
-      ) : (
-        <span>
-          {editName
-            ? editName.charAt(0).toUpperCase()
-            : 'S'}
-        </span>
-      )}
+                  {editProfileImage ? (
+                    <img
+                      src={editProfileImage}
+                      alt="Profile preview"
+                    />
+                  ) : (
+                    <span>
+                      {editName
+                        ? editName
+                            .charAt(0)
+                            .toUpperCase()
+                        : 'S'}
+                    </span>
+                  )}
 
-    </div>
+                </div>
 
-  </div>
+              </div>
 
-  {/* PHOTO CONTENT */}
-<div className="profile-photo-editor-content">
+              <div className="profile-photo-editor-content">
 
-  <div className="profile-photo-editor-heading">
-    <h3>Profile Photo</h3>
+                <div className="profile-photo-editor-heading">
 
-    <p>
-      Add a clear photo so other students
-      can recognize you.
-    </p>
-  </div>
+                  <h3>
+                    Profile Photo
+                  </h3>
 
-  <div className="profile-image-actions">
+                  <p>
+                    Add a clear photo so other
+                    students can recognize you.
+                  </p>
 
-    {/* ADD PHOTO BUTTON */}
-    <label
-      htmlFor="profile-image-upload"
-      className="photo-upload"
-    >
-      <span>＋</span>
-      Add Photo
-    </label>
+                </div>
 
-    <input
-      id="profile-image-upload"
-      type="file"
-      accept="image/jpeg,image/png,image/webp"
-      onChange={handleImageChange}
-      hidden
-    />
+                <div className="profile-image-actions">
 
-    {/* REMOVE PHOTO BUTTON */}
-    {editProfileImage && (
-      <button
-        type="button"
-        className="remove-photo-button"
-        onClick={handleRemoveProfileImage}
-      >
-        <span>×</span>
-        Remove Photo
-      </button>
-    )}
+                  <label
+                    htmlFor="profile-image-upload"
+                    className="photo-upload"
+                  >
+                    <span>＋</span>
+                    {editProfileImage
+                      ? 'Change Photo'
+                      : 'Add Photo'}
+                  </label>
 
-  </div>
+                  <input
+                    id="profile-image-upload"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={handleImageChange}
+                    hidden
+                  />
 
-  <span className="profile-photo-hint">
-    JPG, PNG or WEBP • Max 5 MB • Square photo recommended
-  </span>
+                  {editProfileImage && (
+                    <button
+                      type="button"
+                      className="remove-photo-button"
+                      onClick={
+                        handleRemoveProfileImage
+                      }
+                    >
+                      <span>×</span>
+                      Remove Photo
+                    </button>
+                  )}
 
-</div>
+                </div>
 
-</div>
+                <span className="profile-photo-hint">
+                  JPG, PNG or WEBP • Max 5 MB • Square
+                  photo recommended
+                </span>
+
+              </div>
+
+            </div>
+
+            {/* =====================================
+                FORM GRID
+            ===================================== */}
 
             <div className="profile-form-grid">
 
@@ -855,7 +919,6 @@ const handleRemoveProfileImage = () => {
                     )
                   }
                 >
-
                   <option value="">
                     Select year
                   </option>
@@ -875,7 +938,6 @@ const handleRemoveProfileImage = () => {
                   <option value="4th Year">
                     4th Year
                   </option>
-
                 </select>
 
               </div>
@@ -919,6 +981,10 @@ const handleRemoveProfileImage = () => {
 
             </div>
 
+            {/* =====================================
+                ACTIONS
+            ===================================== */}
+
             <div className="profile-actions">
 
               <button
@@ -929,13 +995,11 @@ const handleRemoveProfileImage = () => {
                   uploadingImage
                 }
               >
-
                 {uploadingImage
                   ? 'Uploading Photo...'
                   : savingProfile
                     ? 'Saving...'
                     : 'Save Profile'}
-
               </button>
 
               <button
@@ -956,7 +1020,9 @@ const handleRemoveProfileImage = () => {
 
         ) : (
 
-          /* ================= PROFILE INFORMATION ================= */
+          /* =========================================
+             PROFILE INFORMATION
+          ========================================= */
 
           <div className="profile-information">
 
@@ -965,13 +1031,11 @@ const handleRemoveProfileImage = () => {
               <span>📧</span>
 
               <div>
-
                 <small>Email</small>
 
                 <p>
                   {email || 'Not added'}
                 </p>
-
               </div>
 
             </div>
@@ -981,14 +1045,11 @@ const handleRemoveProfileImage = () => {
               <span>🎓</span>
 
               <div>
-
                 <small>Department</small>
 
                 <p>
-                  {department ||
-                    'Not added'}
+                  {department || 'Not added'}
                 </p>
-
               </div>
 
             </div>
@@ -998,13 +1059,11 @@ const handleRemoveProfileImage = () => {
               <span>📚</span>
 
               <div>
-
                 <small>Year</small>
 
                 <p>
                   {year || 'Not added'}
                 </p>
-
               </div>
 
             </div>
@@ -1014,20 +1073,20 @@ const handleRemoveProfileImage = () => {
               <span>🏠</span>
 
               <div>
-
                 <small>Hostel</small>
 
                 <p>
                   {hostel || 'Not added'}
                 </p>
-
               </div>
 
             </div>
 
             <div className="profile-bio">
 
-              <h2>About Me</h2>
+              <h2>
+                About Me
+              </h2>
 
               <p>
                 {bio ||
@@ -1040,13 +1099,7 @@ const handleRemoveProfileImage = () => {
 
         )}
 
-        <Link
-          to="/"
-          className="back-home-link"
-        >
-          ← Back to Home
-        </Link>
-
+        
       </div>
 
     </div>

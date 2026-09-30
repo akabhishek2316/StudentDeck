@@ -1,5 +1,6 @@
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+
 import {
   getListing,
   getMe,
@@ -9,8 +10,12 @@ import {
   removeSavedItem,
   createConversation,
 } from '../api'
+
 import BackButton from '../components/BackButton'
+import UnauthorizedAccess from '../components/UnauthorizedAccess'
+
 import './ListingDetails.css'
+
 
 function ListingDetails() {
   const { id } = useParams()
@@ -18,52 +23,109 @@ function ListingDetails() {
 
   const [item, setItem] = useState(null)
   const [currentUser, setCurrentUser] = useState(null)
+
   const [loading, setLoading] = useState(true)
+  const [authorized, setAuthorized] = useState(null)
+
   const [deleting, setDeleting] = useState(false)
   const [saving, setSaving] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
+
   const [error, setError] = useState('')
   const [contacting, setContacting] = useState(false)
+
 
   useEffect(() => {
     loadListing()
   }, [id])
+
 
   const loadListing = async () => {
     try {
       setLoading(true)
       setError('')
 
-      const [listingData, userData] = await Promise.all([
-        getListing(id),
-        getMe(),
-      ])
 
-      const listing = listingData.listing
-      const user = userData.user
+      /*
+       * First check whether user is logged in
+       */
+      let userData
+
+      try {
+        userData = await getMe()
+      } catch (authError) {
+        console.log(
+          'User is not logged in'
+        )
+
+        setAuthorized(false)
+        setCurrentUser(null)
+        setItem(null)
+
+        return
+      }
+
+
+      if (!userData?.user) {
+        setAuthorized(false)
+        setCurrentUser(null)
+        setItem(null)
+
+        return
+      }
+
+
+      /*
+       * User is authenticated
+       */
+      setAuthorized(true)
+      setCurrentUser(userData.user)
+
+
+      /*
+       * Load marketplace listing
+       */
+      const listingData =
+        await getListing(id)
+
+      const listing =
+        listingData.listing
 
       setItem(listing)
-      setCurrentUser(user)
 
+
+      /*
+       * Check saved status only
+       * for another user's listing
+       */
       if (
         listing &&
-        user &&
-        String(listing.seller?._id) !== String(user._id)
+        String(listing.seller?._id) !==
+        String(userData.user._id)
       ) {
         try {
-          const savedData = await checkSaved(
-            'marketplace',
-            id
+          const savedData =
+            await checkSaved(
+              'marketplace',
+              id
+            )
+
+          setIsSaved(
+            Boolean(savedData?.saved)
           )
 
-          setIsSaved(savedData.saved)
-        } catch (error) {
+        } catch (savedError) {
           console.error(
             'Failed to check saved status:',
-            error
+            savedError
           )
+
+          setIsSaved(false)
         }
+      } else {
+        setIsSaved(false)
       }
+
     } catch (error) {
       console.error(
         'Failed to load listing:',
@@ -71,17 +133,22 @@ function ListingDetails() {
       )
 
       setError(
-        error.message || 'Failed to load listing'
+        error.message ||
+        'Failed to load listing'
       )
+
     } finally {
       setLoading(false)
     }
   }
 
+
   const isOwner =
     item &&
     currentUser &&
-    String(item.seller?._id) === String(currentUser._id)
+    String(item.seller?._id) ===
+    String(currentUser._id)
+
 
   const handleSave = async () => {
     try {
@@ -94,6 +161,7 @@ function ListingDetails() {
         )
 
         setIsSaved(false)
+
       } else {
         await saveItem(
           'marketplace',
@@ -102,6 +170,7 @@ function ListingDetails() {
 
         setIsSaved(true)
       }
+
     } catch (error) {
       console.error(
         'Failed to update saved item:',
@@ -110,22 +179,27 @@ function ListingDetails() {
 
       alert(
         error.message ||
-          'Failed to update saved item'
+        'Failed to update saved item'
       )
+
     } finally {
       setSaving(false)
     }
   }
 
+
   const handleContactSeller = async () => {
-    if (!item?.seller?._id) return
+    if (!item?.seller?._id) {
+      return
+    }
 
     try {
       setContacting(true)
 
-      const conversation = await createConversation(
-        item.seller._id
-      )
+      const conversation =
+        await createConversation(
+          item.seller._id
+        )
 
       navigate('/messages', {
         state: {
@@ -134,6 +208,7 @@ function ListingDetails() {
             conversation?._id,
         },
       })
+
     } catch (error) {
       console.error(
         'Failed to start conversation:',
@@ -142,17 +217,20 @@ function ListingDetails() {
 
       alert(
         error.message ||
-          'Failed to start a conversation with the seller'
+        'Failed to start a conversation with the seller'
       )
+
     } finally {
       setContacting(false)
     }
   }
 
+
   const handleDelete = async () => {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete this listing?'
-    )
+    const confirmed =
+      window.confirm(
+        'Are you sure you want to delete this listing?'
+      )
 
     if (!confirmed) {
       return
@@ -163,9 +241,12 @@ function ListingDetails() {
 
       await deleteListing(id)
 
-      alert('Listing deleted successfully')
+      alert(
+        'Listing deleted successfully'
+      )
 
       navigate('/marketplace')
+
     } catch (error) {
       console.error(
         'Failed to delete listing:',
@@ -174,48 +255,135 @@ function ListingDetails() {
 
       alert(
         error.message ||
-          'Failed to delete listing'
+        'Failed to delete listing'
       )
+
     } finally {
       setDeleting(false)
     }
   }
 
-  if (loading) {
+
+  /*
+   * Login required
+   */
+  if (authorized === false) {
     return (
-      <div className="listing-not-found">
-        <h1>Loading...</h1>
+      <UnauthorizedAccess
+        title="Login Required"
+        message="You need to login to view marketplace listings."
+        buttonText="Go to Login"
+      />
+    )
+  }
+
+
+  /*
+   * Loading
+   */
+  if (
+    loading ||
+    authorized === null
+  ) {
+    return (
+      <div className="listing-status-page">
+
+        <div className="listing-status-card loading-card">
+
+          <div className="listing-status-icon loading-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <span className="listing-status-label">
+            MARKETPLACE
+          </span>
+
+          <h1>
+            Loading listing
+          </h1>
+
+          <p>
+            Please wait while we retrieve this item
+            from the campus marketplace.
+          </p>
+
+        </div>
+
       </div>
     )
   }
 
-  if (error || !item) {
+
+  /*
+   * Listing not found / API error
+   */
+  if (
+    error ||
+    !item
+  ) {
     return (
-      <div className="listing-not-found">
+      <div className="listing-status-page">
 
-        <h1>Item Not Found</h1>
+        <div className="listing-status-card">
 
-        <p>
-          {error ||
-            'Sorry, this listing is no longer available.'}
-        </p>
+          <div className="listing-status-icon">
+            <span>⌁</span>
+          </div>
 
-        <Link to="/marketplace">
-          ← Back to Marketplace
-        </Link>
+          <span className="listing-status-label">
+            MARKETPLACE
+          </span>
+
+          <h1>
+            This listing isn’t available
+          </h1>
+
+          <p>
+            {error ||
+              'This item may have been removed or is no longer available.'}
+          </p>
+
+          <div className="listing-status-actions">
+
+            <Link
+              to="/marketplace"
+              className="status-primary-button"
+            >
+              <span>←</span>
+              Back to Marketplace
+            </Link>
+
+            <Link
+              to="/"
+              className="status-secondary-button"
+            >
+              Go to Home
+            </Link>
+
+          </div>
+
+        </div>
 
       </div>
     )
   }
+
 
   return (
     <div className="listing-details-page">
 
       <div className="listing-details-container">
 
-        <BackButton label="Back to Marketplace" fallback="/marketplace" />
+        <BackButton
+          label="Back to Marketplace"
+          fallback="/marketplace"
+        />
+
 
         <div className="listing-details-card">
+
 
           <div className="listing-details-image">
 
@@ -225,16 +393,22 @@ function ListingDetails() {
                 alt={item.title}
               />
             ) : (
-              <span>No image available</span>
+              <span>
+                No image available
+              </span>
             )}
 
           </div>
 
+
           <div className="listing-details-content">
+
 
             <div className="listing-details-title-row">
 
-              <h1>{item.title}</h1>
+              <h1>
+                {item.title}
+              </h1>
 
               <strong className="listing-price">
                 {item.isFree
@@ -244,9 +418,11 @@ function ListingDetails() {
 
             </div>
 
+
             <p className="listing-description">
               {item.description}
             </p>
+
 
             <div className="listing-tags">
 
@@ -260,13 +436,16 @@ function ListingDetails() {
 
             </div>
 
+
             <div className="listing-information">
+
 
               <div className="information-item">
 
                 <span>📍</span>
 
                 <div>
+
                   <small>
                     Pickup Location
                   </small>
@@ -274,15 +453,18 @@ function ListingDetails() {
                   <p>
                     {item.location}
                   </p>
+
                 </div>
 
               </div>
+
 
               <div className="information-item">
 
                 <span>🏷️</span>
 
                 <div>
+
                   <small>
                     Category
                   </small>
@@ -290,15 +472,18 @@ function ListingDetails() {
                   <p>
                     {item.category}
                   </p>
+
                 </div>
 
               </div>
+
 
               <div className="information-item">
 
                 <span>✨</span>
 
                 <div>
+
                   <small>
                     Condition
                   </small>
@@ -306,15 +491,18 @@ function ListingDetails() {
                   <p>
                     {item.condition}
                   </p>
+
                 </div>
 
               </div>
+
 
               <div className="information-item">
 
                 <span>💰</span>
 
                 <div>
+
                   <small>
                     Price
                   </small>
@@ -324,11 +512,14 @@ function ListingDetails() {
                       ? 'Free'
                       : `₹${item.price}`}
                   </p>
+
                 </div>
 
               </div>
 
+
             </div>
+
 
             <div className="seller-section">
 
@@ -342,25 +533,31 @@ function ListingDetails() {
                 and arrange a meeting.
               </p>
 
+
               <div className="listing-action-buttons">
+
 
                 <button
                   type="button"
                   className="contact-seller-button"
-                  onClick={handleContactSeller}
+                  onClick={
+                    handleContactSeller
+                  }
                   disabled={contacting}
                 >
-                  {contacting ? 'Starting chat...' : 'Contact Seller'}
+                  {contacting
+                    ? 'Starting chat...'
+                    : 'Contact Seller'}
                 </button>
+
 
                 {!isOwner && (
                   <button
                     type="button"
-                    className={`save-listing-button ${
-                      isSaved
+                    className={`save-listing-button ${isSaved
                         ? 'saved'
                         : ''
-                    }`}
+                      }`}
                     onClick={handleSave}
                     disabled={saving}
                   >
@@ -372,6 +569,7 @@ function ListingDetails() {
                   </button>
                 )}
 
+
                 {isOwner && (
                   <>
 
@@ -381,6 +579,7 @@ function ListingDetails() {
                     >
                       Edit Listing
                     </Link>
+
 
                     <button
                       type="button"
@@ -396,9 +595,11 @@ function ListingDetails() {
                   </>
                 )}
 
+
               </div>
 
             </div>
+
 
           </div>
 
@@ -409,5 +610,6 @@ function ListingDetails() {
     </div>
   )
 }
+
 
 export default ListingDetails

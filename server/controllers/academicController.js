@@ -1,6 +1,6 @@
 const AcademicResource = require("../models/AcademicResource");
 const cloudinary = require("../config/cloudinary");
-const {createNotificationForAllUsers} = require("../utils/notificationHelper");
+const { createNotificationForAllUsers } = require("../utils/notificationHelper");
 
 const deleteCloudinaryFile = async (
     publicId,
@@ -104,21 +104,21 @@ const createResource = async (req, res) => {
             });
 
         const populatedResource =
-    await resource.populate(
-        "uploadedBy",
-        "name email profileImage department year"
-    );
+            await resource.populate(
+                "uploadedBy",
+                "name email profileImage department year"
+            );
 
-await createNotificationForAllUsers({
-    io: req.app.get("io"),
-    actorId: req.user._id,
-    type: "academic",
-    title: "New Academic Resource",
-    message: `${req.user.name || "A student"} added "${resource.title}" to Academic Resources.`,
-    link: "/academic"
-});
+        await createNotificationForAllUsers({
+            io: req.app.get("io"),
+            actorId: req.user._id,
+            type: "academic",
+            title: "New Academic Resource",
+            message: `${req.user.name || "A student"} added "${resource.title}" to Academic Resources.`,
+            link: "/academic"
+        });
 
-return res.status(201).json({
+        return res.status(201).json({
             message:
                 "Academic resource created successfully",
             resource: populatedResource
@@ -140,11 +140,16 @@ const getResources = async (req, res) => {
     try {
         const resources =
             await AcademicResource.find()
+                .select(
+                    "-fileUrl -filePublicId -fileResourceType"
+                )
                 .populate(
                     "uploadedBy",
                     "name email profileImage department year"
                 )
-                .sort({ createdAt: -1 });
+                .sort({
+                    createdAt: -1
+                });
 
         return res.status(200).json({
             resources
@@ -167,10 +172,14 @@ const getResourceById = async (req, res) => {
         const resource =
             await AcademicResource.findById(
                 req.params.id
-            ).populate(
-                "uploadedBy",
-                "name email profileImage department year"
-            );
+            )
+                .select(
+                    "-fileUrl -filePublicId -fileResourceType"
+                )
+                .populate(
+                    "uploadedBy",
+                    "name email profileImage department year"
+                );
 
         if (!resource) {
             return res.status(404).json({
@@ -191,6 +200,49 @@ const getResourceById = async (req, res) => {
         return res.status(500).json({
             message:
                 "Server error while fetching academic resource"
+        });
+    }
+};
+
+
+const getResourceFile = async (req, res) => {
+    try {
+        const resource =
+            await AcademicResource.findById(
+                req.params.id
+            ).select(
+                "fileUrl fileResourceType title"
+            );
+
+        if (!resource) {
+            return res.status(404).json({
+                message:
+                    "Academic resource not found"
+            });
+        }
+
+        if (!resource.fileUrl) {
+            return res.status(404).json({
+                message:
+                    "Resource file is unavailable"
+            });
+        }
+
+        return res.status(200).json({
+            fileUrl: resource.fileUrl,
+            resourceType:
+                resource.fileResourceType || "raw",
+            title: resource.title
+        });
+    } catch (error) {
+        console.error(
+            "Get academic resource file error:",
+            error.message
+        );
+
+        return res.status(500).json({
+            message:
+                "Server error while accessing resource file"
         });
     }
 };
@@ -313,7 +365,7 @@ const updateResource = async (req, res) => {
             replacingCloudinaryFile =
                 oldPublicId &&
                 oldPublicId !==
-                    filePublicId.trim();
+                filePublicId.trim();
         }
 
         if (fileResourceType !== undefined) {
@@ -422,6 +474,7 @@ module.exports = {
     createResource,
     getResources,
     getResourceById,
+    getResourceFile,
     updateResource,
     deleteResource
 };

@@ -22,6 +22,9 @@ import Messages from './pages/Messages'
 import EditListing from './pages/EditListing'
 import Saved from './pages/Saved'
 import NotFound from './pages/NotFound'
+import CreateLostFound from './pages/CreateLostFound'
+import CreateAcademic from './pages/CreateAcademic'
+import CreateEvent from './pages/CreateEvent'
 
 function App() {
   return (
@@ -77,34 +80,54 @@ function App() {
               navbar and footer are always present. */}
           <Route element={<ProtectedRoute />}>
 
+            {/* Marketplace */}
             <Route
               path="/marketplace/:id/edit"
               element={<EditListing />}
             />
 
             <Route
+              path="/marketplace/create"
+              element={<CreateListing />}
+            />
+
+            {/* Lost & Found */}
+            <Route
               path="/lost-found/:id/edit"
               element={<EditLostFound />}
             />
 
+            <Route
+              path="/lost-found/create"
+              element={<CreateLostFound />}
+            />
+
+            {/* Academic */}
             <Route
               path="/academic/:id/edit"
               element={<EditAcademicResource />}
             />
 
             <Route
+              path="/academic/create"
+              element={<CreateAcademic />}
+            />
+
+            {/* Events */}
+            <Route
               path="/events/:id/edit"
               element={<EditEvent />}
             />
 
             <Route
-              path="/profile"
-              element={<Profile />}
+              path="/events/create"
+              element={<CreateEvent />}
             />
 
+            {/* Other protected pages */}
             <Route
-              path="/marketplace/create"
-              element={<CreateListing />}
+              path="/profile"
+              element={<Profile />}
             />
 
             <Route

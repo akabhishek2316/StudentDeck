@@ -1,314 +1,1286 @@
+/* =====================================================
+   STUDENTDECK — LISTING DETAILS
+   ===================================================== */
+
 .listing-details-page {
   min-height: 100vh;
-  background-color: #f8fafc;
-  padding: 50px 20px;
+
+  padding: 50px 20px 70px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 8% 5%,
+      rgba(37, 99, 235, 0.07),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 92% 15%,
+      rgba(14, 165, 233, 0.06),
+      transparent 25%
+    ),
+    #f7faff;
+
+  color: #0f172a;
 }
 
+
+/* =====================================================
+   CONTAINER
+   ===================================================== */
+
 .listing-details-container {
-  max-width: 1100px;
+  width: min(1120px, 92%);
+
   margin: 0 auto;
 }
 
-.back-marketplace {
-  display: inline-block;
-  margin-bottom: 25px;
-  color: #2563eb;
+
+/* =====================================================
+   BACK BUTTON
+   ===================================================== */
+
+.listing-details-container .back-marketplace {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 22px;
+
+  padding: 9px 13px;
+
+  border: 1px solid #dce5ef;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.9);
+
+  color: #334155;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
   text-decoration: none;
-  font-size: 16px;
+
+  box-shadow:
+    0 4px 14px rgba(15, 23, 42, 0.04);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.back-marketplace:hover {
-  text-decoration: underline;
+.listing-details-container .back-marketplace:hover {
+  transform: translateX(-2px);
+
+  border-color: #bfdbfe;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.07);
 }
+
+
+/* =====================================================
+   MAIN CARD
+   ===================================================== */
 
 .listing-details-card {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
   overflow: hidden;
+
+  border: 1px solid #dfe7f0;
+
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 18px 50px rgba(15, 23, 42, 0.08),
+    0 4px 14px rgba(15, 23, 42, 0.035);
 }
 
+
+/* =====================================================
+   IMAGE
+   ===================================================== */
+
 .listing-details-image {
-  min-height: 500px;
-  background-color: #f1f5f9;
+  position: relative;
+
+  min-height: 540px;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
-  color: #64748b;
-  font-size: 18px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(37, 99, 235, 0.08),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #eef5fa
+    );
+
+  border-right: 1px solid #e5edf4;
+
+  color: #94a3b8;
+
+  font-size: 14px;
+}
+
+.listing-details-image::after {
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08),
+      transparent 35%,
+      rgba(15, 23, 42, 0.025)
+    );
 }
 
 .listing-details-image img {
+  position: relative;
+
+  z-index: 1;
+
   width: 100%;
+
   height: 100%;
-  min-height: 500px;
-  object-fit: cover;
+
+  min-height: 540px;
+
+  display: block;
+
+  object-fit: contain;
+
+  transition:
+    transform 0.35s ease;
 }
 
-.listing-details-content {
-  padding: 40px;
+.listing-details-image:hover img {
+  transform: scale(1.025);
 }
+
+
+/* =====================================================
+   CONTENT
+   ===================================================== */
+
+.listing-details-content {
+  display: flex;
+
+  flex-direction: column;
+
+  padding: 42px;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   TITLE + PRICE
+   ===================================================== */
 
 .listing-details-title-row {
   display: flex;
-  justify-content: space-between;
+
   align-items: flex-start;
+
+  justify-content: space-between;
+
   gap: 20px;
 }
 
 .listing-details-title-row h1 {
+  min-width: 0;
+
   margin: 0;
+
   color: #0f172a;
-  font-size: 34px;
+
+  font-size: clamp(28px, 3vw, 36px);
+
+  line-height: 1.15;
+
+  font-weight: 800;
+
+  letter-spacing: -0.8px;
+
+  overflow-wrap: anywhere;
 }
 
 .listing-price {
-  color: #16a34a;
-  font-size: 25px;
+  flex-shrink: 0;
+
+  padding: 7px 11px;
+
+  border: 1px solid #bbf7d0;
+
+  border-radius: 9px;
+
+  background: #f0fdf4;
+
+  color: #15803d;
+
+  font-size: 20px;
+
+  font-weight: 800;
+
+  line-height: 1.2;
+
   white-space: nowrap;
 }
 
+
+/* =====================================================
+   DESCRIPTION
+   ===================================================== */
+
 .listing-description {
-  margin-top: 25px;
+  margin: 20px 0 0;
+
   color: #64748b;
-  font-size: 18px;
-  line-height: 1.7;
+
+  font-size: 14px;
+
+  line-height: 1.75;
 }
+
+
+/* =====================================================
+   TAGS
+   ===================================================== */
 
 .listing-tags {
   display: flex;
-  gap: 10px;
-  margin-top: 25px;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 20px;
 }
 
 .listing-tags span {
-  padding: 8px 14px;
-  border-radius: 20px;
-  background-color: #f1f5f9;
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 28px;
+
+  padding: 0 11px;
+
+  border: 1px solid #dbe7f0;
+
+  border-radius: 999px;
+
+  background: #f8fbfe;
+
   color: #475569;
-  font-size: 14px;
+
+  font-size: 11px;
+
+  font-weight: 700;
 }
 
+
+/* =====================================================
+   INFORMATION GRID
+   ===================================================== */
+
 .listing-information {
-  margin-top: 30px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 11px;
+
+  margin-top: 25px;
 }
 
 .information-item {
   display: flex;
+
   align-items: center;
-  gap: 12px;
-  padding: 15px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+
+  gap: 11px;
+
+  min-width: 0;
+
+  padding: 13px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #e2eaf1;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fbfe
+    );
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.information-item:hover {
+  transform: translateY(-1px);
+
+  border-color: #c9dff1;
+
+  box-shadow:
+    0 7px 18px rgba(15, 23, 42, 0.05);
 }
 
 .information-item > span {
-  font-size: 22px;
+  width: 34px;
+
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #eff6ff;
+
+  border: 1px solid #dbeafe;
+
+  font-size: 16px;
+}
+
+.information-item > div {
+  min-width: 0;
 }
 
 .information-item small {
   display: block;
-  color: #64748b;
-  margin-bottom: 4px;
+
+  margin-bottom: 3px;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.05em;
 }
 
 .information-item p {
   margin: 0;
-  color: #0f172a;
-  font-weight: 600;
+
+  overflow: hidden;
+
+  color: #1e293b;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
+
+/* =====================================================
+   SELLER SECTION
+   ===================================================== */
+
 .seller-section {
-  margin-top: 35px;
-  padding-top: 25px;
-  border-top: 1px solid #e2e8f0;
+  margin-top: 28px;
+
+  padding-top: 24px;
+
+  border-top: 1px solid #e5ebf1;
 }
 
 .seller-section h2 {
-  margin-top: 0;
-  color: #0f172a;
-  font-size: 22px;
+  margin: 0 0 6px;
+
+  color: #10233f;
+
+  font-size: 19px;
+
+  line-height: 1.3;
+
+  font-weight: 800;
 }
 
 .seller-section p {
-  color: #64748b;
+  max-width: 580px;
+
+  margin: 0;
+
+  color: #718096;
+
+  font-size: 12px;
+
   line-height: 1.6;
 }
 
+
+/* =====================================================
+   ACTION BUTTONS
+   ===================================================== */
+
 .listing-action-buttons {
   display: flex;
+
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 15px;
+
+  gap: 9px;
+
+  margin-top: 17px;
 }
 
+
+/* =====================================================
+   CONTACT SELLER
+   ===================================================== */
+
 .contact-seller-button {
-  display: inline-block;
-  padding: 12px 22px;
-  border: none;
-  border-radius: 8px;
-  background-color: #1e293b;
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
+  min-height: 42px;
+
+  padding: 0 17px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1e3a8a,
+      #2563eb
+    );
+
+  color: #ffffff;
+
   font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
   cursor: pointer;
-  box-sizing: border-box;
+
+  box-shadow:
+    0 7px 18px rgba(37, 99, 235, 0.20);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
 
 .contact-seller-button:hover {
-  background-color: #334155;
+  transform: translateY(-2px);
+
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 11px 24px rgba(37, 99, 235, 0.25);
+}
+
+.contact-seller-button:active {
+  transform: translateY(0);
 }
 
 .contact-seller-button:disabled {
-  background-color: #94a3b8;
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =====================================================
+   SAVE BUTTON
+   ===================================================== */
+
+.save-listing-button {
+  min-height: 42px;
+
+  padding: 0 16px;
+
+  border: 1px solid #bfdbfe;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #2563eb;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.save-listing-button:hover {
+  transform: translateY(-1px);
+
+  border-color: #93c5fd;
+
+  background: #eff6ff;
+}
+
+.save-listing-button.saved {
+  border-color: #2563eb;
+
+  background: #2563eb;
+
+  color: #ffffff;
+}
+
+.save-listing-button.saved:hover {
+  background: #1d4ed8;
+}
+
+.save-listing-button:disabled {
+  opacity: 0.6;
+
   cursor: not-allowed;
 }
 
+
+/* =====================================================
+   EDIT BUTTON
+   ===================================================== */
+
 .edit-listing-button {
-  display: inline-block;
-  padding: 12px 22px;
-  border-radius: 8px;
-  background-color: #2563eb;
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 16px;
+  min-height: 42px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0 16px;
+
   box-sizing: border-box;
+
+  border: 1px solid #bfdbfe;
+
+  border-radius: 10px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .edit-listing-button:hover {
-  background-color: #1d4ed8;
+  transform: translateY(-1px);
+
+  background: #dbeafe;
+
+  border-color: #93c5fd;
 }
 
+
+/* =====================================================
+   DELETE BUTTON
+   ===================================================== */
+
 .delete-listing-button {
-  display: inline-block;
-  padding: 12px 22px;
-  border: none;
-  border-radius: 8px;
-  background-color: #dc2626;
-  color: #ffffff;
+  min-height: 42px;
+
+  padding: 0 16px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 10px;
+
+  background: #fff7f7;
+
+  color: #dc2626;
+
   font-family: inherit;
-  font-size: 16px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
   cursor: pointer;
-  box-sizing: border-box;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .delete-listing-button:hover {
-  background-color: #b91c1c;
+  transform: translateY(-1px);
+
+  border-color: #fca5a5;
+
+  background: #fef2f2;
 }
 
 .delete-listing-button:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
+
   cursor: not-allowed;
+
+  transform: none;
 }
 
-.listing-not-found {
+
+/* =====================================================
+   PREMIUM ERROR / STATUS PAGE
+   ===================================================== */
+
+.listing-status-page {
   min-height: 70vh;
+
   display: flex;
-  flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
+
+  padding: 55px 20px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(37, 99, 235, 0.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(14, 165, 233, 0.07),
+      transparent 30%
+    ),
+    #f7faff;
+}
+
+
+/* =====================================================
+   STATUS CARD
+   ===================================================== */
+
+.listing-status-card {
+  width: min(500px, 100%);
+
+  padding: 42px 38px;
+
+  box-sizing: border-box;
+
   text-align: center;
+
+  border: 1px solid #dfe7f0;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(248, 251, 255, 0.98)
+    );
+
+  box-shadow:
+    0 25px 60px rgba(15, 23, 42, 0.09),
+    0 5px 18px rgba(15, 23, 42, 0.04);
 }
 
-.listing-not-found h1 {
-  color: #0f172a;
-}
 
-.listing-not-found p {
-  color: #64748b;
-}
+/* =====================================================
+   STATUS ICON
+   ===================================================== */
 
-.listing-not-found a {
-  margin-top: 15px;
+.listing-status-icon {
+  width: 70px;
+
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  border: 1px solid #dbeafe;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #eff6ff,
+      #f0f9ff
+    );
+
   color: #2563eb;
+
+  font-size: 31px;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.09);
+}
+
+.listing-status-icon span {
+  display: block;
+}
+
+
+/* =====================================================
+   STATUS LABEL
+   ===================================================== */
+
+.listing-status-label {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #0284c7;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.15em;
+}
+
+
+/* =====================================================
+   STATUS HEADING
+   ===================================================== */
+
+.listing-status-card h1 {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 28px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+}
+
+
+/* =====================================================
+   STATUS DESCRIPTION
+   ===================================================== */
+
+.listing-status-card > p {
+  max-width: 420px;
+
+  margin: 12px auto 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.65;
+}
+
+
+/* =====================================================
+   STATUS ACTIONS
+   ===================================================== */
+
+.listing-status-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 9px;
+
+  margin-top: 25px;
+}
+
+
+/* =====================================================
+   PRIMARY STATUS BUTTON
+   ===================================================== */
+
+.status-primary-button {
+  min-height: 42px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 17px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1e3a8a,
+      #2563eb
+    );
+
+  color: #ffffff;
+
   text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.listing-not-found a:hover {
-  text-decoration: underline;
+.status-primary-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 25px rgba(37, 99, 235, 0.25);
 }
 
-/* Tablet */
+
+/* =====================================================
+   SECONDARY STATUS BUTTON
+   ===================================================== */
+
+.status-secondary-button {
+  min-height: 42px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0 17px;
+
+  border: 1px solid #dbe3ec;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #475569;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.status-secondary-button:hover {
+  transform: translateY(-1px);
+
+  border-color: #cbd5e1;
+
+  background: #f8fafc;
+}
+
+
+/* =====================================================
+   STATUS NOTE
+   ===================================================== */
+
+.listing-status-note {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-top: 24px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #e7edf3;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+.listing-status-note span:first-child {
+  flex-shrink: 0;
+
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   LOADING ANIMATION
+   ===================================================== */
+
+.loading-icon {
+  gap: 5px;
+}
+
+.loading-icon span {
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #2563eb;
+
+  animation:
+    listing-loading 1.2s infinite ease-in-out;
+}
+
+.loading-icon span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.loading-icon span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes listing-loading {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.65);
+
+    opacity: 0.4;
+  }
+
+  40% {
+    transform: scale(1);
+
+    opacity: 1;
+  }
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
 @media (max-width: 900px) {
+
+  .listing-details-page {
+    padding: 35px 18px 55px;
+  }
+
   .listing-details-card {
     grid-template-columns: 1fr;
   }
 
   .listing-details-image {
-    min-height: 350px;
+    min-height: 380px;
+
+    border-right: 0;
+
+    border-bottom: 1px solid #e5edf4;
   }
 
   .listing-details-image img {
-    min-height: 350px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-  .listing-details-page {
-    padding: 30px 15px;
+    min-height: 380px;
   }
 
   .listing-details-content {
-    padding: 25px;
+    padding: 32px;
+  }
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .listing-details-page {
+    padding: 25px 12px 45px;
+  }
+
+  .listing-details-container {
+    width: 100%;
+  }
+
+  .listing-details-container .back-marketplace {
+    margin-bottom: 15px;
+
+    padding: 8px 11px;
+
+    font-size: 11px;
+  }
+
+  .listing-details-card {
+    border-radius: 16px;
+  }
+
+  .listing-details-image {
+    min-height: 290px;
+  }
+
+  .listing-details-image img {
+    min-height: 290px;
+  }
+
+  .listing-details-content {
+    padding: 24px 20px;
   }
 
   .listing-details-title-row {
     flex-direction: column;
+
+    gap: 12px;
   }
 
   .listing-details-title-row h1 {
-    font-size: 28px;
+    font-size: 27px;
+  }
+
+  .listing-price {
+    font-size: 17px;
+
+    padding: 6px 9px;
+  }
+
+  .listing-description {
+    margin-top: 16px;
+
+    font-size: 13px;
+  }
+
+  .listing-tags {
+    margin-top: 17px;
   }
 
   .listing-information {
     grid-template-columns: 1fr;
+
+    gap: 9px;
+
+    margin-top: 20px;
+  }
+
+  .information-item {
+    padding: 12px;
+  }
+
+  .seller-section {
+    margin-top: 23px;
+
+    padding-top: 20px;
+  }
+
+  .seller-section h2 {
+    font-size: 17px;
   }
 
   .listing-action-buttons {
     flex-direction: column;
+
+    gap: 8px;
   }
 
   .contact-seller-button,
+  .save-listing-button,
   .edit-listing-button,
   .delete-listing-button {
     width: 100%;
-    text-align: center;
+
+    min-height: 43px;
+  }
+
+
+  /* Status page */
+
+  .listing-status-page {
+    min-height: 65vh;
+
+    padding: 35px 15px;
+  }
+
+  .listing-status-card {
+    padding: 32px 22px;
+
+    border-radius: 18px;
+  }
+
+  .listing-status-icon {
+    width: 62px;
+
+    height: 62px;
+
+    border-radius: 17px;
+
+    font-size: 27px;
+  }
+
+  .listing-status-card h1 {
+    font-size: 24px;
+  }
+
+  .listing-status-card > p {
+    font-size: 12px;
+
+    line-height: 1.6;
+  }
+
+  .listing-status-actions {
+    flex-direction: column;
+
+    width: 100%;
+  }
+
+  .status-primary-button,
+  .status-secondary-button {
+    width: 100%;
+  }
+
+  .listing-status-note {
+    align-items: flex-start;
+
+    text-align: left;
   }
 }
 
-.save-listing-button {
-  padding: 12px 20px;
-  border: 1px solid #2563eb;
-  border-radius: 8px;
-  background-color: white;
-  color: #2563eb;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+
+/* =====================================================
+   SMALL MOBILE
+   ===================================================== */
+
+@media (max-width: 380px) {
+
+  .listing-details-content {
+    padding: 21px 16px;
+  }
+
+  .listing-details-title-row h1 {
+    font-size: 24px;
+  }
+
+  .listing-details-image {
+    min-height: 250px;
+  }
+
+  .listing-details-image img {
+    min-height: 250px;
+  }
+
+  .listing-status-card {
+    padding: 28px 18px;
+  }
+
+  .listing-status-card h1 {
+    font-size: 22px;
+  }
 }
 
-.save-listing-button:hover {
-  background-color: #eff6ff;
-}
 
-.save-listing-button.saved {
-  background-color: #2563eb;
-  color: white;
-}
+/* =====================================================
+   REDUCED MOTION
+   ===================================================== */
 
-.save-listing-button.saved:hover {
-  background-color: #1d4ed8;
-}
+@media (prefers-reduced-motion: reduce) {
 
-.save-listing-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  .listing-details-image img,
+  .listing-details-container .back-marketplace,
+  .information-item,
+  .contact-seller-button,
+  .save-listing-button,
+  .edit-listing-button,
+  .delete-listing-button,
+  .status-primary-button,
+  .status-secondary-button {
+    transition: none;
+  }
+
+  .loading-icon span {
+    animation: none;
+  }
 }

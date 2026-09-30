@@ -1,0 +1,1014 @@
+/* =========================================================
+   CREATE ACADEMIC RESOURCE
+   FRESH CSS
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.academic-page {
+  width: 100%;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      rgba(14, 165, 233, 0.07),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 95% 8%,
+      rgba(99, 102, 241, 0.06),
+      transparent 26%
+    ),
+    linear-gradient(
+      180deg,
+      #f8fbff 0%,
+      #eef5fc 100%
+    );
+
+  color: #0f172a;
+}
+
+
+/* =========================================================
+   FORM SECTION
+   ========================================================= */
+
+.academic-form-section {
+  width: 100%;
+
+  padding: 38px 20px 70px;
+}
+
+
+.academic-form-container {
+  width: min(760px, 100%);
+
+  margin: 0 auto;
+  padding: 32px;
+
+  background: #ffffff;
+
+  border: 1px solid #d9e3ee;
+  border-radius: 20px;
+
+  box-shadow:
+    0 18px 45px rgba(15, 23, 42, 0.07),
+    0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+
+/* =========================================================
+   FORM TITLE
+   ========================================================= */
+
+.academic-form-container > h2 {
+  margin: 0 0 26px;
+
+  color: #10233f;
+
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 850;
+
+  letter-spacing: -0.5px;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.academic-form-container form {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 19px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.academic-form-container .form-group {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.academic-form-container .form-group label {
+  color: #263b53;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  line-height: 1.3;
+}
+
+
+/* =========================================================
+   INPUT / SELECT / TEXTAREA
+   ========================================================= */
+
+.academic-form-container .form-group input,
+.academic-form-container .form-group select,
+.academic-form-container .form-group textarea {
+  width: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  border: 1px solid #c9d6e4;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #17263b;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+/* =========================================================
+   INPUT + SELECT
+   ========================================================= */
+
+.academic-form-container .form-group input,
+.academic-form-container .form-group select {
+  height: 46px;
+
+  padding: 0 13px;
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.academic-form-container .form-group select {
+  cursor: pointer;
+
+  -webkit-appearance: auto;
+  -moz-appearance: auto;
+  appearance: auto;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.academic-form-container .form-group textarea {
+  min-height: 120px;
+
+  padding: 13px 14px;
+
+  resize: vertical;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+   ========================================================= */
+
+.academic-form-container
+.form-group
+input::placeholder,
+
+.academic-form-container
+.form-group
+textarea::placeholder {
+  color: #8b9bad;
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.academic-form-container .form-group input:hover,
+.academic-form-container .form-group select:hover,
+.academic-form-container .form-group textarea:hover {
+  border-color: #9fb3c8;
+}
+
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.academic-form-container .form-group input:focus,
+.academic-form-container .form-group select:focus,
+.academic-form-container .form-group textarea:focus {
+  border-color: #2583dc;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 131, 220, 0.11);
+}
+
+
+/* =========================================================
+   FILE UPLOAD BOX
+   ========================================================= */
+
+.academic-file-upload-box {
+  width: 100%;
+  min-height: 250px;
+
+  padding: 25px 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: 2px dashed #b9c9dc;
+
+  border-radius: 15px;
+
+  background: #f8fbff;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   UPLOAD ICON
+   ========================================================= */
+
+.academic-upload-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border: 1px solid #d7e5f3;
+
+  border-radius: 15px;
+
+  background: #edf6ff;
+
+  font-size: 27px;
+}
+
+
+/* =========================================================
+   UPLOAD TEXT
+   ========================================================= */
+
+.academic-file-upload-box h3 {
+  margin: 0;
+
+  color: #1e293b;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+
+.academic-file-upload-box > p {
+  margin: 7px 0 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+
+.academic-file-upload-box > span {
+  margin-top: 5px;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   CHOOSE FILE BUTTON
+   ========================================================= */
+
+.academic-file-select-button,
+.academic-file-change-button {
+  position: relative;
+
+  width: fit-content;
+
+  min-height: 40px;
+
+  margin-top: 15px;
+
+  padding: 0 18px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #1769d3;
+
+  border-radius: 9px;
+
+  background: #0878e8;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 7px 16px rgba(37, 99, 235, 0.18);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.academic-file-select-button:hover,
+.academic-file-change-button:hover {
+  background: #066dcc;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 20px rgba(37, 99, 235, 0.23);
+}
+
+
+/* =========================================================
+   REAL FILE INPUT
+   ========================================================= */
+
+.academic-file-select-button input[type="file"],
+.academic-file-change-button input[type="file"] {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  opacity: 0;
+
+  cursor: pointer;
+
+  border: 0;
+
+  z-index: 10;
+}
+
+
+/* =========================================================
+   SELECTED FILE
+   ========================================================= */
+
+.academic-selected-file {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+}
+
+
+.academic-file-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 10px;
+
+  border: 1px solid #d8e4f0;
+
+  border-radius: 14px;
+
+  background: #eef5ff;
+
+  font-size: 27px;
+}
+
+
+.academic-selected-file strong {
+  max-width: 100%;
+
+  color: #1e293b;
+
+  font-size: 13px;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+.academic-selected-file > span {
+  margin-top: 5px;
+
+  color: #64748b;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   IMAGE PREVIEW
+   ========================================================= */
+
+.academic-file-preview-wrapper {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  text-align: left;
+}
+
+
+.academic-file-preview {
+  width: 180px;
+  height: 140px;
+
+  flex: 0 0 180px;
+
+  object-fit: contain;
+
+  border: 1px solid #d5e1ed;
+
+  border-radius: 10px;
+
+  background: #f1f6fb;
+}
+
+
+.academic-file-info {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.academic-file-info strong {
+  display: block;
+
+  color: #1e293b;
+
+  font-size: 13px;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   FILE ACTIONS
+   ========================================================= */
+
+.academic-file-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+/* =========================================================
+   REMOVE BUTTON
+   ========================================================= */
+
+.academic-file-remove-button {
+  min-height: 40px;
+
+  padding: 0 14px;
+
+  border: 1px solid #f1b7b7;
+
+  border-radius: 9px;
+
+  background: #fff7f7;
+
+  color: #dc2626;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.academic-file-remove-button:hover {
+  background: #feecec;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ADD RESOURCE BUTTON
+   ========================================================= */
+
+.submit-resource-button {
+  width: 100%;
+
+  height: 50px;
+
+  margin-top: 7px;
+
+  padding: 0 20px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #0878e8;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  line-height: 1;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(8, 120, 232, 0.22);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.submit-resource-button:hover:not(:disabled) {
+  background: #066dcc;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 11px 24px rgba(8, 120, 232, 0.27);
+}
+
+
+.submit-resource-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+.submit-resource-button:disabled {
+  background: #8bb9e5;
+
+  cursor: not-allowed;
+
+  opacity: 1;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .academic-form-section {
+    padding: 22px 14px 45px;
+  }
+
+
+  .academic-form-container {
+    padding: 21px 17px;
+
+    border-radius: 16px;
+  }
+
+
+  .academic-form-container > h2 {
+    margin-bottom: 21px;
+
+    font-size: 20px;
+  }
+
+
+  .academic-form-container form {
+    gap: 16px;
+  }
+
+
+  .academic-form-container .form-group label {
+    font-size: 11px;
+  }
+
+
+  .academic-form-container .form-group input,
+  .academic-form-container .form-group select {
+    height: 45px;
+
+    padding: 0 11px;
+
+    font-size: 12px;
+
+    border-radius: 9px;
+  }
+
+
+  .academic-form-container .form-group textarea {
+    min-height: 110px;
+
+    padding: 11px 12px;
+
+    font-size: 12px;
+
+    border-radius: 9px;
+  }
+
+
+  /* Upload box */
+
+  .academic-file-upload-box {
+    min-height: 225px;
+
+    padding: 18px 12px;
+
+    border-radius: 13px;
+  }
+
+
+  .academic-upload-icon {
+    width: 50px;
+    height: 50px;
+
+    font-size: 23px;
+  }
+
+
+  .academic-file-upload-box h3 {
+    font-size: 13px;
+  }
+
+
+  .academic-file-upload-box > p {
+    font-size: 10px;
+  }
+
+
+  /* Choose File */
+
+  .academic-file-select-button,
+  .academic-file-change-button {
+    width: fit-content;
+
+    min-height: 38px;
+
+    margin-top: 13px;
+
+    padding: 0 18px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+  }
+
+
+  /* Image preview */
+
+  .academic-file-preview-wrapper {
+    flex-direction: column;
+
+    gap: 12px;
+
+    text-align: center;
+  }
+
+
+  .academic-file-preview {
+    width: 100%;
+
+    max-width: 220px;
+
+    height: 150px;
+
+    flex-basis: auto;
+  }
+
+
+  .academic-file-info {
+    width: 100%;
+  }
+
+
+  .academic-file-actions {
+    justify-content: center;
+  }
+
+
+  /* Remove button */
+
+  .academic-file-remove-button {
+    min-height: 38px;
+
+    padding: 0 13px;
+
+    font-size: 10px;
+  }
+
+
+  /* Add Resource */
+
+  .submit-resource-button {
+    height: 48px;
+
+    margin-top: 5px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .academic-form-section {
+    padding: 18px 10px 38px;
+  }
+
+
+  .academic-form-container {
+    padding: 18px 13px;
+
+    border-radius: 14px;
+  }
+
+
+  .academic-form-container > h2 {
+    font-size: 19px;
+  }
+
+
+  .academic-form-container .form-group input,
+  .academic-form-container .form-group select {
+    height: 43px;
+
+    font-size: 11px;
+  }
+
+
+  .academic-form-container .form-group textarea {
+    min-height: 100px;
+
+    font-size: 11px;
+  }
+
+
+  .academic-file-actions {
+    width: 100%;
+
+    flex-direction: column;
+  }
+
+
+  .academic-file-change-button,
+  .academic-file-remove-button {
+    width: 100%;
+  }
+
+
+  .academic-file-select-button {
+    width: fit-content;
+  }
+
+
+  .submit-resource-button {
+    height: 46px;
+
+    font-size: 12px;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .academic-page *,
+  .academic-page *::before,
+  .academic-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* =========================================================
+   FINAL FIX — CHOOSE FILE BUTTON
+   ========================================================= */
+
+.academic-file-upload-box > .academic-file-select-button {
+  width: max-content !important;
+  max-width: max-content !important;
+
+  min-width: 0 !important;
+
+  flex: 0 0 auto !important;
+  align-self: center !important;
+
+  display: inline-flex !important;
+
+  position: relative !important;
+
+  height: 40px !important;
+  min-height: 40px !important;
+
+  margin: 15px auto 0 !important;
+  padding: 0 20px !important;
+
+  border: 1px solid #1769d3 !important;
+  border-radius: 9px !important;
+
+  background: #0878e8 !important;
+  color: #ffffff !important;
+
+  font-family: inherit !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+
+  line-height: 1 !important;
+  text-align: center !important;
+
+  cursor: pointer !important;
+
+  box-shadow:
+    0 7px 16px rgba(37, 99, 235, 0.18) !important;
+
+  overflow: hidden !important;
+
+  box-sizing: border-box !important;
+}
+
+
+/* REAL FILE INPUT */
+
+.academic-file-upload-box
+> .academic-file-select-button
+> input[type="file"] {
+  position: absolute !important;
+
+  top: 0 !important;
+  left: 0 !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  min-width: 0 !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  opacity: 0 !important;
+
+  cursor: pointer !important;
+
+  border: 0 !important;
+
+  z-index: 20 !important;
+}
+
+
+/* HOVER */
+
+.academic-file-upload-box
+> .academic-file-select-button:hover {
+  background: #066dcc !important;
+
+  transform: translateY(-1px) !important;
+
+  box-shadow:
+    0 10px 20px rgba(37, 99, 235, 0.23) !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .academic-file-upload-box
+  > .academic-file-select-button {
+    width: max-content !important;
+    max-width: max-content !important;
+
+    min-width: 0 !important;
+
+    height: 38px !important;
+    min-height: 38px !important;
+
+    margin: 13px auto 0 !important;
+
+    padding: 0 18px !important;
+
+    font-size: 10px !important;
+
+    border-radius: 8px !important;
+  }
+}
+
+
+/* VERY SMALL MOBILE */
+
+@media (max-width: 380px) {
+
+  .academic-file-upload-box
+  > .academic-file-select-button {
+    width: max-content !important;
+    max-width: max-content !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    padding: 0 17px !important;
+  }
+}

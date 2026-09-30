@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { getListings } from '../api'
 import ListingCard from '../components/ListingCard'
 import './Marketplace.css'
+import PageHeader from '../components/PageHeader'
 
 function Marketplace() {
   const navigate = useNavigate()
@@ -31,7 +32,7 @@ function Marketplace() {
 
         alert(
           error.message ||
-            'Failed to fetch listings'
+          'Failed to fetch listings'
         )
       } finally {
         setLoading(false)
@@ -56,45 +57,17 @@ function Marketplace() {
           PAGE HEADER
           ================================================= */}
 
-     <section className="marketplace-header">
 
-  <button
-    type="button"
-    className="marketplace-back-button"
-    onClick={handleBack}
-    aria-label="Go back"
-  >
-    <span>←</span>
-    <span>Back</span>
-  </button>
-
-  <div className="marketplace-header-content">
-
-    <div className="marketplace-eyebrow">
-      <span className="marketplace-eyebrow-dot"></span>
-      CAMPUS MARKETPLACE
-    </div>
-
-    <h1>
-      Buy. Sell. <span>Connect.</span>
-    </h1>
-
-    <p>
-      Discover useful items from your campus
-      community or sell things you no longer need.
-    </p>
-
-  </div>
-
-  <Link
-    to="/marketplace/create"
-    className="post-item-button"
-  >
-    <span className="post-item-icon">+</span>
-    Post an Item
-  </Link>
-
-</section>
+      <PageHeader
+        eyebrow="CAMPUS MARKETPLACE"
+        title="Buy. Sell. Connect."
+        description="Discover useful items from your campus
+      community or sell things you no longer need."
+        backTo="/"
+        actionTo="/marketplace/create"
+        actionText="Post an Item"
+        actionIcon="+"
+      />
 
       {/* =================================================
           MARKETPLACE CONTENT

@@ -155,7 +155,7 @@ function CreateListing() {
 
       alert(
         error.message ||
-          'Failed to post item'
+        'Failed to post item'
       )
     } finally {
       setUploadingImage(false)
@@ -168,33 +168,33 @@ function CreateListing() {
       <div className="create-listing-container">
 
         <button
-        type="button"
-        className="listing-back-button"
-        onClick={() =>
-          navigate('/marketplace')
-        }
-      >
-        <span className="listing-back-icon">
-          ←
-        </span>
+          type="button"
+          className="listing-back-button"
+          onClick={() =>
+            navigate('/marketplace')
+          }
+        >
+          <span className="listing-back-icon">
+            ←
+          </span>
 
-        <span>
-          Back to Marketplace
-        </span>
-      </button>
+          <span>
+            Back to Marketplace
+          </span>
+        </button>
 
-      <div className="listing-title-section">
-        <span className="listing-eyebrow">
-          MARKETPLACE
-        </span>
+        <div className="listing-title-section">
+          <span className="listing-eyebrow">
+            MARKETPLACE
+          </span>
 
-        <h1>Post an Item</h1>
+          <h1>Post an Item</h1>
 
-        <p className="listing-form-subtitle">
-          Sell or give away useful items to
-          fellow students.
-        </p>
-      </div>
+          <p className="listing-form-subtitle">
+            Sell or give away useful items to
+            fellow students.
+          </p>
+        </div>
 
 
         <form onSubmit={handleSubmit}>

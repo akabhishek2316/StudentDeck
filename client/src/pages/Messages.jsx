@@ -9,6 +9,7 @@ import {
   useNavigate,
 } from 'react-router-dom'
 import { io } from 'socket.io-client'
+import PageHeader from '../components/PageHeader'
 
 import {
   createConversation,
@@ -22,14 +23,16 @@ import {
 } from '../api'
 
 import './Messages.css'
+import Navbar from '../components/Navbar'
 
 const SOCKET_URL =
-  import.meta.env.VITE_SOCKET_URL ||
-  'http://localhost:5000'
+  import.meta.env.VITE_SOCKET_URL
 
 function Messages() {
   const navigate = useNavigate()
   const location = useLocation()
+ 
+const messageInputRef = useRef(null)
 
   const socketRef = useRef(null)
   const activeConversationRef = useRef(null)
@@ -208,21 +211,21 @@ function Messages() {
   }, [filePreview])
 
   useEffect(() => {
-  const totalUnread = conversations.reduce(
-    (total, conversation) =>
-      total + Number(conversation?.unreadCount || 0),
-    0
-  )
+    const totalUnread = conversations.reduce(
+      (total, conversation) =>
+        total + Number(conversation?.unreadCount || 0),
+      0
+    )
 
-  localStorage.setItem(
-    'unreadMessageCount',
-    String(totalUnread)
-  )
+    localStorage.setItem(
+      'unreadMessageCount',
+      String(totalUnread)
+    )
 
-  window.dispatchEvent(
-    new Event('unreadMessagesUpdated')
-  )
-}, [conversations])
+    window.dispatchEvent(
+      new Event('unreadMessagesUpdated')
+    )
+  }, [conversations])
 
   /*
    * =========================
@@ -351,27 +354,27 @@ function Messages() {
    NAVBAR UNREAD MESSAGE COUNT
 ===================================================== */
 
-const getTotalUnreadMessages = (conversationList) => {
-  return conversationList.reduce(
-    (total, conversation) =>
-      total + Number(conversation?.unreadCount || 0),
-    0
-  )
-}
+          const getTotalUnreadMessages = (conversationList) => {
+            return conversationList.reduce(
+              (total, conversation) =>
+                total + Number(conversation?.unreadCount || 0),
+              0
+            )
+          }
 
-const syncNavbarUnreadCount = (conversationList) => {
-  const totalUnread =
-    getTotalUnreadMessages(conversationList)
+          const syncNavbarUnreadCount = (conversationList) => {
+            const totalUnread =
+              getTotalUnreadMessages(conversationList)
 
-  localStorage.setItem(
-    'unreadMessageCount',
-    String(totalUnread)
-  )
+            localStorage.setItem(
+              'unreadMessageCount',
+              String(totalUnread)
+            )
 
-  window.dispatchEvent(
-    new Event('unreadMessagesUpdated')
-  )
-}
+            window.dispatchEvent(
+              new Event('unreadMessagesUpdated')
+            )
+          }
 
 
           /*
@@ -623,9 +626,9 @@ const syncNavbarUnreadCount = (conversationList) => {
           conversationData.conversations ||
           []
 
-       setConversations(
-  loadedConversations
-)
+        setConversations(
+          loadedConversations
+        )
 
 
 
@@ -872,71 +875,71 @@ const syncNavbarUnreadCount = (conversationList) => {
    */
 
   const updateConversationPreview = (
-  message,
-  shouldIncrementUnread = false
-) => {
-  if (!message?.['_id']) return
+    message,
+    shouldIncrementUnread = false
+  ) => {
+    if (!message?.['_id']) return
 
-  const conversationId =
-    String(message.conversation)
+    const conversationId =
+      String(message.conversation)
 
-  setConversations((current) => {
-    const existingConversation =
-      current.find(
-        (conversation) =>
-          String(conversation?.['_id']) ===
-          conversationId
-      )
+    setConversations((current) => {
+      const existingConversation =
+        current.find(
+          (conversation) =>
+            String(conversation?.['_id']) ===
+            conversationId
+        )
 
-    if (!existingConversation) {
-      return current
-    }
+      if (!existingConversation) {
+        return current
+      }
 
-    const currentUnread =
-      Number(
-        existingConversation.unreadCount || 0
-      )
+      const currentUnread =
+        Number(
+          existingConversation.unreadCount || 0
+        )
 
-    const lastMessage =
-      message.text?.trim() ||
-      message.attachment?.name ||
-      (message.attachment
-        ? 'Attachment'
-        : '')
+      const lastMessage =
+        message.text?.trim() ||
+        message.attachment?.name ||
+        (message.attachment
+          ? 'Attachment'
+          : '')
 
-    const updatedConversation = {
-      ...existingConversation,
+      const updatedConversation = {
+        ...existingConversation,
 
-      updatedAt:
-        message.createdAt,
+        updatedAt:
+          message.createdAt,
 
-      lastMessage,
+        lastMessage,
 
-      unreadCount:
-        shouldIncrementUnread
-          ? currentUnread + 1
-          : currentUnread,
-    }
+        unreadCount:
+          shouldIncrementUnread
+            ? currentUnread + 1
+            : currentUnread,
+      }
 
-    const remaining =
-      current.filter(
-        (conversation) =>
-          String(conversation?.['_id']) !==
-          conversationId
-      )
+      const remaining =
+        current.filter(
+          (conversation) =>
+            String(conversation?.['_id']) !==
+            conversationId
+        )
 
-    const updatedConversations = [
-      updatedConversation,
-      ...remaining,
-    ]
+      const updatedConversations = [
+        updatedConversation,
+        ...remaining,
+      ]
 
-    /*
-     * Navbar unread count sync
-     */
-    
-    return updatedConversations
-  })
-}
+      /*
+       * Navbar unread count sync
+       */
+
+      return updatedConversations
+    })
+  }
   /*
    * =========================
    * TIME FORMAT
@@ -1001,22 +1004,22 @@ const syncNavbarUnreadCount = (conversationList) => {
    * =========================
    */
 
- const handleSelectConversation =
+const handleSelectConversation =
   (conversation) => {
 
     const conversationId =
       String(conversation?.['_id'])
 
     setConversations((current) =>
-  current.map((item) =>
-    String(item?._id) === conversationId
-      ? {
-          ...item,
-          unreadCount: 0,
-        }
-      : item
-  )
-)
+      current.map((item) =>
+        String(item?._id) === conversationId
+          ? {
+              ...item,
+              unreadCount: 0,
+            }
+          : item
+      )
+    )
 
     setSelectedConversation({
       ...conversation,
@@ -1028,6 +1031,7 @@ const syncNavbarUnreadCount = (conversationList) => {
 
     clearSelectedFile()
   }
+
   /*
    * =========================
    * START NEW CONVERSATION
@@ -1352,7 +1356,20 @@ const syncNavbarUnreadCount = (conversationList) => {
 
         setNewMessage('')
 
-        clearSelectedFile()
+clearSelectedFile()
+
+/*
+ * Keep keyboard open after sending.
+ * Re-focus the message input after React updates.
+ */
+requestAnimationFrame(() => {
+  if (
+    window.innerWidth <= 700 &&
+    messageInputRef.current
+  ) {
+    messageInputRef.current.focus()
+  }
+})
 
 
       } catch (error) {
@@ -1408,56 +1425,46 @@ const syncNavbarUnreadCount = (conversationList) => {
   }
 
   return (
-    <div className="messages-page">
+    <div
+  className={`messages-page ${
+    selectedConversation
+      ? 'specific-chat-page'
+      : 'messages-list-page'
+  }`}
+>
+  {!selectedConversation && (
+  <>
+    <Navbar />
 
-      <section className="messages-header">
+    <PageHeader
+      eyebrow="CAMPUS COMMUNICATION"
+      title="Connect. Communicate."
+      description="Connect with students and communicate directly on campus."
+      backTo="/"
+    />
+  </>
+)}
 
-        <button
-          type="button"
-          className="messages-back-button"
-          onClick={() => navigate(-1)}
-          aria-label="Go back"
-        >
-          <span>←</span>
-          <span>Back</span>
-        </button>
+  <section
+    className={`chat-container ${
+      selectedConversation
+        ? 'specific-chat-open'
+        : ''
+    }`}
+  >
 
-        <div className="messages-header-content">
-
-          <div className="messages-eyebrow">
-            <span className="messages-eyebrow-dot"></span>
-            CAMPUS COMMUNICATION
-          </div>
-
-          <h1>
-            Connect. <span>Communicate.</span>
-          </h1>
-
-          <p>
-            Connect with students and communicate
-            directly on campus.
-          </p>
-
-        </div>
-
-        <div className="messages-header-spacer"></div>
-
-      </section>
-
-      <section
-        className={`chat-container ${selectedConversation
-            ? 'mobile-chat-open'
-            : ''
-          }`}
-      >
-
+{!selectedConversation && (
         <aside className="conversation-list">
 
           <div className="conversation-header">
 
             <div className="conversation-header-row">
+   
+
 
               <h2>Chats</h2>
+
+   
 
               <button
                 type="button"
@@ -1644,6 +1651,7 @@ const syncNavbarUnreadCount = (conversationList) => {
           )}
 
         </aside>
+        )}
 
         <main className="chat-window">
 
@@ -1949,6 +1957,7 @@ const syncNavbarUnreadCount = (conversationList) => {
                 </button>
 
                 <input
+                  ref={messageInputRef}
                   type="text"
                   value={newMessage}
                   onChange={(event) => {

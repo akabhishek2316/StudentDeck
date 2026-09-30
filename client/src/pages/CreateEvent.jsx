@@ -1,24 +1,13 @@
+import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import {
-  useNavigate,
-  useParams,
-} from 'react-router-dom'
-import {
-  getEvent,
-  getMe,
-  updateEvent,
+  createEvent,
   uploadToCloudinary,
 } from '../api'
-import './EditEvent.css'
+import './CreateEvent.css'
 
-
-function EditEvent() {
-  const { id } = useParams()
+function CreateEvent() {
   const navigate = useNavigate()
-
-  const [event, setEvent] = useState(null)
-  const [currentUser, setCurrentUser] =
-    useState(null)
 
   const [title, setTitle] = useState('')
   const [description, setDescription] =
@@ -35,10 +24,7 @@ function EditEvent() {
   const [category, setCategory] =
     useState('')
 
-  const [image, setImage] = useState('')
-  const [imagePublicId, setImagePublicId] =
-    useState('')
-  const [newImageFile, setNewImageFile] =
+  const [imageFile, setImageFile] =
     useState(null)
   const [imagePreview, setImagePreview] =
     useState('')
@@ -46,120 +32,37 @@ function EditEvent() {
   const [registrationLink, setRegistrationLink] =
     useState('')
 
-  const [loading, setLoading] =
-    useState(true)
-  const [saving, setSaving] =
+  const [submitting, setSubmitting] =
     useState(false)
   const [uploadingImage, setUploadingImage] =
     useState(false)
-  const [error, setError] =
-    useState('')
 
   useEffect(() => {
-    loadEvent()
-  }, [id])
-
-  const loadEvent = async () => {
-    try {
-      setLoading(true)
-      setError('')
-
-      const [eventData, userData] =
-        await Promise.all([
-          getEvent(id),
-          getMe(),
-        ])
-
-      const loadedEvent =
-        eventData.event
-
-      setEvent(loadedEvent)
-      setCurrentUser(userData.user)
-
-      setTitle(
-        loadedEvent.title || ''
-      )
-
-      setDescription(
-        loadedEvent.description || ''
-      )
-
-      setOrganizer(
-        loadedEvent.organizer || ''
-      )
-
-      if (loadedEvent.date) {
-        const eventDate =
-          new Date(loadedEvent.date)
-
-        if (
-          !Number.isNaN(
-            eventDate.getTime()
-          )
-        ) {
-          setDate(
-            eventDate
-              .toISOString()
-              .split('T')[0]
-          )
-        } else {
-          setDate('')
-        }
-      } else {
-        setDate('')
+    return () => {
+      if (imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview)
       }
-
-      setStartTime(
-        loadedEvent.startTime || ''
-      )
-
-      setEndTime(
-        loadedEvent.endTime || ''
-      )
-
-      setLocation(
-        loadedEvent.location || ''
-      )
-
-      setCategory(
-        loadedEvent.category || ''
-      )
-
-      setImage(
-        loadedEvent.image || ''
-      )
-
-      setImagePublicId(
-        loadedEvent.imagePublicId || ''
-      )
-
-      setImagePreview(
-        loadedEvent.image || ''
-      )
-
-      setRegistrationLink(
-        loadedEvent.registrationLink || ''
-      )
-    } catch (error) {
-      console.error(
-        'Failed to load event:',
-        error
-      )
-
-      setError(
-        error.message ||
-        'Failed to load event'
-      )
-    } finally {
-      setLoading(false)
     }
-  }
+  }, [imagePreview])
 
-  const isOwner =
-    event &&
-    currentUser &&
-    String(event.createdBy?._id) ===
-    String(currentUser._id)
+  const formatTime = (value) => {
+    if (!value) {
+      return ''
+    }
+
+    const [hours, minutes] =
+      value.split(':')
+
+    const hour = Number(hours)
+
+    const period =
+      hour >= 12 ? 'PM' : 'AM'
+
+    const hour12 =
+      hour % 12 || 12
+
+    return `${hour12}:${minutes} ${period}`
+  }
 
   const handleImageChange = (event) => {
     const file =
@@ -196,51 +99,31 @@ function EditEvent() {
       return
     }
 
-    setNewImageFile(file)
-
-    const reader =
-      new FileReader()
-
-    reader.onload = () => {
-      setImagePreview(
-        reader.result
-      )
+    if (imagePreview.startsWith('blob:')) {
+      URL.revokeObjectURL(imagePreview)
     }
 
-    reader.onerror = () => {
-      alert(
-        'Failed to preview image'
-      )
-    }
+    setImageFile(file)
 
-    reader.readAsDataURL(file)
+    setImagePreview(
+      URL.createObjectURL(file)
+    )
   }
 
-  const handleKeepExistingImage =
-    () => {
-      setNewImageFile(null)
-
-      setImagePreview(
-        image || ''
-      )
+  const handleRemoveImage = () => {
+    if (imagePreview.startsWith('blob:')) {
+      URL.revokeObjectURL(imagePreview)
     }
 
-  const handleSubmit = async (
-    eventObject
-  ) => {
-    eventObject.preventDefault()
+    setImageFile(null)
+    setImagePreview('')
+  }
 
-    if (!isOwner) {
-      alert(
-        'You can only edit your own events'
-      )
-      return
-    }
+  const handleSubmit = async (event) => {
+    event.preventDefault()
 
     if (!title.trim()) {
-      alert(
-        'Please enter an event title'
-      )
+      alert('Please enter an event title')
       return
     }
 
@@ -279,7 +162,7 @@ function EditEvent() {
       return
     }
 
-    if (!category.trim()) {
+    if (!category) {
       alert(
         'Please select the event category'
       )
@@ -287,30 +170,29 @@ function EditEvent() {
     }
 
     try {
-      setSaving(true)
+      setSubmitting(true)
 
-      let finalImage = image
-      let finalImagePublicId =
-        imagePublicId
+      let image = ''
+      let imagePublicId = ''
 
-      if (newImageFile) {
+      if (imageFile) {
         setUploadingImage(true)
 
         const uploadResult =
           await uploadToCloudinary(
-            newImageFile
+            imageFile
           )
 
-        finalImage =
+        image =
           uploadResult.secureUrl
 
-        finalImagePublicId =
+        imagePublicId =
           uploadResult.publicId
 
         setUploadingImage(false)
       }
 
-      await updateEvent(id, {
+      await createEvent({
         title: title.trim(),
         description:
           description.trim(),
@@ -323,117 +205,61 @@ function EditEvent() {
           location.trim(),
         category:
           category.trim(),
-        image: finalImage,
-        imagePublicId:
-          finalImagePublicId,
+        image,
+        imagePublicId,
         registrationLink:
           registrationLink.trim(),
       })
 
       alert(
-        'Event updated successfully'
+        'Event added successfully!'
       )
 
-      navigate(`/events/${id}`)
+      navigate('/events')
     } catch (error) {
       console.error(
-        'Failed to update event:',
+        'Create event error:',
         error
       )
 
       alert(
         error.message ||
-        'Failed to update event'
+        'Failed to create event'
       )
     } finally {
       setUploadingImage(false)
-      setSaving(false)
+      setSubmitting(false)
     }
-  }
-
-  if (loading) {
-    return (
-      <div className="event-details-not-found">
-        <h1>Loading...</h1>
-      </div>
-    )
-  }
-
-  if (error || !event) {
-    return (
-      <div className="event-details-not-found">
-
-        <h1>Event Not Found</h1>
-
-        <p>
-          {error ||
-            'This event is unavailable.'}
-        </p>
-
-        <button
-          type="button"
-          className="event-edit-button"
-          onClick={() =>
-            navigate('/events')
-          }
-        >
-          ← Back to Events
-        </button>
-
-      </div>
-    )
-  }
-
-  if (!isOwner) {
-    return (
-      <div className="event-details-not-found">
-
-        <h1>Access Denied</h1>
-
-        <p>
-          You can only edit your own
-          events.
-        </p>
-
-        <button
-          type="button"
-          className="event-edit-button"
-          onClick={() =>
-            navigate(`/events/${id}`)
-          }
-        >
-          ← Back to Event
-        </button>
-
-      </div>
-    )
   }
 
   return (
     <div className="events-page">
 
+
+
+      <div className="create-event-topbar">
+        <button
+          type="button"
+          className="create-event-back-button"
+          onClick={() => navigate('/events')}
+        >
+          <span className="back-arrow">←</span>
+          <span>Back to Events</span>
+        </button>
+      </div>
+
       <section className="event-form-section">
-
-        <div className="event-back-row">
-          <button
-            type="button"
-            className="event-back-button"
-            onClick={() => navigate('/events')}
-          >
-            <span className="event-back-icon">←</span>
-            <span>Back to Events</span>
-          </button>
-        </div>
-
-
 
         <div className="event-form-container">
 
-          <h2>Edit Campus Event</h2>
+          <h2>
+            Add Campus Event
+          </h2>
 
           <form onSubmit={handleSubmit}>
 
             <div className="form-group">
+
               <label>
                 Event Title
               </label>
@@ -448,9 +274,11 @@ function EditEvent() {
                 }
                 placeholder="Example: Coding Contest"
               />
+
             </div>
 
             <div className="form-group">
+
               <label>
                 Description
               </label>
@@ -464,9 +292,11 @@ function EditEvent() {
                 }
                 placeholder="Describe the event..."
               />
+
             </div>
 
             <div className="form-group">
+
               <label>
                 Organizer
               </label>
@@ -481,9 +311,11 @@ function EditEvent() {
                 }
                 placeholder="Example: Coding Club"
               />
+
             </div>
 
             <div className="form-group">
+
               <label>
                 Category
               </label>
@@ -524,11 +356,13 @@ function EditEvent() {
                   Other
                 </option>
               </select>
+
             </div>
 
             <div className="event-date-time">
 
               <div className="form-group">
+
                 <label>
                   Date
                 </label>
@@ -542,9 +376,11 @@ function EditEvent() {
                     )
                   }
                 />
+
               </div>
 
               <div className="form-group">
+
                 <label>
                   Start Time
                 </label>
@@ -558,11 +394,13 @@ function EditEvent() {
                     )
                   }
                 />
+
               </div>
 
             </div>
 
             <div className="form-group">
+
               <label>
                 End Time
               </label>
@@ -576,9 +414,11 @@ function EditEvent() {
                   )
                 }
               />
+
             </div>
 
             <div className="form-group">
+
               <label>
                 Location
               </label>
@@ -593,6 +433,7 @@ function EditEvent() {
                 }
                 placeholder="Example: Main Auditorium"
               />
+
             </div>
 
             <div className="form-group">
@@ -603,52 +444,16 @@ function EditEvent() {
 
               <div className="image-upload-box">
 
-                {imagePreview ? (
-                  <div className="image-preview-wrapper">
+                {!imagePreview ? (
 
-                    <img
-                      src={imagePreview}
-                      alt="Event"
-                      className="image-preview"
-                    />
-
-                    <div className="image-preview-actions">
-
-                      <label className="image-change-button">
-                        Replace Image
-
-                        <input
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp"
-                          onChange={
-                            handleImageChange
-                          }
-                        />
-                      </label>
-
-                      {newImageFile && (
-                        <button
-                          type="button"
-                          className="image-remove-button"
-                          onClick={
-                            handleKeepExistingImage
-                          }
-                        >
-                          Keep Existing
-                        </button>
-                      )}
-
-                    </div>
-
-                  </div>
-                ) : (
                   <>
                     <div className="image-upload-icon">
                       📷
                     </div>
 
                     <p>
-                      Add an image for your event
+                      Upload an image for your
+                      event
                     </p>
 
                     <span>
@@ -667,6 +472,45 @@ function EditEvent() {
                       />
                     </label>
                   </>
+
+                ) : (
+
+                  <div className="image-preview-wrapper">
+
+                    <img
+                      src={imagePreview}
+                      alt="Event"
+                      className="image-preview"
+                    />
+
+                    <div className="image-preview-actions">
+
+                      <label className="image-change-button">
+                        Change Image
+
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          onChange={
+                            handleImageChange
+                          }
+                        />
+                      </label>
+
+                      <button
+                        type="button"
+                        className="image-remove-button"
+                        onClick={
+                          handleRemoveImage
+                        }
+                      >
+                        Remove
+                      </button>
+
+                    </div>
+
+                  </div>
+
                 )}
 
               </div>
@@ -674,6 +518,7 @@ function EditEvent() {
             </div>
 
             <div className="form-group">
+
               <label>
                 Registration Link
               </label>
@@ -688,21 +533,22 @@ function EditEvent() {
                 }
                 placeholder="https://example.com/register"
               />
+
             </div>
 
             <button
-              type="submit"
               className="submit-event-button"
+              type="submit"
               disabled={
-                saving ||
+                submitting ||
                 uploadingImage
               }
             >
               {uploadingImage
                 ? 'Uploading image...'
-                : saving
-                  ? 'Saving...'
-                  : 'Save Changes'}
+                : submitting
+                  ? 'Adding...'
+                  : 'Add Event'}
             </button>
 
           </form>
@@ -715,4 +561,4 @@ function EditEvent() {
   )
 }
 
-export default EditEvent
+export default CreateEvent

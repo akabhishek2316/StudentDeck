@@ -85,7 +85,7 @@ function EditLostFound() {
     } catch (error) {
       alert(
         error.message ||
-          'Failed to load Lost & Found post'
+        'Failed to load Lost & Found post'
       )
 
       navigate('/lost-found')
@@ -257,7 +257,7 @@ function EditLostFound() {
 
       alert(
         error.message ||
-          'Failed to update Lost & Found post'
+        'Failed to update Lost & Found post'
       )
     } finally {
       setUploadingImage(false)
@@ -284,40 +284,24 @@ function EditLostFound() {
   return (
     <div className="report-section">
 
+      <button
+        type="button"
+        className="lost-found-edit-back-button"
+        onClick={() => navigate('/lost-found')}
+      >
+        <span className="lost-found-edit-back-icon">
+          ←
+        </span>
+
+        <span>
+          Back to Lost &amp; Found
+        </span>
+      </button>
       <div className="report-container">
 
-  <button
-    type="button"
-    className="lost-found-edit-back-button"
-    onClick={() => navigate('/lost-found')}
-  >
-    <span className="lost-found-edit-back-icon">
-      ←
-    </span>
 
-    <span>
-      Back to Lost &amp; Found
-    </span>
-  </button>
 
-  <div className="lost-found-edit-title-section">
-
-    <span className="lost-found-edit-eyebrow">
-      LOST &amp; FOUND
-    </span>
-
-    <h2>
-      Edit Lost &amp; Found Post
-    </h2>
-
-    <p>
-      Update your post details or replace
-      the item image.
-    </p>
-
-  </div>
-
-  <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
 
           <div className="form-group">
 

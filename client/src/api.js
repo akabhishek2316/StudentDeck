@@ -1,6 +1,5 @@
 const API_URL =
-  import.meta.env.VITE_API_URL ||
-  'http://localhost:5000'
+  import.meta.env.VITE_API_URL
 const getToken = () => {
   return localStorage.getItem('token')
 }
@@ -10,8 +9,8 @@ const getAuthHeaders = () => {
 
   return token
     ? {
-        Authorization: `Bearer ${token}`,
-      }
+      Authorization: `Bearer ${token}`,
+    }
     : {}
 }
 
@@ -243,7 +242,7 @@ export const createLostFoundPost = async (postData) => {
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to create Lost & Found post'
+      'Failed to create Lost & Found post'
     )
   }
 
@@ -271,7 +270,7 @@ export const updateLostFoundPost = async (
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to update Lost & Found post'
+      'Failed to update Lost & Found post'
     )
   }
 
@@ -294,7 +293,7 @@ export const deleteLostFoundPost = async (id) => {
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to delete Lost & Found post'
+      'Failed to delete Lost & Found post'
     )
   }
 
@@ -315,7 +314,7 @@ export const getAcademicResources = async () => {
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to fetch academic resources'
+      'Failed to fetch academic resources'
     )
   }
 
@@ -332,7 +331,31 @@ export const getAcademicResource = async (id) => {
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to fetch academic resource'
+      'Failed to fetch academic resource'
+    )
+  }
+
+  return data
+}
+
+export const getAcademicResourceFile = async (
+  id
+) => {
+  const response = await fetch(
+    `${API_URL}/api/academic-resources/${id}/file`,
+    {
+      headers: {
+        ...getAuthHeaders(),
+      },
+    }
+  )
+
+  const data = await response.json()
+
+  if (!response.ok) {
+    throw new Error(
+      data.message ||
+      'Please login to access this resource'
     )
   }
 
@@ -359,7 +382,7 @@ export const createAcademicResource = async (
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to create academic resource'
+      'Failed to create academic resource'
     )
   }
 
@@ -387,7 +410,7 @@ export const updateAcademicResource = async (
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to update academic resource'
+      'Failed to update academic resource'
     )
   }
 
@@ -410,7 +433,7 @@ export const deleteAcademicResource = async (id) => {
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to delete academic resource'
+      'Failed to delete academic resource'
     )
   }
 
@@ -545,7 +568,7 @@ export const getConversations = async () => {
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to fetch conversations'
+      'Failed to fetch conversations'
     )
   }
 
@@ -572,7 +595,7 @@ export const createConversation = async (userId) => {
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to create conversation'
+      'Failed to create conversation'
     )
   }
 
@@ -594,7 +617,7 @@ export const getMessages = async (conversationId) => {
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to fetch messages'
+      'Failed to fetch messages'
     )
   }
 
@@ -656,7 +679,7 @@ export const markMessageAsRead = async (
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to mark message as read'
+      'Failed to mark message as read'
     )
   }
 
@@ -712,7 +735,7 @@ export const saveItem = async (
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to save item'
+      'Failed to save item'
     )
   }
 
@@ -734,7 +757,7 @@ export const getSavedItems = async () => {
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to fetch saved items'
+      'Failed to fetch saved items'
     )
   }
 
@@ -759,7 +782,7 @@ export const checkSaved = async (
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to check saved item'
+      'Failed to check saved item'
     )
   }
 
@@ -785,7 +808,7 @@ export const removeSavedItem = async (
   if (!response.ok) {
     throw new Error(
       data.message ||
-        'Failed to remove saved item'
+      'Failed to remove saved item'
     )
   }
 
@@ -839,24 +862,24 @@ export const uploadToCloudinary = async (file) => {
   )
 
   const resourceType =
-  file.type === 'application/pdf'
-    ? 'raw'
-    : 'image'
+    file.type === 'application/pdf'
+      ? 'raw'
+      : 'image'
 
-const response = await fetch(
-  `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
-  {
-    method: 'POST',
-    body: formData,
-  }
-)
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
+    {
+      method: 'POST',
+      body: formData,
+    }
+  )
 
   const data = await response.json()
 
   if (!response.ok) {
     throw new Error(
       data?.error?.message ||
-        'Cloudinary upload failed'
+      'Cloudinary upload failed'
     )
   }
 

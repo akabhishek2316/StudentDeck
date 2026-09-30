@@ -1,33 +1,172 @@
 /* =========================================================
-   STUDENTDECK — AUTH PAGE
+   STUDENTDECK — AUTH PAGES
+   Login + Register
 ========================================================= */
 
 .auth-page {
   min-height: 100vh;
   width: 100%;
-  max-width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      circle at 8% 8%,
+      rgba(37, 99, 235, 0.10),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 92% 90%,
+      rgba(14, 165, 233, 0.09),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #f8fbff 0%,
+      #f8fafc 55%,
+      #f1f5f9 100%
+    );
+}
+
+
+/* =========================================================
+   TOP BRAND HEADER
+========================================================= */
+
+.auth-header {
+  width: 100%;
+  min-height: 74px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 32px 20px;
+  padding: 0 24px;
 
   box-sizing: border-box;
-  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  border-bottom: 1px solid #e2e8f0;
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.auth-header-inner {
+  width: 100%;
+  max-width: 1080px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  color: #172554;
+
+  text-decoration: none;
+}
+
+.auth-brand-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
 
   background:
-    radial-gradient(
-      circle at 8% 12%,
-      rgba(37, 99, 235, 0.08),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 92% 88%,
-      rgba(14, 165, 233, 0.07),
-      transparent 30%
-    ),
-    #f8fafc;
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #24438b
+    );
+
+  color: #ffffff;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  box-shadow:
+    0 7px 18px rgba(37, 99, 235, 0.20);
+}
+
+.auth-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.auth-brand-name {
+  color: #172554;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -0.4px;
+}
+
+.auth-brand-tagline {
+  color: #64748b;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HEADER RIGHT
+========================================================= */
+
+.auth-header-campus {
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.2px;
+}
+
+
+/* =========================================================
+   MAIN AREA
+========================================================= */
+
+.auth-main {
+  flex: 1;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 46px 20px 38px;
+
+  box-sizing: border-box;
 }
 
 
@@ -37,44 +176,112 @@
 
 .auth-container {
   width: 100%;
-  max-width: 420px;
+  max-width: 430px;
 
-  padding: 38px 38px 32px;
+  padding: 38px 38px 34px;
 
   box-sizing: border-box;
 
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.96);
 
-  border: 1px solid #e2e8f0;
-  border-radius: 18px;
+  border: 1px solid #cbd5e1;
+
+  border-radius: 20px;
 
   box-shadow:
-    0 20px 45px rgba(15, 23, 42, 0.08),
-    0 4px 12px rgba(15, 23, 42, 0.04);
+    0 24px 55px rgba(15, 23, 42, 0.09),
+    0 6px 18px rgba(15, 23, 42, 0.05);
+
+  position: relative;
+}
+
+
+/* subtle top accent */
+
+.auth-container::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 32px;
+  right: 32px;
+
+  height: 3px;
+
+  border-radius: 0 0 6px 6px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #24438b,
+      #2563eb,
+      #0ea5e9
+    );
+}
+
+.auth-wrapper {
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.auth-home-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 10px;
+  padding: 7px 11px;
+
+  border: 1px solid #d8e1ec;
+  border-radius: 8px;
+  background: #ffffff;
+
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+
+  transition: all 0.2s ease;
+}
+
+.auth-home-button span:first-child {
+  font-size: 17px;
+  line-height: 1;
+  color: #2563eb;
+}
+
+.auth-home-button:hover {
+  border-color: #b9cce3;
+  background: #f8fbff;
+  color: #1d4ed8;
+  transform: translateX(-2px);
 }
 
 
 /* =========================================================
-   BRAND
+   CARD BRAND LABEL
 ========================================================= */
 
-.auth-container::before {
-  content: "StudentDeck";
+.auth-card-label {
+  margin-bottom: 13px;
 
-  display: block;
+  color: #2563eb;
 
-  margin-bottom: 25px;
-
-  color: #24438b;
-
-  font-size: 23px;
+  font-size: 11px;
   font-weight: 800;
 
   line-height: 1;
 
-  letter-spacing: -0.6px;
+  letter-spacing: 1.4px;
 
   text-align: center;
+  text-transform: uppercase;
 }
 
 
@@ -92,18 +299,18 @@
 
   line-height: 1.2;
 
-  letter-spacing: -0.7px;
+  letter-spacing: -0.8px;
 
   text-align: center;
 }
 
 .auth-subtitle {
-  margin: 9px 0 30px;
+  margin: 9px 0 29px;
 
   color: #64748b;
 
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.55;
 
   text-align: center;
 }
@@ -125,7 +332,7 @@
 .form-group {
   width: 100%;
 
-  margin-bottom: 19px;
+  margin-bottom: 18px;
 }
 
 .form-group label {
@@ -150,13 +357,13 @@
   display: block;
 
   width: 100%;
-  min-height: 46px;
+  min-height: 48px;
 
   padding: 12px 14px;
 
   box-sizing: border-box;
 
-  border: 1px solid #d6dee8;
+  border: 1.5px solid #94a3b8 !important;
   border-radius: 10px;
 
   background: #ffffff;
@@ -167,6 +374,13 @@
   font-size: 14px;
 
   outline: none;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(148, 163, 184, 0.12);
 
   transition:
     border-color 0.2s ease,
@@ -179,21 +393,22 @@
 }
 
 .form-group input:hover {
-  border-color: #b9c5d3;
+  border-color: #64748b !important;
 }
 
 .form-group input:focus {
-  border-color: #2563eb;
+  border-color: #2563eb !important;
 
   background: #ffffff;
 
   box-shadow:
-    0 0 0 3px rgba(37, 99, 235, 0.09);
+    0 0 0 3px rgba(37, 99, 235, 0.10),
+    inset 0 0 0 1px rgba(37, 99, 235, 0.12);
 }
 
 
 /* =========================================================
-   PASSWORD
+   PASSWORD INPUT
 ========================================================= */
 
 .password-input-wrapper {
@@ -206,13 +421,13 @@
   display: block;
 
   width: 100%;
-  min-height: 46px;
+  min-height: 48px;
 
-  padding: 12px 46px 12px 14px;
+  padding: 12px 48px 12px 14px;
 
   box-sizing: border-box;
 
-  border: 1px solid #d6dee8;
+  border: 1.5px solid #94a3b8 !important;
   border-radius: 10px;
 
   background: #ffffff;
@@ -224,6 +439,13 @@
 
   outline: none;
 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(148, 163, 184, 0.12);
+
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
@@ -234,14 +456,15 @@
 }
 
 .password-input-wrapper input:hover {
-  border-color: #b9c5d3;
+  border-color: #64748b !important;
 }
 
 .password-input-wrapper input:focus {
-  border-color: #2563eb;
+  border-color: #2563eb !important;
 
   box-shadow:
-    0 0 0 3px rgba(37, 99, 235, 0.09);
+    0 0 0 3px rgba(37, 99, 235, 0.10),
+    inset 0 0 0 1px rgba(37, 99, 235, 0.12);
 }
 
 
@@ -257,8 +480,8 @@
 
   transform: translateY(-50%);
 
-  width: 34px;
-  height: 34px;
+  width: 35px;
+  height: 35px;
 
   display: flex;
   align-items: center;
@@ -282,6 +505,7 @@
 
 .password-toggle:hover {
   background: #f1f5f9;
+
   color: #24438b;
 }
 
@@ -300,7 +524,6 @@
 
 /* =========================================================
    YEAR INPUT
-   For Register page
 ========================================================= */
 
 .year-input-wrapper {
@@ -310,14 +533,16 @@
 }
 
 .year-input-wrapper input {
-  width: 100%;
-  min-height: 46px;
+  display: block;
 
-  padding: 12px 45px 12px 14px;
+  width: 100%;
+  min-height: 48px;
+
+  padding: 12px 46px 12px 14px;
 
   box-sizing: border-box;
 
-  border: 1px solid #d6dee8;
+  border: 1.5px solid #94a3b8 !important;
   border-radius: 10px;
 
   background: #ffffff;
@@ -329,6 +554,9 @@
 
   outline: none;
 
+  box-shadow:
+    inset 0 0 0 1px rgba(148, 163, 184, 0.12);
+
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
@@ -338,30 +566,38 @@
   color: #94a3b8;
 }
 
+.year-input-wrapper input:hover {
+  border-color: #64748b !important;
+}
+
 .year-input-wrapper input:focus {
-  border-color: #2563eb;
+  border-color: #2563eb !important;
 
   box-shadow:
-    0 0 0 3px rgba(37, 99, 235, 0.09);
+    0 0 0 3px rgba(37, 99, 235, 0.10),
+    inset 0 0 0 1px rgba(37, 99, 235, 0.12);
 }
+
+
+/* =========================================================
+   YEAR ARROWS
+========================================================= */
 
 .year-arrows {
   position: absolute;
 
-  right: 8px;
+  right: 7px;
   top: 50%;
 
   transform: translateY(-50%);
 
   display: flex;
   flex-direction: column;
-
-  gap: 0;
 }
 
 .year-arrows button {
-  width: 24px;
-  height: 16px;
+  width: 27px;
+  height: 17px;
 
   display: flex;
   align-items: center;
@@ -375,29 +611,32 @@
 
   color: #64748b;
 
-  font-size: 10px;
+  font-size: 9px;
 
   cursor: pointer;
+
+  border-radius: 4px;
 }
 
 .year-arrows button:hover {
+  background: #f1f5f9;
   color: #24438b;
 }
 
 
 /* =========================================================
-   LOGIN BUTTON
+   AUTH BUTTON
 ========================================================= */
 
 .auth-button {
   width: 100%;
-  min-height: 47px;
+  min-height: 48px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin-top: 6px;
+  margin-top: 7px;
   padding: 12px 18px;
 
   box-sizing: border-box;
@@ -409,7 +648,8 @@
     linear-gradient(
       135deg,
       #24438b 0%,
-      #1e3a5f 100%
+      #2563eb 55%,
+      #0ea5e9 100%
     );
 
   color: #ffffff;
@@ -421,7 +661,7 @@
   cursor: pointer;
 
   box-shadow:
-    0 7px 16px rgba(36, 67, 139, 0.18);
+    0 8px 20px rgba(37, 99, 235, 0.20);
 
   transition:
     transform 0.2s ease,
@@ -432,17 +672,17 @@
 .auth-button:hover {
   transform: translateY(-1px);
 
-  filter: brightness(1.07);
+  filter: brightness(1.05);
 
   box-shadow:
-    0 10px 22px rgba(36, 67, 139, 0.22);
+    0 11px 25px rgba(37, 99, 235, 0.25);
 }
 
 .auth-button:active {
   transform: translateY(0);
 
   box-shadow:
-    0 4px 10px rgba(36, 67, 139, 0.15);
+    0 5px 12px rgba(37, 99, 235, 0.18);
 }
 
 .auth-button:focus-visible {
@@ -456,18 +696,48 @@
 ========================================================= */
 
 .auth-footer {
-  margin: 23px 0 0;
+  width: 100%;
+
+  padding: 18px 20px 22px;
+
+  box-sizing: border-box;
 
   color: #64748b;
 
-  font-size: 13px;
+  font-size: 11px;
 
   line-height: 1.5;
 
   text-align: center;
 }
 
-.auth-footer a {
+.auth-footer-brand {
+  margin-bottom: 5px;
+
+  color: #334155;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.3px;
+}
+
+.auth-footer-note {
+  color: #94a3b8;
+}
+
+
+/* =========================================================
+   AUTH FOOTER LINK
+========================================================= */
+
+.auth-container .auth-footer {
+  margin: 23px 0 0;
+
+  padding: 0;
+}
+
+.auth-container .auth-footer a {
   color: #2563eb;
 
   font-weight: 700;
@@ -477,7 +747,7 @@
   transition: color 0.2s ease;
 }
 
-.auth-footer a:hover {
+.auth-container .auth-footer a:hover {
   color: #1d4ed8;
 
   text-decoration: underline;
@@ -489,24 +759,51 @@
 ========================================================= */
 
 @media (max-width: 600px) {
-  .auth-page {
-    min-height: 100svh;
 
-    padding: 22px 16px;
+  .auth-header {
+    min-height: 66px;
+
+    padding: 0 16px;
+  }
+
+  .auth-brand-icon {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 9px;
+
+    font-size: 16px;
+  }
+
+  .auth-brand-name {
+    font-size: 16px;
+  }
+
+  .auth-brand-tagline {
+    font-size: 9px;
+  }
+
+  .auth-header-campus {
+    display: none;
+  }
+
+  .auth-main {
+    padding: 30px 16px 25px;
+
+    align-items: flex-start;
   }
 
   .auth-container {
-    max-width: 430px;
+    max-width: 450px;
 
-    padding: 32px 24px 28px;
+    padding: 35px 24px 28px;
 
-    border-radius: 16px;
+    border-radius: 17px;
   }
 
   .auth-container::before {
-    margin-bottom: 22px;
-
-    font-size: 21px;
+    left: 24px;
+    right: 24px;
   }
 
   .auth-container h1 {
@@ -518,6 +815,14 @@
 
     font-size: 13px;
   }
+
+  .form-group {
+    margin-bottom: 17px;
+  }
+
+  .auth-footer {
+    padding-bottom: 18px;
+  }
 }
 
 
@@ -526,20 +831,27 @@
 ========================================================= */
 
 @media (max-width: 400px) {
-  .auth-page {
-    padding: 16px 12px;
+
+  .auth-header {
+    padding: 0 12px;
+  }
+
+  .auth-main {
+    padding: 22px 12px;
   }
 
   .auth-container {
-    padding: 28px 18px 24px;
-  }
+    padding: 32px 18px 25px;
 
-  .auth-container::before {
-    font-size: 20px;
+    border-radius: 15px;
   }
 
   .auth-container h1 {
     font-size: 24px;
+  }
+
+  .auth-card-label {
+    font-size: 10px;
   }
 
   .form-group label {
@@ -549,19 +861,15 @@
   .form-group input,
   .password-input-wrapper input,
   .year-input-wrapper input {
-    min-height: 44px;
+    min-height: 46px;
 
     font-size: 13px;
   }
 
   .auth-button {
-    min-height: 45px;
+    min-height: 46px;
 
     font-size: 13px;
-  }
-
-  .auth-footer {
-    font-size: 12px;
   }
 }
 
@@ -571,9 +879,10 @@
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   .auth-button,
   .password-toggle,
-  .auth-footer a,
+  .auth-container .auth-footer a,
   .form-group input,
   .password-input-wrapper input,
   .year-input-wrapper input {

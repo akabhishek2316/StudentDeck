@@ -27,40 +27,40 @@ const onlineUsers = new Map();
 ========================= */
 
 const allowedOrigins = [
-    "https://dummy-project-1-dfsr.onrender.com",
-    "http://localhost:5173"
+  "https://studentdeck.netlify.app",
+  "http://localhost:5173"
 ];
 
 app.use((req, res, next) => {
-    const origin = req.headers.origin;
+  const origin = req.headers.origin;
 
-    if (allowedOrigins.includes(origin)) {
-        res.header(
-            "Access-Control-Allow-Origin",
-            origin
-        );
-
-        res.header(
-            "Access-Control-Allow-Credentials",
-            "true"
-        );
-    }
-
+  if (allowedOrigins.includes(origin)) {
     res.header(
-        "Access-Control-Allow-Methods",
-        "GET,POST,PUT,DELETE,OPTIONS"
+      "Access-Control-Allow-Origin",
+      origin
     );
 
     res.header(
-        "Access-Control-Allow-Headers",
-        "Content-Type,Authorization"
+      "Access-Control-Allow-Credentials",
+      "true"
     );
+  }
 
-    if (req.method === "OPTIONS") {
-        return res.sendStatus(204);
-    }
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,DELETE,OPTIONS"
+  );
 
-    next();
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type,Authorization"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
 });
 
 /* =========================
@@ -82,14 +82,14 @@ app.use("/api/events", eventRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/saves", saveRoutes);
 app.use("/api/uploads", uploadRoutes);
-app.use("/api/notifications",notificationRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 /* =========================
    ROOT ROUTE
 ========================= */
 
 app.get("/", (req, res) => {
-    res.send("StudentDeck Backend is running!");
+  res.send("StudentDeck Backend is running!");
 });
 
 /* =========================
@@ -105,11 +105,11 @@ const server = http.createServer(app);
 
 
 const io = new Server(server, {
-    cors: {
-        origin: allowedOrigins,
-        methods: ["GET", "POST"],
-        credentials: true
-    }
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true
+  }
 });
 
 /* =========================
@@ -119,130 +119,130 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Socket connected:", socket.id);
 
- socket.on("join_user", (userId) => {
-  if (!userId) return;
+  socket.on("join_user", (userId) => {
+    if (!userId) return;
 
-  const normalizedUserId = String(userId);
+    const normalizedUserId = String(userId);
 
-  socket.userId = normalizedUserId;
+    socket.userId = normalizedUserId;
 
-  socket.join(`user:${normalizedUserId}`);
+    socket.join(`user:${normalizedUserId}`);
 
-  onlineUsers.set(
-    normalizedUserId,
-    socket.id
-  );
+    onlineUsers.set(
+      normalizedUserId,
+      socket.id
+    );
 
-  console.log(
-    `User online: ${normalizedUserId}`
-  );
-
-  // Newly connected user ko already-online users bhejo
-  socket.emit("online_users", {
-    userIds: Array.from(
-      onlineUsers.keys()
-    ),
-  });
-
-  // Baaki connected users ko notify karo
-  socket.broadcast.emit("user_online", {
-    userId: normalizedUserId,
-  });
-});
-
-socket.on("join_conversation", (conversationId) => {
-  if (!conversationId) return;
-
-  socket.join(
-    `conversation:${conversationId}`
-  );
-
-  console.log(
-    `Socket ${socket.id} joined conversation:${conversationId}`
-  );
-});
-
-socket.on(
-  "message_delivered",
-  async ({
-    messageId,
-    conversationId,
-    senderId
-  }) => {
     console.log(
-      "DELIVERY ACK RECEIVED:",
-      {
-        messageId,
-        conversationId,
-        senderId,
-        deliveredBy: socket.userId
-      }
-    )
+      `User online: ${normalizedUserId}`
+    );
 
-    if (
-      !messageId ||
-      !senderId ||
-      !socket.userId
-    ) {
+    // Newly connected user ko already-online users bhejo
+    socket.emit("online_users", {
+      userIds: Array.from(
+        onlineUsers.keys()
+      ),
+    });
+
+    // Baaki connected users ko notify karo
+    socket.broadcast.emit("user_online", {
+      userId: normalizedUserId,
+    });
+  });
+
+  socket.on("join_conversation", (conversationId) => {
+    if (!conversationId) return;
+
+    socket.join(
+      `conversation:${conversationId}`
+    );
+
+    console.log(
+      `Socket ${socket.id} joined conversation:${conversationId}`
+    );
+  });
+
+  socket.on(
+    "message_delivered",
+    async ({
+      messageId,
+      conversationId,
+      senderId
+    }) => {
       console.log(
-        "DELIVERY ACK MISSING DATA"
+        "DELIVERY ACK RECEIVED:",
+        {
+          messageId,
+          conversationId,
+          senderId,
+          deliveredBy: socket.userId
+        }
       )
 
-      return
-    }
-
-    try {
-      const message =
-        await Message.findOneAndUpdate(
-          {
-            _id: messageId,
-            sender: senderId
-          },
-          {
-            delivered: true
-          },
-          {
-            new: true
-          }
-        )
-
-      if (!message) {
+      if (
+        !messageId ||
+        !senderId ||
+        !socket.userId
+      ) {
         console.log(
-          "Message not found for delivery:",
-          messageId
+          "DELIVERY ACK MISSING DATA"
         )
 
         return
       }
 
-      io.to(
-        `user:${String(senderId)}`
-      ).emit(
-        "message_delivered",
-        {
-          messageId:
-            String(messageId),
+      try {
+        const message =
+          await Message.findOneAndUpdate(
+            {
+              _id: messageId,
+              sender: senderId
+            },
+            {
+              delivered: true
+            },
+            {
+              new: true
+            }
+          )
 
-          conversationId:
-            String(conversationId),
+        if (!message) {
+          console.log(
+            "Message not found for delivery:",
+            messageId
+          )
 
-          deliveredTo:
-            String(socket.userId)
+          return
         }
-      )
 
-      console.log(
-        `Message delivered: ${messageId} → ${senderId}`
-      )
+        io.to(
+          `user:${String(senderId)}`
+        ).emit(
+          "message_delivered",
+          {
+            messageId:
+              String(messageId),
 
-    } catch (error) {
-      console.error(
-        "Message delivery update error:",
-        error.message
-      )
+            conversationId:
+              String(conversationId),
+
+            deliveredTo:
+              String(socket.userId)
+          }
+        )
+
+        console.log(
+          `Message delivered: ${messageId} → ${senderId}`
+        )
+
+      } catch (error) {
+        console.error(
+          "Message delivery update error:",
+          error.message
+        )
+      }
     }
-  }
-)
+  )
 
   socket.on("typing_start", ({ conversationId, userId }) => {
     if (!conversationId || !userId) return;
@@ -267,31 +267,31 @@ socket.on(
   });
 
   socket.on("disconnect", () => {
-  console.log(
-    "Socket disconnected:",
-    socket.id
-  );
-
-  const userId = socket.userId;
-
-  if (!userId) return;
-
-  const currentSocketId =
-    onlineUsers.get(userId);
-
-  // Agar ye user's current socket hai
-  if (currentSocketId === socket.id) {
-    onlineUsers.delete(userId);
-
-    socket.broadcast.emit("user_offline", {
-      userId,
-    });
-
     console.log(
-      `User offline: ${userId}`
+      "Socket disconnected:",
+      socket.id
     );
-  }
-});
+
+    const userId = socket.userId;
+
+    if (!userId) return;
+
+    const currentSocketId =
+      onlineUsers.get(userId);
+
+    // Agar ye user's current socket hai
+    if (currentSocketId === socket.id) {
+      onlineUsers.delete(userId);
+
+      socket.broadcast.emit("user_offline", {
+        userId,
+      });
+
+      console.log(
+        `User offline: ${userId}`
+      );
+    }
+  });
 
 });
 
@@ -307,17 +307,17 @@ app.set("io", io);
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
-    try {
-        await connectDB();
+  try {
+    await connectDB();
 
-        server.listen(PORT, "0.0.0.0", () => {
-            console.log(`Server running on port ${PORT}`);
-        });
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
 
-    } catch (error) {
-        console.error("Failed to start server:", error);
-        process.exit(1);
-    }
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
 };
 
 startServer();

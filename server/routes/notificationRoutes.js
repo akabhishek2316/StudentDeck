@@ -47,26 +47,19 @@ router.get("/", protect, async (req, res) => {
 });
 
 /*
- * MARK ONE NOTIFICATION AS READ
+ * DELETE ONE NOTIFICATION
+ * Current user can delete only their own notification
  */
-router.put(
-    "/:id/read",
+router.delete(
+    "/:notificationId",
     protect,
     async (req, res) => {
         try {
             const notification =
-                await Notification.findOneAndUpdate(
-                    {
-                        _id: req.params.id,
-                        recipient: req.user._id
-                    },
-                    {
-                        read: true
-                    },
-                    {
-                        new: true
-                    }
-                );
+                await Notification.findOneAndDelete({
+                    _id: req.params.notificationId,
+                    recipient: req.user._id
+                });
 
             if (!notification) {
                 return res.status(404).json({
@@ -75,18 +68,65 @@ router.put(
                 });
             }
 
+            const unreadCount =
+                await Notification.countDocuments({
+                    recipient: req.user._id,
+                    read: false
+                });
+
             return res.status(200).json({
-                notification
+                message:
+                    "Notification deleted",
+                deletedId:
+                    notification._id,
+                unreadCount
             });
         } catch (error) {
             console.error(
-                "Mark notification read error:",
+                "Delete notification error:",
                 error.message
             );
 
             return res.status(500).json({
                 message:
-                    "Server error while updating notification"
+                    "Server error while deleting notification"
+            });
+        }
+    }
+);
+
+/*
+ * MARK ONE NOTIFICATION AS READ
+ */
+/*
+ * CLEAR ALL NOTIFICATIONS FOR CURRENT USER
+ */
+router.delete(
+    "/read-all",
+    protect,
+    async (req, res) => {
+        try {
+            const result =
+                await Notification.deleteMany({
+                    recipient: req.user._id
+                });
+
+            return res.status(200).json({
+                message:
+                    "All notifications cleared",
+                deletedCount:
+                    result.deletedCount,
+                unreadCount: 0
+            });
+        } catch (error) {
+            console.error(
+                "Clear all notifications error:",
+                error.message
+            );
+
+            return res.status(500).json({
+                message:
+                    "Server error while clearing notifications"
             });
         }
     }
