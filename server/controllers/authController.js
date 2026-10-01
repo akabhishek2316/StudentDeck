@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
             message: "All required fields must be provided"
         });
     }
-    const collegeEmailDomain = "@ritm.ac.in";
+    const collegeEmailDomain = "@aktu.ac.in";
 
     if (!email.toLowerCase().endsWith(collegeEmailDomain)) {
         return res.status(400).json({
@@ -79,7 +79,7 @@ return res.status(201).json({
 
         const normalizedEmail = email.toLowerCase();
 
-        const collegeEmailDomain = "@ritm.ac.in";
+        const collegeEmailDomain = "@aktu.ac.in";
 
         if (!normalizedEmail.endsWith(collegeEmailDomain)) {
             return res.status(400).json({

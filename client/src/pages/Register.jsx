@@ -160,7 +160,7 @@ function Register() {
               <div className="form-group">
 
                 <label>
-                  Email
+                  Email (end with @aktu.ac.in)
                 </label>
 
                 <input
@@ -169,7 +169,7 @@ function Register() {
                   onChange={(event) =>
                     setEmail(event.target.value)
                   }
-                  placeholder="Enter your college email"
+                  placeholder="Enter your college email "
                 />
 
               </div>
